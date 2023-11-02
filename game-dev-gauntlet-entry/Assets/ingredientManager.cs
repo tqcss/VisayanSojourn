@@ -1,20 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 public class ingredientManager : MonoBehaviour
 {
+    // REFERENCES
     public ingredientModule ingredientModule;
     public GameObject ingredientButton;
     public GameObject uiContent;
     public GameObject ingredientBase;
+
     public LayerMask m_DragLayers; // layer dedicated for loose items
     public int deadZoneX = -11;
-    public int deadZoneY = -13;
+    // public int deadZoneY = -13;
 
+    // // DRAG DROP PHYSICS
     [Range(0.0f, 100.0f)]
     public float m_Damping = 1.0f;
 
@@ -31,13 +31,17 @@ public class ingredientManager : MonoBehaviour
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
             newButton.GetComponentInChildren<Text>().text = ingredientModule.getIngredient(i).name;
 
-            EventTrigger eventTrigger = newButton.GetComponent<EventTrigger>();
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerDown;
-            entry.callback.AddListener((eventData) => {spawnIngredient(i);});
-            eventTrigger.triggers.Add(entry);
+            // ASSIGN TRIGGER EVENT
+            EventTrigger clickTrigger = newButton.GetComponent<EventTrigger>();
+            EventTrigger.Entry clickEvent = new EventTrigger.Entry()
+            {
+                eventID = EventTriggerType.PointerDown
+            };
 
-            }
+            int localValue = i; // temp var for lambda
+            clickEvent.callback.AddListener((data) => { spawnIngredient(localValue); });
+            clickTrigger.triggers.Add(clickEvent);
+        }
     }
 
     void Update() // LOOSE ITEM BEHAVIOR
@@ -79,10 +83,10 @@ public class ingredientManager : MonoBehaviour
 
     public void spawnIngredient(int id)
     {
-        // Debug.Log("Spawned ingredient: " + ingredientModule.getIngredient(id).name);
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
         GameObject newIngredient = Instantiate(ingredientBase, mousePosition, Quaternion.identity);
+        newIngredient.GetComponent<info>().id = id; // assign id to game object for ingredientchecker
         
         // insert sprite assigner here
     }
