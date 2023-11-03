@@ -1,37 +1,41 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEditor;
 
-public class ingredientManager : MonoBehaviour
+public class IngredientManager : MonoBehaviour
 {
-    // REFERENCES
-    public ingredientModule ingredientModule;
-    public GameObject ingredientButton;
-    public GameObject uiContent;
-    public GameObject ingredientBase;
-
+    private IngredientModule ingredientModule;
+    private GameObject ingredientButton;
+    private GameObject ingredientBase;
+    public GameObject uiContent; // parent of ingredientButton
+    
+    // FOR DRAG AND DROP PHYSICS
     public LayerMask m_DragLayers; // layer dedicated for loose items
     public int deadZoneX = -11;
-    // public int deadZoneY = -13;
+    private TargetJoint2D m_TargetJoint;
+    private Rigidbody2D body; // loose item held by mouse - rigidbody2d component
 
-    // // DRAG DROP PHYSICS
     [Range(0.0f, 100.0f)]
     public float m_Damping = 1.0f;
 
     [Range(0.0f, 100.0f)]
     public float m_Frequency = 5.0f;
 
-    private TargetJoint2D m_TargetJoint;
-    private Rigidbody2D body; // loose item held by mouse - rigidbody2d component
-
-    private void Start() // INGREDIENT SLOT MANAGER
+    private void Start()
     {
-        for (int i = 0; i < ingredientModule.ingredients.Length; i++)
-        {
-            GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
-            newButton.GetComponentInChildren<Text>().text = ingredientModule.getIngredient(i).name;
+        ingredientModule = GameObject.FindWithTag("ingredientModule").GetComponent<IngredientModule>();
+        ingredientButton = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ingredientButton.prefab");
+        ingredientBase = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ingredientBase.prefab");
 
-            // ASSIGN TRIGGER EVENT
+        // INGREDIENT SLOT LOADER
+        for (int i = 0; i < ingredientModule.ingredients.Count; i++)
+        {
+            IngredientInfo ingredientInfo = ingredientModule.getIngredient(i);
+            GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
+            newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name;
+            newButton.transform.GetChild(0).GetComponent<Image>().sprite = ingredientInfo.sprite;
+
             EventTrigger clickTrigger = newButton.GetComponent<EventTrigger>();
             EventTrigger.Entry clickEvent = new EventTrigger.Entry()
             {
@@ -86,8 +90,16 @@ public class ingredientManager : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
         GameObject newIngredient = Instantiate(ingredientBase, mousePosition, Quaternion.identity);
-        newIngredient.GetComponent<info>().id = id; // assign id to game object for ingredientchecker
-        
-        // insert sprite assigner here
+        newIngredient.GetComponent<ObjectInfo>().id = id;
+
+        IngredientInfo ingredientInfo = ingredientModule.getIngredient(id);
+        newIngredient.transform.localScale = new Vector3(ingredientInfo.scaleX, ingredientInfo.scaleY, 0);
+        newIngredient.GetComponent<SpriteRenderer>().sprite = ingredientInfo.sprite;
+        newIngredient.GetComponent<BoxCollider2D>().size = new Vector2(ingredientInfo.colliderSizeX, ingredientInfo.colliderSizeY);
+
+        if (ingredientInfo.randomRotation)
+        {
+            newIngredient.transform.rotation = Quaternion.Euler(0, 0, (Random.Range(0f, 360f)));
+        }
     }
 }
