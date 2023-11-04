@@ -29,9 +29,8 @@ public class IngredientManager : MonoBehaviour
         ingredientBase = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ingredientBase.prefab");
 
         // INGREDIENT SLOT LOADER
-        for (int i = 0; i < ingredientModule.ingredients.Count; i++)
+        foreach (IngredientInfo ingredientInfo in ingredientModule.ingredients)
         {
-            IngredientInfo ingredientInfo = ingredientModule.getIngredient(i);
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
             newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name;
             newButton.transform.GetChild(0).GetComponent<Image>().sprite = ingredientInfo.sprite;
@@ -42,8 +41,7 @@ public class IngredientManager : MonoBehaviour
                 eventID = EventTriggerType.PointerDown
             };
 
-            int localValue = i; // temp var for lambda
-            clickEvent.callback.AddListener((data) => { spawnIngredient(localValue); });
+            clickEvent.callback.AddListener((data) => { spawnIngredient(ingredientInfo); });
             clickTrigger.triggers.Add(clickEvent);
         }
     }
@@ -85,14 +83,13 @@ public class IngredientManager : MonoBehaviour
         }
     }
 
-    public void spawnIngredient(int id)
+    public void spawnIngredient(IngredientInfo ingredientInfo)
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
         GameObject newIngredient = Instantiate(ingredientBase, mousePosition, Quaternion.identity);
-        newIngredient.GetComponent<ObjectInfo>().id = id;
+        newIngredient.GetComponent<ObjectInfo>().id = ingredientInfo.id;
 
-        IngredientInfo ingredientInfo = ingredientModule.getIngredient(id);
         newIngredient.transform.localScale = new Vector3(ingredientInfo.scaleX, ingredientInfo.scaleY, 0);
         newIngredient.GetComponent<SpriteRenderer>().sprite = ingredientInfo.sprite;
         newIngredient.GetComponent<BoxCollider2D>().size = new Vector2(ingredientInfo.colliderSizeX, ingredientInfo.colliderSizeY);

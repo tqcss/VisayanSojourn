@@ -9,8 +9,7 @@ public class IngredientModule : MonoBehaviour
 
     private void Start()
     {
-        IngredientInfo[] info = Resources.LoadAll<IngredientInfo>("ingredientInfo");
-        ingredients = info.ToList();
+        ingredients = Resources.LoadAll<IngredientInfo>("ingredientInfo").ToList();
     }
 
     public IngredientInfo getIngredient(int id)
