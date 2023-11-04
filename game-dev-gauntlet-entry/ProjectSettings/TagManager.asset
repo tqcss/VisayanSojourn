@@ -8,6 +8,8 @@ TagManager:
   - ingredientModule
   - ingredientManager
   - looseIngredient
+  - orderManager
+  - orderText
   layers:
   - Default
   - TransparentFX

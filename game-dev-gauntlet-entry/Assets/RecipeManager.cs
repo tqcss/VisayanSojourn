@@ -8,23 +8,24 @@ public class RecipeManager : MonoBehaviour
     private List<DishInfo> dishes = new List<DishInfo>();
     private IngredientManager ingredientManager;
     private IngredientModule ingredientModule;
+    private OrderManager orderManager;
+    private DishInfo chosenDish;
 
     private void Start()
     {
         ingredientManager = GameObject.FindWithTag("ingredientManager").GetComponent<IngredientManager>();
         ingredientModule = GameObject.FindWithTag("ingredientModule").GetComponent<IngredientModule>();
+        orderManager = GameObject.FindWithTag("orderManager").GetComponent<OrderManager>();
         dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Add: " + collision.gameObject.GetComponent<ObjectInfo>().id);
         objectsOnPlate.Add(collision.gameObject.GetComponent<ObjectInfo>().id);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("Remove: " + collision.gameObject.GetComponent<ObjectInfo>().id);
         objectsOnPlate.Remove(collision.gameObject.GetComponent<ObjectInfo>().id);
     }
 
@@ -46,6 +47,7 @@ public class RecipeManager : MonoBehaviour
         return true;
     }
 
+    /*
     private DishInfo findDish()
     {
         // List<DishInfo> matchingDishes = dishes.Where(dish => objectsOnPlate.All(ingredient => dish.recipe.Contains(ingredient))).ToList();
@@ -59,11 +61,20 @@ public class RecipeManager : MonoBehaviour
         Debug.Log($"No dish found with recipe [{string.Join(", ", objectsOnPlate)}]");
         return null;
     }
+    */
 
     public void checkIngredients()
     {
-        DishInfo dish = findDish();
-        if (dish) Debug.Log("Dish found: " + dish.name);
+        if (recipeMatch(chosenDish))
+        {
+            orderManager.getRandomDish();
+            Debug.Log("Correct Dish");
+        }
+        else
+        {
+            Debug.Log("Incorrect Dish");
+            // CALL FAIL FUNCTION HERE
+        }
 
         foreach(GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
         {

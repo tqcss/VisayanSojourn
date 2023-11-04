@@ -59,6 +59,8 @@ public class IngredientManager : MonoBehaviour
             if (!body) return;
             // Debug.Log(body.name);
 
+            if (m_TargetJoint) Destroy(m_TargetJoint);
+
             m_TargetJoint = body.gameObject.AddComponent<TargetJoint2D>();
             m_TargetJoint.dampingRatio = m_Damping;
             m_TargetJoint.frequency = m_Frequency;
