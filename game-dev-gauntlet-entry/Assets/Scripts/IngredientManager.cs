@@ -25,8 +25,8 @@ public class IngredientManager : MonoBehaviour
     private void Start()
     {
         ingredientModule = GameObject.FindWithTag("ingredientModule").GetComponent<IngredientModule>();
-        ingredientButton = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ingredientButton.prefab");
-        ingredientBase = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ingredientBase.prefab");
+        ingredientButton = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ingredientButton.prefab");
+        ingredientBase = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ingredientBase.prefab");
 
         // INGREDIENT SLOT LOADER
         foreach (IngredientInfo ingredientInfo in ingredientModule.ingredients)
