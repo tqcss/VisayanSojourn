@@ -8,9 +8,9 @@ public class OrderManager : MonoBehaviour
 {
     private List<DishInfo> dishes = new List<DishInfo>();
     private RecipeManager recipeManager;
-    private Text orderText;
+    public Text orderText;
 
-    private DishInfo currentOrderPrompt;
+    public DishInfo currentOrderPrompt;
 
     void Start()
     {
@@ -19,12 +19,9 @@ public class OrderManager : MonoBehaviour
         recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
     }
 
-    public DishInfo getRandomDish()
+    public void changeOrderPrompt(DishInfo dish)
     {
-        currentOrderPrompt = dishes[Random.Range(0, dishes.Count)];
+        currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
-        return currentOrderPrompt;
     }
-
-
 }

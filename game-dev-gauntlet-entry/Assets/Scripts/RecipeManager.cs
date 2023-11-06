@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class RecipeManager : MonoBehaviour
 {
-    private List<int> objectsOnPlate = new List<int>();
+    private List<string> objectsOnPlate = new List<string>();
     private List<DishInfo> dishes = new List<DishInfo>();
     private IngredientManager ingredientManager;
     private IngredientModule ingredientModule;
     private OrderManager orderManager;
-    private DishInfo chosenDish;
 
     private void Start()
     {
@@ -21,25 +20,27 @@ public class RecipeManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        objectsOnPlate.Add(collision.gameObject.GetComponent<ObjectInfo>().id);
+        objectsOnPlate.Add(collision.gameObject.name);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        objectsOnPlate.Remove(collision.gameObject.GetComponent<ObjectInfo>().id);
+        objectsOnPlate.Remove(collision.gameObject.name);
     }
 
-    private bool recipeMatch(DishInfo dish)
+    private bool recipeMatch()
     {
-        if (dish.recipe.Length != objectsOnPlate.Count)
+        DishInfo dish = orderManager.currentOrderPrompt;
+
+        if (dish == null || dish.recipe.Count != objectsOnPlate.Count)
         {
             return false;
         }
 
         objectsOnPlate.Sort();
-        for (int i = 0; i < dish.recipe.Length; i++)
+        for (int i = 0; i < dish.recipe.Count; i++)
         {
-            if (dish.recipe[i] != objectsOnPlate[i])
+            if (dish.recipe[i].name != objectsOnPlate[i])
             {
                 return false;
             }
@@ -47,27 +48,17 @@ public class RecipeManager : MonoBehaviour
         return true;
     }
 
-    /*
-    private DishInfo findDish()
-    {
-        // List<DishInfo> matchingDishes = dishes.Where(dish => objectsOnPlate.All(ingredient => dish.recipe.Contains(ingredient))).ToList();
-        foreach (DishInfo dish in dishes)
-        {
-            if (recipeMatch(dish))
-            {
-                return dish;
-            }
-        }
-        Debug.Log($"No dish found with recipe [{string.Join(", ", objectsOnPlate)}]");
-        return null;
-    }
-    */
 
     public void checkIngredients()
     {
-        if (recipeMatch(chosenDish))
+        if (!orderManager.currentOrderPrompt)
         {
-            orderManager.getRandomDish();
+            return;
+        }
+
+        if (recipeMatch())
+        {
+            orderManager.currentOrderPrompt = null;
             Debug.Log("Correct Dish");
         }
         else
@@ -90,6 +81,4 @@ public class RecipeManager : MonoBehaviour
             Destroy(ingredient);
         }
     }
-
-    // Hello!
 }

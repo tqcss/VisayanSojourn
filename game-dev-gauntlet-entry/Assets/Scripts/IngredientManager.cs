@@ -91,16 +91,22 @@ public class IngredientManager : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
-        GameObject newIngredient = Instantiate(ingredientBase, mousePosition, Quaternion.identity);
-        newIngredient.GetComponent<ObjectInfo>().id = ingredientInfo.id;
 
-        newIngredient.transform.localScale = new Vector3(ingredientInfo.scaleX, ingredientInfo.scaleY, 0);
-        newIngredient.GetComponent<SpriteRenderer>().sprite = ingredientInfo.sprite;
-        newIngredient.GetComponent<BoxCollider2D>().size = new Vector2(ingredientInfo.colliderSizeX, ingredientInfo.colliderSizeY);
+        GameObject newIngredient = Instantiate(ingredientBase, mousePosition, Quaternion.identity);
+        newIngredient.name = ingredientInfo.name;
 
         if (ingredientInfo.randomRotation)
         {
             newIngredient.transform.rotation = Quaternion.Euler(0, 0, (Random.Range(0f, 360f)));
         }
+
+        if (ingredientInfo.sprite == null)
+        {
+            return;
+        }
+
+        newIngredient.transform.localScale = new Vector3(ingredientInfo.scaleX, ingredientInfo.scaleY, 0);
+        newIngredient.GetComponent<SpriteRenderer>().sprite = ingredientInfo.sprite;
+        newIngredient.GetComponent<BoxCollider2D>().size = new Vector2(ingredientInfo.colliderSizeX, ingredientInfo.colliderSizeY);
     }
 }

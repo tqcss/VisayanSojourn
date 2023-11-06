@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
   m_Name: dish A
   m_EditorClassIdentifier: 
-  recipe: 0000000001000000
+  recipe:
+  - {fileID: 11400000, guid: 352de4f36b003c5428e32e1bcff58cea, type: 2}
+  - {fileID: 11400000, guid: 184e0c0a19cdf554da9084ee94758354, type: 2}
   sprite: {fileID: 0}
   scale: {x: 0, y: 0, z: 0}
