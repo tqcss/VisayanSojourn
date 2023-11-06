@@ -101,42 +101,42 @@ public class LevelLoad : MonoBehaviour
 
         if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 1 && PlayerPrefs.GetInt("FirstTimeAntique", 1) == 1)
         {
-            Debug.Log("Play Start -> Antique Animation");
+            //Debug.Log("Play Start -> Antique Animation");
             MainMenu.SetActive(false);
             yield return new WaitForSeconds(AntiqueAnimSec);
             PlayerPrefs.SetInt("FirstTimeAntique", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 2 && PlayerPrefs.GetInt("FirstTimeAklan", 1) == 1)
         {
-            Debug.Log("Play Antique -> Aklan Animation");
+            //Debug.Log("Play Antique -> Aklan Animation");
             MainMenu.SetActive(false);
             yield return new WaitForSeconds(AklanAnimSec);
             PlayerPrefs.SetInt("FirstTimeAklan", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 3 && PlayerPrefs.GetInt("FirstTimeCapiz", 1) == 1)
         {
-            Debug.Log("Play Aklan -> Capiz Animation");
+            //Debug.Log("Play Aklan -> Capiz Animation");
             MainMenu.SetActive(false);
             yield return new WaitForSeconds(CapizAnimSec);
             PlayerPrefs.SetInt("FirstTimeCapiz", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 4 && PlayerPrefs.GetInt("FirstTimeNegrosOcc", 1) == 1)
         {
-            Debug.Log("Play Capiz -> Negros Occ Animation");
+            //Debug.Log("Play Capiz -> Negros Occ Animation");
             MainMenu.SetActive(false);
             yield return new WaitForSeconds(NegrosOccAnimSec);
             PlayerPrefs.SetInt("FirstTimeNegrosOcc", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 5 && PlayerPrefs.GetInt("FirstTimeGuimaras", 1) == 1)
         {
-            Debug.Log("Play Negros Occ -> Guimaras Animation");
+            //Debug.Log("Play Negros Occ -> Guimaras Animation");
             MainMenu.SetActive(false);
             yield return new WaitForSeconds(GuimarasAnimSec);
             PlayerPrefs.SetInt("FirstTimeGuimaras", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 6 && PlayerPrefs.GetInt("FirstTimeIloilo", 1) == 1)
         {
-            Debug.Log("Play Guimaras -> Iloilo Animation");
+            //Debug.Log("Play Guimaras -> Iloilo Animation");
             MainMenu.SetActive(false);
             yield return new WaitForSeconds(IloiloAnimSec);
             PlayerPrefs.SetInt("FirstTimeIloilo", 0); 

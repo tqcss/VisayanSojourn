@@ -73,7 +73,16 @@ public class RecipeManager : MonoBehaviour
         else
         {
             Debug.Log("Incorrect Dish");
-            // CALL FAIL FUNCTION HERE
+            if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
+            {
+                PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", 3) - 1);
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                // Automatically goes back to main menu if no more lives
+                Debug.Log("No more lives.");
+            }
         }
 
         foreach(GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
