@@ -70,6 +70,7 @@ public class RecipeManager : MonoBehaviour
             if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
             {
                 PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", 3) - 1);
+                PlayerPrefs.SetInt("FailsBeforeWin", PlayerPrefs.GetInt("FailsBeforeWin", 0) + 1);
                 PlayerPrefs.Save();
             }
             else

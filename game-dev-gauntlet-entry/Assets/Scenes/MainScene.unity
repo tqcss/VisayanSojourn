@@ -523,12 +523,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   livesTotal: 3
-  lifeMaxCooldown: 300
+  lifeMaxCooldown: 600
   LifeSet:
   - {fileID: 2066937005}
   - {fileID: 319767326}
   - {fileID: 1640183460}
   FullHeart: {fileID: 21300000, guid: d1161f1068e002b49bdb00e9644f4d04, type: 3}
+  HalfHeart: {fileID: 21300000, guid: a1ef95b6153df0d47bbeabacf904c0f2, type: 3}
   EmptyHeart: {fileID: 21300000, guid: eb5125dc9de8b694bb8a893b9ed38811, type: 3}
   TimerCDText: {fileID: 1924155048}
 --- !u!1 &77642329

@@ -50,6 +50,7 @@ public class LevelLoad : MonoBehaviour
 
     public void LoadBack (string sceneLevel)
     {
+        PlayerPrefs.SetInt("FailsBeforeWin", 0);
         StartCoroutine(LoadAsynchronously(sceneLevel));
     }
 

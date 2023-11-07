@@ -66,6 +66,7 @@ public class PlayerOnLevel : MonoBehaviour
         if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0))
         {
             PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesTotal) - 1);
+            PlayerPrefs.SetInt("FailsBeforeWin", PlayerPrefs.GetInt("FailsBeforeWin", 0) + 1);
             PlayerPrefs.Save();
         }
         else

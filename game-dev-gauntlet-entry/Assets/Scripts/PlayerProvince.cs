@@ -23,7 +23,7 @@ public class PlayerProvince : MonoBehaviour
         UpdateProvince();
     }
 
-    public void UpdateProvince()
+    private void UpdateProvince()
     {
         for (int i = 0; i < LocationMarker.Length; i++)
         {
