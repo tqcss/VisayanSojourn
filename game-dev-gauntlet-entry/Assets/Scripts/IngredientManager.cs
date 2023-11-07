@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using System.Linq;
 
 public class IngredientManager : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class IngredientManager : MonoBehaviour
         ingredientBase = Resources.Load("Prefabs/ingredientBase", typeof(GameObject)) as GameObject;
 
         // INGREDIENT SLOT LOADER
-        foreach (IngredientInfo ingredientInfo in ingredientModule.ingredients)
+        foreach (IngredientInfo ingredientInfo in ingredientModule.ingredients.OrderBy(item => item.name).ToList())
         {
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
             newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name;
