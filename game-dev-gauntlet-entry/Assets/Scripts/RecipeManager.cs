@@ -9,12 +9,14 @@ public class RecipeManager : MonoBehaviour
     private IngredientManager ingredientManager;
     private IngredientModule ingredientModule;
     private OrderManager orderManager;
+    private GameObject particles;
 
     private void Start()
     {
         ingredientManager = GameObject.FindWithTag("ingredientManager").GetComponent<IngredientManager>();
         ingredientModule = GameObject.FindWithTag("ingredientModule").GetComponent<IngredientModule>();
         orderManager = GameObject.FindWithTag("orderManager").GetComponent<OrderManager>();
+        particles = Resources.Load("Prefabs/particleSystem", typeof(GameObject)) as GameObject;
         dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
     }
 
@@ -53,6 +55,7 @@ public class RecipeManager : MonoBehaviour
     {
         if (!orderManager.currentOrderPrompt)
         {
+            Debug.Log("No assigned dish");
             return;
         }
 
@@ -76,9 +79,28 @@ public class RecipeManager : MonoBehaviour
             }
         }
 
+        List<GameObject> particleInstances = new List<GameObject>();
         foreach(GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
         {
+            GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);
+            particleInstances.Add(newParticle);
+            var maintemp = newParticle.GetComponent<ParticleSystem>().main;
+            maintemp.startColor = ingredientModule.getIngredient(ingredient.name).particleColor;
             Destroy(ingredient);
+            newParticle.GetComponent<ParticleSystem>().Play();
         }
+
+        /*
+        float timer = 0;
+        do
+        {
+            timer += Time.deltaTime;
+        } while (timer < 2);
+
+        foreach (GameObject particleInstance in particleInstances)
+        {
+            Destroy(particleInstance);
+        }
+        */
     }
 }

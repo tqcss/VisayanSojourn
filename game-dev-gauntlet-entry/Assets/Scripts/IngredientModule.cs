@@ -12,8 +12,16 @@ public class IngredientModule : MonoBehaviour
         ingredients = Resources.LoadAll<IngredientInfo>("ingredientInfo").ToList();
     }
 
-    public IngredientInfo getIngredient(int id)
+    public IngredientInfo getIngredient(string name)
     {
-        return ingredients[id];
+        foreach (IngredientInfo ingredient in ingredients)
+        {
+            if (ingredient.name == name)
+            {
+                return ingredient;
+            }
+        }
+        Debug.LogWarning($"No ingredient found with the name '{name}'");
+        return null;
     }
 }

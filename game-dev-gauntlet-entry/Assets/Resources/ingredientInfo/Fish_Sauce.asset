@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a427a29b8be0bf1498b41d041084aae1, type: 3}
   m_Name: Fish_Sauce
   m_EditorClassIdentifier: 
-  id: 2
   sprite: {fileID: 21300000, guid: 07a53a3a8a53eeb4db6b036430306bdb, type: 3}
   scaleX: 1.5
   scaleY: 1.5
   colliderSizeX: 2
   colliderSizeY: 4
+  randomRotation: 0
+  particleColor: {r: 0.43921572, g: 0.2509804, b: 0.16470589, a: 0}
