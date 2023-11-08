@@ -9,5 +9,6 @@ public class IngredientInfo : ScriptableObject
     public float colliderSizeX;
     public float colliderSizeY;
     public bool randomRotation;
-    public Color particleColor;
+    public Color particleColorA;
+    public Color particleColorB;
 }

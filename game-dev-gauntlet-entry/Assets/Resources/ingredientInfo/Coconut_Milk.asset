@@ -18,4 +18,5 @@ MonoBehaviour:
   colliderSizeX: 2
   colliderSizeY: 4
   randomRotation: 0
-  particleColor: {r: 0.9176471, g: 0.98823535, b: 1, a: 1}
+  particleColorA: {r: 0.9843138, g: 1, b: 0.9960785, a: 1}
+  particleColorB: {r: 0.53333336, g: 0.8313726, b: 0.94117653, a: 1}

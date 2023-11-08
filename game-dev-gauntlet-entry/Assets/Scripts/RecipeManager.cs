@@ -11,6 +11,8 @@ public class RecipeManager : MonoBehaviour
     private OrderManager orderManager;
     private GameObject particles;
 
+    public int particleColorOffset = 5;
+
     private void Start()
     {
         ingredientManager = GameObject.FindWithTag("ingredientManager").GetComponent<IngredientManager>();
@@ -98,7 +100,7 @@ public class RecipeManager : MonoBehaviour
             GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);
             particleInstances.Add(newParticle);
             var maintemp = newParticle.GetComponent<ParticleSystem>().main;
-            maintemp.startColor = ingredientModule.getIngredient(ingredient.name).particleColor;
+            maintemp.startColor = new ParticleSystem.MinMaxGradient(ingredientModule.getIngredient(ingredient.name).particleColorA, ingredientModule.getIngredient(ingredient.name).particleColorB);
             Destroy(ingredient);
             newParticle.GetComponent<ParticleSystem>().Play();
         }
