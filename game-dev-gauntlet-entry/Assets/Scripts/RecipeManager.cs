@@ -50,7 +50,6 @@ public class RecipeManager : MonoBehaviour
         return true;
     }
 
-
     public void checkIngredients()
     {
         if (!orderManager.currentOrderPrompt)
@@ -67,21 +66,34 @@ public class RecipeManager : MonoBehaviour
         else
         {
             Debug.Log("Incorrect Dish");
-            if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
-            {
-                PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", 3) - 1);
-                PlayerPrefs.SetInt("FailsBeforeWin", PlayerPrefs.GetInt("FailsBeforeWin", 0) + 1);
-                PlayerPrefs.Save();
-            }
-            else
-            {
-                // Automatically goes back to main menu if no more lives
-                Debug.Log("No more lives.");
-            }
+            failPlayer();
         }
+        orderManager.timerRunning = false;
 
+        destroyAllLooseItems();
+    }
+
+    public void failPlayer()
+    {
+        orderManager.timerRunning = false;
+        destroyAllLooseItems();
+        if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
+        {
+            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", 3) - 1);
+            PlayerPrefs.SetInt("FailsBeforeWin", PlayerPrefs.GetInt("FailsBeforeWin", 0) + 1);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            // Automatically goes back to main menu if no more lives
+            Debug.Log("No more lives.");
+        }
+    }
+
+    private void destroyAllLooseItems()
+    {
         List<GameObject> particleInstances = new List<GameObject>();
-        foreach(GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
+        foreach (GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
         {
             GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);
             particleInstances.Add(newParticle);
@@ -90,18 +102,5 @@ public class RecipeManager : MonoBehaviour
             Destroy(ingredient);
             newParticle.GetComponent<ParticleSystem>().Play();
         }
-
-        /*
-        float timer = 0;
-        do
-        {
-            timer += Time.deltaTime;
-        } while (timer < 2);
-
-        foreach (GameObject particleInstance in particleInstances)
-        {
-            Destroy(particleInstance);
-        }
-        */
     }
 }

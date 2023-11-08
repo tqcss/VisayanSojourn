@@ -10,6 +10,7 @@ TagManager:
   - looseIngredient
   - orderManager
   - orderText
+  - timerBar
   layers:
   - Default
   - TransparentFX

@@ -56,13 +56,22 @@ public class IngredientManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Collider2D collider = Physics2D.OverlapPoint(mousePosition, m_DragLayers);
-            if (!collider) return;
+            if (!collider)
+            {
+                return;
+            }
 
             body = collider.attachedRigidbody;
-            if (!body) return;
+            if (!body)
+            {
+                return;
+            }
             // Debug.Log(body.name);
 
-            if (m_TargetJoint) Destroy(m_TargetJoint);
+            if (m_TargetJoint)
+            {
+                Destroy(m_TargetJoint);
+            }
 
             m_TargetJoint = body.gameObject.AddComponent<TargetJoint2D>();
             m_TargetJoint.dampingRatio = m_Damping;
