@@ -71,7 +71,7 @@ public class RecipeManager : MonoBehaviour
             failPlayer();
         }
         orderManager.timerRunning = false;
-
+        orderManager.currentOrderPrompt = null;
         destroyAllLooseItems();
     }
 
