@@ -164,12 +164,12 @@ public class PlayerLives : MonoBehaviour
         {
             if (i < livesTotal)
             {
-                if ((lifeCooldown < lifeMaxCooldown / 2) && (i < livesTotal - 1))
-                {
-                    LifeSet[(PlayerPrefs.GetInt("GlobalLives", livesTotal))].sprite = HalfHeart;
-                }
                 LifeSet[i].sprite = FullHeart;
             }    
+        }
+        if ((lifeCooldown < lifeMaxCooldown / 2) && ((PlayerPrefs.GetInt("GlobalLives", livesTotal) - 1) < (livesTotal - 1)))
+        {
+            LifeSet[(PlayerPrefs.GetInt("GlobalLives", livesTotal))].sprite = HalfHeart;
         }
     }
 
