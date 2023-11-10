@@ -12,7 +12,6 @@ public class LevelLoad : MonoBehaviour
     public GameObject MainMenu;
     public GameObject LoadingScreen;
     public Slider LoadingSlider;
-    public TextMeshProUGUI ProvinceText;
 
     public GameObject LoadingAntique;
     public GameObject LoadingAklan;
@@ -20,6 +19,12 @@ public class LevelLoad : MonoBehaviour
     public GameObject LoadingNegrosOcc;
     public GameObject LoadingGuimaras;
     public GameObject LoadingIloilo;
+    public GameObject DescAntique;
+    public GameObject DescAklan;
+    public GameObject DescCapiz;
+    public GameObject DescNegrosOcc;
+    public GameObject DescGuimaras;
+    public GameObject DescIloilo;
 
     private string sceneLevel;
     private bool canPlayAnimation = false;
@@ -74,7 +79,6 @@ public class LevelLoad : MonoBehaviour
         operation.allowSceneActivation = false;
         
         float progress = 0;
-        yield return new WaitForSeconds(1);
 
         while (!operation.isDone)
         {
@@ -161,55 +165,67 @@ public class LevelLoad : MonoBehaviour
         
         if (sceneLevel == "AntiqueScene") 
         {
+            PlayerPrefs.SetInt("ProvinceCurrent", 1);
             LoadingAntique.SetActive(true);
         } 
         else if (sceneLevel == "AklanScene") 
         {
+            PlayerPrefs.SetInt("ProvinceCurrent", 2);
             LoadingAklan.SetActive(true);
         }
         else if (sceneLevel == "CapizScene")
         {
+            PlayerPrefs.SetInt("ProvinceCurrent", 3);
             LoadingCapiz.SetActive(true);
         }
         else if (sceneLevel == "NegrosOccScene")
         {
+            PlayerPrefs.SetInt("ProvinceCurrent", 4);
             LoadingNegrosOcc.SetActive(true);
         }
         else if (sceneLevel == "GuimarasScene")
         {
+            PlayerPrefs.SetInt("ProvinceCurrent", 5);
             LoadingGuimaras.SetActive(true);
         }
         else if (sceneLevel == "IloiloScene")
         {
+            PlayerPrefs.SetInt("ProvinceCurrent", 6);
             LoadingIloilo.SetActive(true);
         }
     }
 
     public void UpdateDescription (string sceneLevel)
     {
+        DescAntique.SetActive(false);
+        DescAklan.SetActive(false);
+        DescCapiz.SetActive(false);
+        DescNegrosOcc.SetActive(false);
+        DescGuimaras.SetActive(false);
+        DescIloilo.SetActive(false);
         if (sceneLevel == "AntiqueScene") 
         {
-            ProvinceText.text = "ANTIQUE";
+            DescAntique.SetActive(true);
         } 
         else if (sceneLevel == "AklanScene") 
         {
-            ProvinceText.text = "AKLAN";
+            DescAklan.SetActive(true);
         }
         else if (sceneLevel == "CapizScene")
         {
-            ProvinceText.text = "CAPIZ";
+            DescCapiz.SetActive(true);
         }
         else if (sceneLevel == "NegrosOccScene")
         {
-            ProvinceText.text = "NEGROS OCCIDENTAL";
+            DescNegrosOcc.SetActive(true);
         }
         else if (sceneLevel == "GuimarasScene")
         {
-            ProvinceText.text = "GUIMARAS";
+            DescGuimaras.SetActive(true);
         }
         else if (sceneLevel == "IloiloScene")
         {
-            ProvinceText.text = "ILOILO";
+            DescIloilo.SetActive(true);
         } 
     }
 

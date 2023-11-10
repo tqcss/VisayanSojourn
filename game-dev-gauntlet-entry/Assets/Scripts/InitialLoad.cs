@@ -42,7 +42,6 @@ public class InitialLoad : MonoBehaviour
         operation.allowSceneActivation = false;
         
         float progress = 0;
-        yield return new WaitForSeconds(1);
 
         while (!operation.isDone)
         {

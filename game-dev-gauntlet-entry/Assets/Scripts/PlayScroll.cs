@@ -17,7 +17,7 @@ public class PlayScroll : MonoBehaviour
     {
         if (videoPlayer)
         {
-            videoPlayer.frame = 1;
+            videoPlayer.Stop();
             videoPlayer.Play();
         }
     }
