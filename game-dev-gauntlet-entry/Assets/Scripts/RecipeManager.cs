@@ -103,11 +103,9 @@ public class RecipeManager : MonoBehaviour
 
     private void destroyAllLooseItems()
     {
-        List<GameObject> particleInstances = new List<GameObject>();
         foreach (GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
         {
             GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);
-            particleInstances.Add(newParticle);
             var maintemp = newParticle.GetComponent<ParticleSystem>().main;
             maintemp.startColor = new ParticleSystem.MinMaxGradient(ingredientModule.getIngredient(ingredient.name).particleColorA, ingredientModule.getIngredient(ingredient.name).particleColorB);
             Destroy(ingredient);
