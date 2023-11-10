@@ -16,11 +16,8 @@ public class OrderManager : MonoBehaviour
 
     public DishInfo currentOrderPrompt;
 
-    // <timer>
     public bool timerRunning = false;
     private float timeLeft;
-
-    // </timer>
 
 
 
