@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class CookBookScript : MonoBehaviour
 {
     public GameObject cookBookUi;
 
-    private Image c_uiImage;
+    private RawImage c_uiImage;
+    private VideoPlayer c_uiVideo;
 
     private bool shown = false;
     private bool bgFading = false;
@@ -15,7 +17,9 @@ public class CookBookScript : MonoBehaviour
 
     void Start()
     {
-        c_uiImage = cookBookUi.GetComponent<Image>();
+        c_uiImage = cookBookUi.GetComponent<RawImage>();
+        c_uiVideo = cookBookUi.GetComponent<VideoPlayer>();
+        c_uiVideo.Prepare();
     }
 
     void Update()
@@ -47,25 +51,27 @@ public class CookBookScript : MonoBehaviour
             return;
         }
 
-        if (shown && c_uiImage.color.a < .9f)
+        if (shown && c_uiImage.color.a < 1)
         {
-            float nextValue = Time.deltaTime * 2.7f;
-            if (c_uiImage.color.a + nextValue >= .9f)
+            float nextValue = Time.deltaTime * 3;
+            if (c_uiImage.color.a + nextValue >= 1)
             {
-                c_uiImage.color = new Color(0, 0, 0, .9f);
+                c_uiImage.color = new Color(1, 1, 1, 1);
                 bgFading = false;
+                c_uiVideo.Play();
                 return;
             }
-            c_uiImage.color = new Color(0, 0, 0, (c_uiImage.color.a + nextValue));
+            c_uiImage.color = new Color(1, 1, 1, (c_uiImage.color.a + nextValue));
         }
         else if (!shown && c_uiImage.color.a > 0)
         {
-            float nextValue = Time.deltaTime * 2.7f;
+            float nextValue = Time.deltaTime * 3;
             if (c_uiImage.color.a - nextValue <= 0)
             {
-                c_uiImage.color = new Color(0, 0, 0, 0);
+                c_uiImage.color = new Color(1, 1, 1, 0);
                 c_uiImage.gameObject.SetActive(false);
                 bgFading = false;
+                c_uiVideo.Stop();
                 return;
             }
             c_uiImage.color = new Color(0, 0, 0, (c_uiImage.color.a - nextValue));
