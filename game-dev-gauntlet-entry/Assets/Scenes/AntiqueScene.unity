@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 55564437}
   - component: {fileID: 55564436}
   - component: {fileID: 55564435}
+  - component: {fileID: 55564438}
   m_Layer: 5
   m_Name: RoundFinishUI
   m_TagString: Untagged
@@ -231,6 +232,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!210 &55564438
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55564433}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_SortAtRoot: 0
 --- !u!1 &101023843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1670,7 +1683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RecipeScroll: {fileID: 1595305238}
-  scrollTimeSec: 1
+  scrollTimeSec: 9
   KitchenUI: {fileID: 475100241}
   StartButton: {fileID: 914713100}
   FoodNameText: {fileID: 214776804}
@@ -1992,6 +2005,7 @@ GameObject:
   - component: {fileID: 798324659}
   - component: {fileID: 798324658}
   - component: {fileID: 798324657}
+  - component: {fileID: 798324660}
   m_Layer: 5
   m_Name: PrevButton
   m_TagString: Untagged
@@ -2112,6 +2126,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 798324655}
   m_CullTransparentMesh: 1
+--- !u!210 &798324660
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798324655}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_SortAtRoot: 0
 --- !u!1 &798722313
 GameObject:
   m_ObjectHideFlags: 0
@@ -3229,6 +3255,7 @@ GameObject:
   - component: {fileID: 1292570266}
   - component: {fileID: 1292570265}
   - component: {fileID: 1292570264}
+  - component: {fileID: 1292570267}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -3349,6 +3376,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292570262}
   m_CullTransparentMesh: 1
+--- !u!210 &1292570267
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292570262}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_SortAtRoot: 0
 --- !u!1 &1303747073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3682,10 +3721,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1595305242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1280, y: 720}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1472782817
 MonoBehaviour:
@@ -4747,6 +4786,7 @@ GameObject:
   - component: {fileID: 1862896102}
   - component: {fileID: 1862896101}
   - component: {fileID: 1862896100}
+  - component: {fileID: 1862896103}
   m_Layer: 5
   m_Name: NextButton
   m_TagString: Untagged
@@ -4903,6 +4943,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862896098}
   m_CullTransparentMesh: 1
+--- !u!210 &1862896103
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862896098}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_SortAtRoot: 0
 --- !u!1 &1865438440
 GameObject:
   m_ObjectHideFlags: 0
