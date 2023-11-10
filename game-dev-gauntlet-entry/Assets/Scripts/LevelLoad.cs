@@ -25,6 +25,8 @@ public class LevelLoad : MonoBehaviour
     public GameObject DescNegrosOcc;
     public GameObject DescGuimaras;
     public GameObject DescIloilo;
+    public GameObject PlayButton;
+    public GameObject NotAvailText;
 
     private string sceneLevel;
     private bool canPlayAnimation = false;
@@ -206,26 +208,38 @@ public class LevelLoad : MonoBehaviour
         if (sceneLevel == "AntiqueScene") 
         {
             DescAntique.SetActive(true);
+            PlayButton.SetActive(true);
+            NotAvailText.SetActive(false);
         } 
         else if (sceneLevel == "AklanScene") 
         {
             DescAklan.SetActive(true);
+            PlayButton.SetActive(true);
+            NotAvailText.SetActive(false);
         }
         else if (sceneLevel == "CapizScene")
         {
             DescCapiz.SetActive(true);
+            PlayButton.SetActive(false);
+            NotAvailText.SetActive(true);
         }
         else if (sceneLevel == "NegrosOccScene")
         {
             DescNegrosOcc.SetActive(true);
+            PlayButton.SetActive(false);
+            NotAvailText.SetActive(true);
         }
         else if (sceneLevel == "GuimarasScene")
         {
             DescGuimaras.SetActive(true);
+            PlayButton.SetActive(false);
+            NotAvailText.SetActive(true);
         }
         else if (sceneLevel == "IloiloScene")
         {
             DescIloilo.SetActive(true);
+            PlayButton.SetActive(false);
+            NotAvailText.SetActive(true);
         } 
     }
 

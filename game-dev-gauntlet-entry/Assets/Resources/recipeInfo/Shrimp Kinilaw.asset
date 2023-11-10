@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Shrimp Kinilaw
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: 3d2e4f81d216cb44284cd51c3a15bebf, type: 2}
+  - {fileID: 11400000, guid: eb234fef61e6b6949bf0dc8a4f059862, type: 2}
+  - {fileID: 11400000, guid: 4e5296c7b58a4324c9f92a95491eb857, type: 2}
+  - {fileID: 11400000, guid: e54d24fdb2187844da5a4c0534c7b009, type: 2}
+  - {fileID: 11400000, guid: cc0eac1269063a149a9901f66e81e01b, type: 2}
+  - {fileID: 11400000, guid: 87505a73dcbf2714b96e689ed76367db, type: 2}
+  - {fileID: 11400000, guid: 193ebafcdc208524fb273a1360cb7ada, type: 2}
+  - {fileID: 11400000, guid: eb4bcddc9c91c134683be571e7cd246b, type: 2}
+  - {fileID: 11400000, guid: c3b087fad74c14a48a69274b28243653, type: 2}
+  - {fileID: 11400000, guid: 352de4f36b003c5428e32e1bcff58cea, type: 2}
+  - {fileID: 11400000, guid: e63be4e3297efc44f99ced07649116d8, type: 2}
+  sprite: {fileID: 0}
+  scale: {x: 0, y: 0, z: 0}
