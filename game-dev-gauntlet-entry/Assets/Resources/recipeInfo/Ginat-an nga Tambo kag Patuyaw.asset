@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipe:
   - {fileID: 11400000, guid: ba1c43963af619f46bcd01f40a4301b1, type: 2}
+  - {fileID: 11400000, guid: 3d2e4f81d216cb44284cd51c3a15bebf, type: 2}
   - {fileID: 11400000, guid: d849bdaa97164ce46ba1ca5ef5a00546, type: 2}
   - {fileID: 11400000, guid: bad5e4b1bb800964aa8b4bba82bf49c1, type: 2}
   - {fileID: 11400000, guid: a8acc8fb1ab7eb54c88fc4a69f45aa94, type: 2}
@@ -21,7 +22,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cc0eac1269063a149a9901f66e81e01b, type: 2}
   - {fileID: 11400000, guid: c2de349ed68137843a56be7c7cf352a0, type: 2}
   - {fileID: 11400000, guid: eb4bcddc9c91c134683be571e7cd246b, type: 2}
-  - {fileID: 11400000, guid: 3bebeed7fda534945958136d8345c21e, type: 2}
   - {fileID: 11400000, guid: 352de4f36b003c5428e32e1bcff58cea, type: 2}
   sprite: {fileID: 0}
   scale: {x: 0, y: 0, z: 0}
