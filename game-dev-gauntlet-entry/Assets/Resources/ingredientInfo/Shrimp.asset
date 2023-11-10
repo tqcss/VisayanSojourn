@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a427a29b8be0bf1498b41d041084aae1, type: 3}
   m_Name: Shrimp
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: c7e74d86010e469438d4c7b113dcdc38, type: 3}
-  scaleX: 1
-  scaleY: 1
-  colliderSizeX: 2.5
-  colliderSizeY: 2.5
-  randomRotation: 1
-  particleColorA: {r: 0.9960785, g: 0.86274517, b: 0.7568628, a: 1}
-  particleColorB: {r: 0.98823535, g: 0.54509807, b: 0.40000004, a: 1}
+  sprite: {fileID: 2138186574, guid: 9967f3295efc53d4da53de18fae6e24d, type: 3}
+  scaleX: 2
+  scaleY: 2
+  colliderSizeX: 0
+  colliderSizeY: 0
+  randomRotation: 0
+  particleColorA: {r: 0, g: 0, b: 0, a: 0}
+  particleColorB: {r: 0, g: 0, b: 0, a: 0}

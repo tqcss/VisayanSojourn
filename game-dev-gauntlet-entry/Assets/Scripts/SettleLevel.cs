@@ -27,6 +27,12 @@ public class SettleLevel : MonoBehaviour
     public DishInfo fourthDish;
     public DishInfo fifthDish;
     public DishInfo sixthDish;
+    public GameObject firstDishObj;
+    public GameObject secondDishObj;
+    public GameObject thirdDishObj;
+    public GameObject fourthDishObj;
+    public GameObject fifthDishObj;
+    public GameObject sixthDishObj;
 
     private OrderManager orderManager;
 
@@ -222,6 +228,7 @@ public class SettleLevel : MonoBehaviour
                 NextButton.SetActive(true);
                 PrevButton.SetActive(false);
                 BackButton.SetActive(true);
+                DisplayDish(1);
             }
             PlayerPrefs.SetInt("RoundCorrect", 0);
         }
@@ -234,6 +241,7 @@ public class SettleLevel : MonoBehaviour
                 NextButton.SetActive(false);
                 PrevButton.SetActive(true);
                 BackButton.SetActive(true);
+                DisplayDish(0);
             }
             else
             {
@@ -241,6 +249,44 @@ public class SettleLevel : MonoBehaviour
                 NextButton.SetActive(false);
                 PrevButton.SetActive(false);
                 BackButton.SetActive(true);
+                DisplayDish(0);
+            }
+        }
+    }
+
+    public void DisplayDish(int display)
+    {
+        firstDishObj.SetActive(false);
+        secondDishObj.SetActive(false);
+        thirdDishObj.SetActive(false);
+        fourthDishObj.SetActive(false);
+        fifthDishObj.SetActive(false);
+        sixthDishObj.SetActive(false);
+        if (display == 1)
+        {
+            if (currentRound == 1)
+            {
+                firstDishObj.SetActive(true);
+            }
+            else if (currentRound == 2)
+            {
+                secondDishObj.SetActive(true);
+            }
+            else if (currentRound == 3)
+            {
+                thirdDishObj.SetActive(true);
+            }
+            else if (currentRound == 4)
+            {
+                fourthDishObj.SetActive(true);
+            }
+            else if (currentRound == 5)
+            {
+                fifthDishObj.SetActive(true);
+            }
+            else if (currentRound == 6)
+            {
+                sixthDishObj.SetActive(true);
             }
         }
     }

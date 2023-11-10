@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a427a29b8be0bf1498b41d041084aae1, type: 3}
   m_Name: Green_Chili
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  scaleX: 0
-  scaleY: 0
+  sprite: {fileID: -641905576, guid: 98c0bbb1c2c8dd040a0e8bf06b64562d, type: 3}
+  scaleX: 2
+  scaleY: 2
   colliderSizeX: 0
   colliderSizeY: 0
   randomRotation: 0
