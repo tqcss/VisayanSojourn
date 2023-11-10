@@ -35,8 +35,13 @@ public class RecipeManager : MonoBehaviour
     private bool recipeMatch()
     {
         DishInfo dish = orderManager.currentOrderPrompt;
-
-        if (dish == null || dish.recipe.Count != objectsOnPlate.Count)
+            
+        for (int i = 0; i < objectsOnPlate.Count; i++)
+        {
+            Debug.Log(objectsOnPlate);
+        }    
+            
+        if (dish.recipe.Count != objectsOnPlate.Count)
         {
             return false;
         }
@@ -64,11 +69,15 @@ public class RecipeManager : MonoBehaviour
         {
             orderManager.currentOrderPrompt = null;
             Debug.Log("Correct Dish");
+
+            PlayerPrefs.SetInt("RoundCorrect", 1);
         }
         else
         {
             Debug.Log("Incorrect Dish");
             failPlayer();
+
+            PlayerPrefs.SetInt("RoundCorrect", 0);
         }
         orderManager.timerRunning = false;
         orderManager.currentOrderPrompt = null;
@@ -77,6 +86,7 @@ public class RecipeManager : MonoBehaviour
 
     public void failPlayer()
     {
+        
         orderManager.timerRunning = false;
         destroyAllLooseItems();
         if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
@@ -87,7 +97,6 @@ public class RecipeManager : MonoBehaviour
         }
         else
         {
-            // Automatically goes back to main menu if no more lives
             Debug.Log("No more lives.");
         }
     }

@@ -15,11 +15,16 @@ public class SettleLevel : MonoBehaviour
     public TextMeshProUGUI FoodNameText;
     public GameObject FoodNameTextObj;
     public TextMeshProUGUI RecipeText;
-    public TextMeshProUGUI MessageText;
     public GameObject RecipeTextObj;
+    public TextMeshProUGUI MessageText;
     public GameObject RoundFinishUI;
     public GameObject BackButton;
+    public GameObject PrevButton;
     public GameObject NextButton;
+    public DishInfo firstDish;
+    public DishInfo secondDish;
+
+    private OrderManager orderManager;
 
     public int maximumRound;
     private int currentRound = 1;
@@ -28,6 +33,7 @@ public class SettleLevel : MonoBehaviour
 
     private void Awake()
     {
+        orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
         StartCoroutine(PlayAnimation());
     }
 
@@ -38,7 +44,11 @@ public class SettleLevel : MonoBehaviour
         RecipeTextObj.SetActive(false);
         StartButton.SetActive(false);
         KitchenUI.SetActive(false);
-        yield return new WaitForSeconds(scrollTimeSec);
+        RoundFinishUI.SetActive(false);
+        if (currentRound == 1)
+        {
+            yield return new WaitForSeconds(scrollTimeSec);
+        }
         DisplayRecipe();
         StartButton.SetActive(true);
     }
@@ -171,23 +181,66 @@ public class SettleLevel : MonoBehaviour
     {
         RecipeScroll.SetActive(false);
         KitchenUI.SetActive(true);
+        if (currentRound == 1)
+        {
+            orderManager.changeOrderPrompt(firstDish);
+        }
+        else if (currentRound == 2)
+        {
+            orderManager.changeOrderPrompt(secondDish);
+        }
     }
 
     public void FinishRound()
     {
-        RoundFinishUI.SetActive(true);
-        if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
+        if (PlayerPrefs.GetInt("RoundCorrect", 0) == 1)
         {
-            MessageText.text = "ROUND FINISHED";
-            NextButton.SetActive(true);
-            BackButton.SetActive(false);
+            RoundFinishUI.SetActive(true);
+            if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
+            {
+                MessageText.text = "ROUND CORRECT";
+                NextButton.SetActive(true);
+                PrevButton.SetActive(false);
+                BackButton.SetActive(true);
+            }
+            PlayerPrefs.SetInt("RoundCorrect", 0);
         }
-        else
+        else if (PlayerPrefs.GetInt("RoundCorrect", 0) == 0)
         {
-            MessageText.text = "NO MORE LIVES";
-            NextButton.SetActive(false);
-            BackButton.SetActive(true);
+            RoundFinishUI.SetActive(true);
+            if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
+            {
+                MessageText.text = "ROUND INCORRECT";
+                NextButton.SetActive(false);
+                PrevButton.SetActive(true);
+                BackButton.SetActive(true);
+            }
+            else
+            {
+                MessageText.text = "NO MORE LIVES";
+                NextButton.SetActive(false);
+                PrevButton.SetActive(false);
+                BackButton.SetActive(true);
+            }
         }
     }
 
+    public void OntoNextRound()
+    {
+        if (currentRound < maximumRound)
+        {
+            currentRound++;
+            StartCoroutine(PlayAnimation());
+        }
+        else
+        {
+            PlayerPrefs.SetInt("ProceedNextProvince", 1);
+            Debug.Log("Go to Next Province");
+        }
+    }
+
+    public void OntoPreviousRound()
+    {
+        StartCoroutine(PlayAnimation());
+    }
 }

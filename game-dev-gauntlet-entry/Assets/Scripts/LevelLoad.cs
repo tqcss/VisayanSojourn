@@ -50,16 +50,18 @@ public class LevelLoad : MonoBehaviour
 
     public void LoadBack (string sceneLevel)
     {
+        Debug.Log("Go to Main");
         PlayerPrefs.SetInt("FailsBeforeWin", 0);
         StartCoroutine(LoadAsynchronously(sceneLevel));
     }
 
     public void LoadFinishBack (string sceneLevel)
     {
-        if (!(PlayerPrefs.GetInt("GlobalLives", 3) <= 0))
+        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
         {
             StartCoroutine(LoadAsynchronously(sceneLevel));
             canPlayAnimation = true;
+            PlayerPrefs.SetInt("ProceedNextProvince", 0);
         }
     }
 

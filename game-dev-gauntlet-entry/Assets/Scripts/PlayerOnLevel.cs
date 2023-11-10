@@ -9,7 +9,7 @@ public class PlayerOnLevel : MonoBehaviour
     public int livesTotal;
     public void FinishedAntique (bool finished)
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 1)
+        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 1 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();
@@ -18,7 +18,7 @@ public class PlayerOnLevel : MonoBehaviour
 
     public void FinishedAklan (bool finished)
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 2)
+        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 2 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();
@@ -27,7 +27,7 @@ public class PlayerOnLevel : MonoBehaviour
 
     public void FinishedCapiz (bool finished)
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 3)
+        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 3 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();
@@ -36,7 +36,7 @@ public class PlayerOnLevel : MonoBehaviour
 
     public void FinishedNegrosOcc (bool finished)
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 4)
+        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 4 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();
@@ -45,7 +45,7 @@ public class PlayerOnLevel : MonoBehaviour
 
     public void FinishedGuimaras (bool finished)
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 5)
+        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 5 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();
@@ -54,7 +54,7 @@ public class PlayerOnLevel : MonoBehaviour
 
     public void FinishedIloilo (bool finished)
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 6)
+        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0) && PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 6 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();

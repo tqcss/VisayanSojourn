@@ -177,6 +177,7 @@ public class PlayerLives : MonoBehaviour
     {
         PlayerPrefs.SetString("SavedTime", DateTime.Now.ToString());
         PlayerPrefs.SetInt("OffCooldownCheck", 0);
+        PlayerPrefs.SetInt("FailsBeforeWin", 0);
     }
 
 }

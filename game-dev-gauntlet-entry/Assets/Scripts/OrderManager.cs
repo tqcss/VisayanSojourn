@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class OrderManager : MonoBehaviour
 {
     private List<DishInfo> dishes = new List<DishInfo>();
-    private RecipeManager recipeManager;
+    public RecipeManager recipeManager;
+    public SettleLevel settleLevel;
     public GameObject timerBar;
     public Text orderText;
 
@@ -40,7 +41,7 @@ public class OrderManager : MonoBehaviour
 
     public void startTimer()
     {
-        Debug.Log("timer started");
+        Debug.Log("Timer Started");
         timeLeft = timeDuration;
         timerBar.transform.localScale = new Vector3(1, timerBar.transform.localScale.y, 0);
         timerRunning = true;
@@ -59,7 +60,9 @@ public class OrderManager : MonoBehaviour
             timerBar.transform.localScale = new Vector3((timeLeft / timeDuration), timerBar.transform.localScale.y, 0);
         } else
         {
+            settleLevel.FinishRound();
             recipeManager.failPlayer();
+            
         }
     }
 }
