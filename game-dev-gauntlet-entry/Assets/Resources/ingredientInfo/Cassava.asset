@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a427a29b8be0bf1498b41d041084aae1, type: 3}
   m_Name: Cassava
   m_EditorClassIdentifier: 
-  sprite: {fileID: -2089406986, guid: 89acf8adeced49243af6aaac9579c72d, type: 3}
+  sprite: {fileID: 963337988, guid: 98c0bbb1c2c8dd040a0e8bf06b64562d, type: 3}
   scaleX: 4
   scaleY: 4
   colliderSizeX: 1

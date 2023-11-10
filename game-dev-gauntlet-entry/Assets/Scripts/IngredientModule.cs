@@ -7,7 +7,7 @@ public class IngredientModule : MonoBehaviour
 {
     public List<IngredientInfo> ingredients = new List<IngredientInfo>();
 
-    private void Start()
+    private void Awake()
     {
         ingredients = Resources.LoadAll<IngredientInfo>("ingredientInfo").ToList();
     }

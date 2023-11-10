@@ -1154,7 +1154,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 804661260}
         m_TargetAssemblyTypeName: SettleLevel, Assembly-CSharp
         m_MethodName: FinishRound
         m_Mode: 1
@@ -2163,6 +2163,8 @@ MonoBehaviour:
   DescNegrosOcc: {fileID: 0}
   DescGuimaras: {fileID: 0}
   DescIloilo: {fileID: 0}
+  PlayButton: {fileID: 0}
+  NotAvailText: {fileID: 0}
   AntiqueAnimSec: 0
   AklanAnimSec: 0
   CapizAnimSec: 0
@@ -2283,8 +2285,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: -400.00003}
-  m_SizeDelta: {x: 260, y: 800}
+  m_AnchoredPosition: {x: 140.00003, y: -896.5383}
+  m_SizeDelta: {x: 240, y: 1793.076}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &850252310
 MonoBehaviour:
@@ -2382,7 +2384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.92156863}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3512,7 +3514,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dd128e2341b404d409034a3d65c6c9b7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 232bac3564499f44bb91a06ab496831c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

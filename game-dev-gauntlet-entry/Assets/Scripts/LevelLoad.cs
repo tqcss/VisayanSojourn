@@ -214,8 +214,8 @@ public class LevelLoad : MonoBehaviour
         else if (sceneLevel == "AklanScene") 
         {
             DescAklan.SetActive(true);
-            PlayButton.SetActive(true);
-            NotAvailText.SetActive(false);
+            PlayButton.SetActive(false);
+            NotAvailText.SetActive(true);
         }
         else if (sceneLevel == "CapizScene")
         {

@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f77e1ff13701e4d9964483793ba29b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrailerTime: 2
+  TrailerTime: 21
   LoadingScreen: {fileID: 2140496696}
   LoadingSlider: {fileID: 1378009748}
 --- !u!4 &262652993
@@ -279,7 +279,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597295784}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: a3e0f04b8486f8c4ba35859bf70dfa83, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 93047392f1f349948ad366395dc76b09, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -299,7 +299,7 @@ VideoPlayer:
   - 1
   m_Url: 
   m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 01
+  m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 0
   m_SkipOnDrop: 1

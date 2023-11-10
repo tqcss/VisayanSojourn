@@ -19,7 +19,7 @@ public class VideoInitial : MonoBehaviour
         VideoPlayer videoPlayer = GetComponent<VideoPlayer>();
         if (videoPlayer)
         {
-            //videoPlayer.Play();
+            videoPlayer.Play();
         }
     }
 
