@@ -254,7 +254,7 @@ public class SettleLevel : MonoBehaviour
         }
     }
 
-    public void DisplayDish(int display)
+    public void DisplayDish(int x)
     {
         firstDishObj.SetActive(false);
         secondDishObj.SetActive(false);
@@ -262,7 +262,7 @@ public class SettleLevel : MonoBehaviour
         fourthDishObj.SetActive(false);
         fifthDishObj.SetActive(false);
         sixthDishObj.SetActive(false);
-        if (display == 1)
+        if (x == 1)
         {
             if (currentRound == 1)
             {

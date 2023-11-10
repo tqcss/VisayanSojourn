@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Sesame_Seeds
   m_EditorClassIdentifier: 
   sprite: {fileID: -820034444, guid: 98c0bbb1c2c8dd040a0e8bf06b64562d, type: 3}
-  scaleX: 2
-  scaleY: 2
-  colliderSizeX: 0
-  colliderSizeY: 0
+  scaleX: 6
+  scaleY: 6
+  colliderSizeX: 1
+  colliderSizeY: 1
   randomRotation: 0
   particleColorA: {r: 0, g: 0, b: 0, a: 0}
   particleColorB: {r: 0, g: 0, b: 0, a: 0}

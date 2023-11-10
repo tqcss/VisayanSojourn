@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Garlic
   m_EditorClassIdentifier: 
   sprite: {fileID: -1573293758, guid: 05bb209f395e2e74aa5c08f97d38c215, type: 3}
-  scaleX: 2
-  scaleY: 2
-  colliderSizeX: 0
-  colliderSizeY: 0
+  scaleX: 4
+  scaleY: 4
+  colliderSizeX: 1
+  colliderSizeY: 1
   randomRotation: 0
   particleColorA: {r: 0, g: 0, b: 0, a: 0}
   particleColorB: {r: 0, g: 0, b: 0, a: 0}

@@ -15,8 +15,8 @@ MonoBehaviour:
   sprite: {fileID: -1261689302, guid: 9967f3295efc53d4da53de18fae6e24d, type: 3}
   scaleX: 2
   scaleY: 2
-  colliderSizeX: 0
-  colliderSizeY: 0
+  colliderSizeX: 1
+  colliderSizeY: 1
   randomRotation: 0
   particleColorA: {r: 0, g: 0, b: 0, a: 0}
   particleColorB: {r: 0, g: 0, b: 0, a: 0}

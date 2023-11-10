@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Bandi
   m_EditorClassIdentifier: 
   recipe:
-  - {fileID: 11400000, guid: b8f0d257622e2b74db475610df11238f, type: 2}
-  - {fileID: 11400000, guid: f48cf9c7e4df9104d95eb15765ba08e5, type: 2}
   - {fileID: 11400000, guid: 6122d055590139344b1dfac1ce569ab0, type: 2}
+  - {fileID: 11400000, guid: 9d05025ff5c8bdf498ba1101a7928131, type: 2}
+  - {fileID: 11400000, guid: f48cf9c7e4df9104d95eb15765ba08e5, type: 2}
   sprite: {fileID: 0}
   scale: {x: 0, y: 0, z: 0}
