@@ -302,11 +302,19 @@ public class SettleLevel : MonoBehaviour
         {
             PlayerPrefs.SetInt("ProceedNextProvince", 1);
             Debug.Log("Go to Next Province");
+            KitchenUI.SetActive(false);
+            RoundFinishUI.SetActive(false);
         }
     }
 
     public void OntoPreviousRound()
     {
         StartCoroutine(PlayAnimation());
+    }
+
+    public void GoBackToMain()
+    {
+        KitchenUI.SetActive(false);
+        RoundFinishUI.SetActive(false);
     }
 }
