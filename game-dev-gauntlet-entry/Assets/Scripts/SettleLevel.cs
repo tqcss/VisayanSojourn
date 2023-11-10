@@ -258,10 +258,10 @@ public class SettleLevel : MonoBehaviour
     {
         firstDishObj.SetActive(false);
         secondDishObj.SetActive(false);
-        thirdDishObj.SetActive(false);
+        /*thirdDishObj.SetActive(false);
         fourthDishObj.SetActive(false);
         fifthDishObj.SetActive(false);
-        sixthDishObj.SetActive(false);
+        sixthDishObj.SetActive(false);*/
         if (x == 1)
         {
             if (currentRound == 1)
