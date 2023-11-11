@@ -24,9 +24,7 @@ public class OrderManager : MonoBehaviour
     void Start()
     {
         dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
-        orderText = GameObject.FindGameObjectWithTag("orderText").GetComponent<Text>();
         recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
-        timerBar = GameObject.FindGameObjectWithTag("timerBar");
     }
 
     public void changeOrderPrompt(DishInfo dish)

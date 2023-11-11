@@ -12,7 +12,6 @@ public class IngredientManager : MonoBehaviour
     private GameObject ingredientButton;
     private GameObject ingredientBase;
     public GameObject uiContent; // parent of ingredientButton
-    public BoxCollider2D leftBorderCollider;
 
     
     // FOR DRAG AND DROP PHYSICS

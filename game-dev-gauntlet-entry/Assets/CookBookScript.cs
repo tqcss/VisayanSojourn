@@ -7,19 +7,38 @@ using UnityEngine.Video;
 public class CookBookScript : MonoBehaviour
 {
     public GameObject cookBookUi;
-
-    private RawImage c_uiImage;
-    private VideoPlayer c_uiVideo;
+    public GameObject book;
+    public GameObject guides;
+    private Image c_uiImage;
+    private Image c_uiBookImage;
 
     private bool shown = false;
     private bool bgFading = false;
-    private int pageNumber = 0;
+    private bool turningPage = false;
+    private int lastPage = 1;
+    private int pageNumber = 1;
 
     void Start()
     {
-        c_uiImage = cookBookUi.GetComponent<RawImage>();
-        c_uiVideo = cookBookUi.GetComponent<VideoPlayer>();
-        c_uiVideo.Prepare();
+        c_uiImage = cookBookUi.GetComponent<Image>();
+        c_uiBookImage = book.GetComponent<Image>();
+        GameObject page = book.transform.GetChild(pageNumber).gameObject;
+        page.SetActive(true);
+        page.GetComponent<CanvasGroup>().alpha = 1;
+       
+    }
+
+    private bool hasPageRelative(int b)
+    {
+        try
+        {
+            book.transform.GetChild(pageNumber + b);
+            return true;
+        }
+        catch (UnityException)
+        {
+            return false;
+        }
     }
 
     void Update()
@@ -36,45 +55,77 @@ public class CookBookScript : MonoBehaviour
             bgFading = true;
         }
 
-        if (!bgFading && shown)
+        if (turningPage)
         {
-            if (Input.GetMouseButtonDown(0))
+            float nextValue = Time.deltaTime * 2;
+            CanvasGroup newCanvasGroup = book.transform.GetChild(pageNumber).GetComponent<CanvasGroup>();
+            CanvasGroup lastCanvasGroup = book.transform.GetChild(lastPage).GetComponent<CanvasGroup>();
+
+            if (newCanvasGroup.alpha + nextValue >= 1)
             {
+                newCanvasGroup.alpha = 1;
+                lastCanvasGroup.alpha = 0;
+                book.transform.GetChild(lastPage).gameObject.SetActive(false);
+                turningPage = false;
+            }
+            newCanvasGroup.alpha += nextValue;
+            lastCanvasGroup.alpha -= nextValue;
+        }
+
+        if (!bgFading)
+        {
+            if (!shown)
+            {
+                return;
+            }
+
+            if (Input.GetMouseButtonDown(0) && !turningPage && hasPageRelative(-2))
+            {
+                turningPage = true;
+                lastPage = pageNumber;
                 pageNumber--;
+                book.transform.GetChild(pageNumber).gameObject.SetActive(true);
                 Debug.Log("page: " + pageNumber);
             }
-            if (Input.GetMouseButtonDown(1))
+
+            if (Input.GetMouseButtonDown(1) && !turningPage && hasPageRelative(1))
             {
+                turningPage = true;
+                lastPage = pageNumber;
                 pageNumber++;
+                book.transform.GetChild(pageNumber).gameObject.SetActive(true);
                 Debug.Log("page: " + pageNumber);
             }
             return;
         }
 
-        if (shown && c_uiImage.color.a < 1)
+        if (shown && c_uiImage.color.a < .95f)
         {
-            float nextValue = Time.deltaTime * 3;
-            if (c_uiImage.color.a + nextValue >= 1)
+            float nextValue = Time.deltaTime * 1.9f;
+            if (c_uiImage.color.a + nextValue >= .95f)
             {
-                c_uiImage.color = new Color(1, 1, 1, 1);
+                c_uiImage.color = new Color(0, 0, 0, .95f);
+                c_uiBookImage.transform.position = new Vector3(0, 0, 0);
                 bgFading = false;
-                c_uiVideo.Play();
                 return;
             }
-            c_uiImage.color = new Color(1, 1, 1, (c_uiImage.color.a + nextValue));
+            c_uiImage.color = new Color(0, 0, 0, (c_uiImage.color.a + nextValue));
+            c_uiBookImage.transform.position = new Vector3(0, c_uiBookImage.transform.position.y + Time.deltaTime * 1400, 0);
         }
         else if (!shown && c_uiImage.color.a > 0)
         {
-            float nextValue = Time.deltaTime * 3;
+            float nextValue = Time.deltaTime * 1.9f;
             if (c_uiImage.color.a - nextValue <= 0)
             {
-                c_uiImage.color = new Color(1, 1, 1, 0);
+                c_uiImage.color = new Color(0, 0, 0, 0);
                 c_uiImage.gameObject.SetActive(false);
+                c_uiBookImage.transform.position = new Vector3(0, -700f, 0);
+                Debug.Log(c_uiBookImage.transform.position.y);
                 bgFading = false;
-                c_uiVideo.Stop();
                 return;
             }
             c_uiImage.color = new Color(0, 0, 0, (c_uiImage.color.a - nextValue));
+            c_uiBookImage.transform.position = new Vector3(0, c_uiBookImage.transform.position.y - Time.deltaTime * 1400, 0);
         }
     }
 }
