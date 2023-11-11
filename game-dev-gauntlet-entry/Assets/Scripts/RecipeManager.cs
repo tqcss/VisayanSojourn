@@ -11,6 +11,10 @@ public class RecipeManager : MonoBehaviour
     private OrderManager orderManager;
     private GameObject particles;
 
+    public AudioSource successSfx;
+    public AudioSource failSfx;
+    public AudioSource destroySfx;
+
     public int particleColorOffset = 5;
 
     private void Start()
@@ -67,6 +71,7 @@ public class RecipeManager : MonoBehaviour
 
         if (recipeMatch())
         {
+            successSfx.Play();
             orderManager.currentOrderPrompt = null;
             Debug.Log("Correct Dish");
 
@@ -86,7 +91,7 @@ public class RecipeManager : MonoBehaviour
 
     public void failPlayer()
     {
-        
+        failSfx.Play();
         orderManager.timerRunning = false;
         destroyAllLooseItems();
         if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
@@ -103,6 +108,7 @@ public class RecipeManager : MonoBehaviour
 
     private void destroyAllLooseItems()
     {
+        destroySfx.Play();
         foreach (GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
         {
             GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);

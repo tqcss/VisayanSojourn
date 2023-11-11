@@ -12,6 +12,7 @@ public class IngredientManager : MonoBehaviour
     private GameObject ingredientButton;
     private GameObject ingredientBase;
     public GameObject uiContent; // parent of ingredientButton
+    public AudioSource spawnSfx;
 
     
     // FOR DRAG AND DROP PHYSICS
@@ -100,6 +101,7 @@ public class IngredientManager : MonoBehaviour
 
     public void spawnIngredient(IngredientInfo ingredientInfo)
     {
+        spawnSfx.Play();
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 

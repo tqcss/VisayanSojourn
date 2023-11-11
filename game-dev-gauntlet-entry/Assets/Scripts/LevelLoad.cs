@@ -27,6 +27,7 @@ public class LevelLoad : MonoBehaviour
     public GameObject DescIloilo;
     public GameObject PlayButton;
     public GameObject NotAvailText;
+    public AudioSource mainMusic;
 
     private string sceneLevel;
     private bool canPlayAnimation = false;
@@ -39,12 +40,14 @@ public class LevelLoad : MonoBehaviour
 
     public void SelectProvince (string selected)
     {
+        mainMusic.Stop();
         sceneLevel = selected;
         UpdateDescription(sceneLevel);
     }
     
     public void LoadLevel (bool playLevel)
     {
+
         if (sceneLevel != null)
         {
             if (!(PlayerPrefs.GetInt("GlobalLives", 3) <= 0))

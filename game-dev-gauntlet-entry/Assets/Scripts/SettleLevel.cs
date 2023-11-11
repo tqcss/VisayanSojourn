@@ -33,6 +33,7 @@ public class SettleLevel : MonoBehaviour
     public GameObject fourthDishObj;
     public GameObject fifthDishObj;
     public GameObject sixthDishObj;
+    public AudioSource startSfx;
 
     private OrderManager orderManager;
 
@@ -189,6 +190,7 @@ public class SettleLevel : MonoBehaviour
 
     public void StartRound()
     {
+        startSfx.Play();
         RecipeScroll.SetActive(false);
         KitchenUI.SetActive(true);
         if (currentRound == 1)
