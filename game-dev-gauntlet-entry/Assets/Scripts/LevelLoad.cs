@@ -25,8 +25,8 @@ public class LevelLoad : MonoBehaviour
     public GameObject DescNegrosOcc;
     public GameObject DescGuimaras;
     public GameObject DescIloilo;
-    public GameObject PlayButton;
-    public GameObject NotAvailText;
+    public GameObject PlayButtonObj;
+    public GameObject NotPlayButtonObj;
 
     private string sceneLevel;
     private bool canPlayAnimation = false;
@@ -41,6 +41,7 @@ public class LevelLoad : MonoBehaviour
     {
         sceneLevel = selected;
         UpdateDescription(sceneLevel);
+        Debug.Log(sceneLevel);
     }
     
     public void LoadLevel (bool playLevel)
@@ -208,38 +209,38 @@ public class LevelLoad : MonoBehaviour
         if (sceneLevel == "AntiqueScene") 
         {
             DescAntique.SetActive(true);
-            PlayButton.SetActive(true);
-            NotAvailText.SetActive(false);
+            PlayButtonObj.SetActive(true);
+            NotPlayButtonObj.SetActive(false);
         } 
         else if (sceneLevel == "AklanScene") 
         {
             DescAklan.SetActive(true);
-            PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            PlayButtonObj.SetActive(true);
+            NotPlayButtonObj.SetActive(false);
         }
         else if (sceneLevel == "CapizScene")
         {
             DescCapiz.SetActive(true);
-            PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            PlayButtonObj.SetActive(false);
+            NotPlayButtonObj.SetActive(true);
         }
         else if (sceneLevel == "NegrosOccScene")
         {
             DescNegrosOcc.SetActive(true);
-            PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            PlayButtonObj.SetActive(false);
+            NotPlayButtonObj.SetActive(true);
         }
         else if (sceneLevel == "GuimarasScene")
         {
             DescGuimaras.SetActive(true);
-            PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            PlayButtonObj.SetActive(false);
+            NotPlayButtonObj.SetActive(true);
         }
         else if (sceneLevel == "IloiloScene")
         {
             DescIloilo.SetActive(true);
-            PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            PlayButtonObj.SetActive(false);
+            NotPlayButtonObj.SetActive(true);
         } 
     }
 
