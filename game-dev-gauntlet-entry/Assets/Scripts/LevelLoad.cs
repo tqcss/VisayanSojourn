@@ -40,7 +40,6 @@ public class LevelLoad : MonoBehaviour
 
     public void SelectProvince (string selected)
     {
-        mainMusic.Stop();
         sceneLevel = selected;
         UpdateDescription(sceneLevel);
         Debug.Log(sceneLevel);
@@ -48,13 +47,13 @@ public class LevelLoad : MonoBehaviour
     
     public void LoadLevel (bool playLevel)
     {
-
         if (sceneLevel != null)
         {
             if (!(PlayerPrefs.GetInt("GlobalLives", 3) <= 0))
             {
                 StartCoroutine(LoadAsynchronously(sceneLevel));
                 LoadBackgroundScreen(sceneLevel);
+                mainMusic.Stop();
             }
         }
     }
