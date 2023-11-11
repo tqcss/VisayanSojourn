@@ -6,6 +6,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
+    public AudioSource currentBackgroundMusic;
     private List<AudioSource> audioQueue = new List<AudioSource>(4);
 
     private void Awake()
@@ -23,18 +24,19 @@ public class AudioManager : MonoBehaviour
         Destroy(audioSource);
     }
 
-    public AudioSource playBackgroundMusic(AudioClip audioClip, float fadeDuration, float targetVolume, float startTimeStamp)
+    public void PlayBackgroundMusic(AudioClip audioClip, float fadeDuration, float targetVolume, float startTimeStamp)
     {
         AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
         newAudioSource.clip = audioClip;
         newAudioSource.time = startTimeStamp;
         newAudioSource.loop = true;
 
+        StartCoroutine(FadeOut(currentBackgroundMusic, fadeDuration));
+        currentBackgroundMusic = newAudioSource;
         StartCoroutine(FadeIn(newAudioSource, fadeDuration, targetVolume));
-        return newAudioSource;
     }
 
-    public void playAudio(AudioClip audioClip, float startTimestamp)
+    public void PlayAudio(AudioClip audioClip, float startTimestamp)
     {
         AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
         newAudioSource.clip = audioClip;
@@ -49,7 +51,7 @@ public class AudioManager : MonoBehaviour
         audioQueue.Add(newAudioSource);
     }
 
-    public AudioSource FadeInAudio(AudioClip audioClip, float fadeDuration, float targetVolume)
+    public void FadeInAudio(AudioClip audioClip, float fadeDuration, float targetVolume)
     {
         AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
         newAudioSource.clip = audioClip;
@@ -63,17 +65,15 @@ public class AudioManager : MonoBehaviour
         audioQueue.Add(newAudioSource);
 
         StartCoroutine(FadeIn(newAudioSource, fadeDuration, targetVolume));
-        return newAudioSource;
     }
 
-    public AudioSource FadeInAudio(AudioClip audioClip, float fadeDuration, float targetVolume, float startTimestamp)
+    public void FadeInAudio(AudioClip audioClip, float fadeDuration, float targetVolume, float startTimestamp)
     {
         AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
         newAudioSource.clip = audioClip;
         newAudioSource.time = startTimestamp;
 
         StartCoroutine(FadeIn(newAudioSource, fadeDuration, targetVolume));
-        return newAudioSource;
     }
 
     public void FadeOutAudio(AudioSource audioSource, float fadeDuration)
@@ -108,5 +108,6 @@ public class AudioManager : MonoBehaviour
 
         audioSource.Stop(); // kailangan pa ba to?
         Destroy(audioSource);
+        Debug.Log("deleted");
     }
 }
