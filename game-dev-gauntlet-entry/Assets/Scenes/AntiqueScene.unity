@@ -1197,8 +1197,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 991925410}
   m_HandleRect: {fileID: 991925409}
   m_Direction: 2
-  m_Value: 1.0009009
-  m_Size: 0.25421494
+  m_Value: 1.0000002
+  m_Size: 0.28009912
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1789,7 +1789,8 @@ MonoBehaviour:
   DescGuimaras: {fileID: 0}
   DescIloilo: {fileID: 0}
   PlayButton: {fileID: 0}
-  NotAvailText: {fileID: 0}
+  NotPlayButton: {fileID: 0}
+  mainMusic: {fileID: 0}
   AntiqueAnimSec: 0
   AklanAnimSec: 0
   CapizAnimSec: 0
@@ -4635,7 +4636,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.59113, y: -959.74316}
+  m_AnchoredPosition: {x: 140.59113, y: -958.50024}
   m_SizeDelta: {x: 238.818, y: 1917}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1179744175
@@ -4803,6 +4804,7 @@ GameObject:
   - component: {fileID: 1219910309}
   - component: {fileID: 1219910311}
   - component: {fileID: 1219910310}
+  - component: {fileID: 1219910312}
   m_Layer: 5
   m_Name: timerBar
   m_TagString: timerBar
@@ -4842,7 +4844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9433962, g: 0.24474904, b: 0.38447866, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4867,6 +4869,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219910308}
   m_CullTransparentMesh: 1
+--- !u!114 &1219910312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219910308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: -4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1260862071
 GameObject:
   m_ObjectHideFlags: 0

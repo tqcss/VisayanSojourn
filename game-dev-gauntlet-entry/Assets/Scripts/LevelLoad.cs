@@ -26,7 +26,7 @@ public class LevelLoad : MonoBehaviour
     public GameObject DescGuimaras;
     public GameObject DescIloilo;
     public GameObject PlayButton;
-    public GameObject NotAvailText;
+    public GameObject NotPlayButton;
     public AudioSource mainMusic;
 
     private string sceneLevel;
@@ -43,6 +43,7 @@ public class LevelLoad : MonoBehaviour
         mainMusic.Stop();
         sceneLevel = selected;
         UpdateDescription(sceneLevel);
+        Debug.Log(sceneLevel);
     }
     
     public void LoadLevel (bool playLevel)
@@ -212,37 +213,37 @@ public class LevelLoad : MonoBehaviour
         {
             DescAntique.SetActive(true);
             PlayButton.SetActive(true);
-            NotAvailText.SetActive(false);
+            NotPlayButton.SetActive(false);
         } 
         else if (sceneLevel == "AklanScene") 
         {
             DescAklan.SetActive(true);
-            PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            PlayButton.SetActive(true);
+            NotPlayButton.SetActive(false);
         }
         else if (sceneLevel == "CapizScene")
         {
             DescCapiz.SetActive(true);
             PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            NotPlayButton.SetActive(true);
         }
         else if (sceneLevel == "NegrosOccScene")
         {
             DescNegrosOcc.SetActive(true);
             PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            NotPlayButton.SetActive(true);
         }
         else if (sceneLevel == "GuimarasScene")
         {
             DescGuimaras.SetActive(true);
             PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            NotPlayButton.SetActive(true);
         }
         else if (sceneLevel == "IloiloScene")
         {
             DescIloilo.SetActive(true);
             PlayButton.SetActive(false);
-            NotAvailText.SetActive(true);
+            NotPlayButton.SetActive(true);
         } 
     }
 
