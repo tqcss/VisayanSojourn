@@ -27,7 +27,6 @@ public class LevelLoad : MonoBehaviour
     public GameObject DescIloilo;
     public GameObject PlayButton;
     public GameObject NotPlayButton;
-    public AudioSource mainMusic;
 
     private string sceneLevel;
     private bool canPlayAnimation = false;
@@ -53,7 +52,6 @@ public class LevelLoad : MonoBehaviour
             {
                 StartCoroutine(LoadAsynchronously(sceneLevel));
                 LoadBackgroundScreen(sceneLevel);
-                mainMusic.Stop();
             }
         }
     }
@@ -109,7 +107,7 @@ public class LevelLoad : MonoBehaviour
     private IEnumerator PlayAnimation()
     {
         canPlayAnimation = false;
-        VideoScreen.SetActive(true);
+        if (VideoScreen) VideoScreen.SetActive(true);
 
         if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 1 && PlayerPrefs.GetInt("FirstTimeAntique", 1) == 1)
         {
@@ -154,7 +152,7 @@ public class LevelLoad : MonoBehaviour
             PlayerPrefs.SetInt("FirstTimeIloilo", 0); 
         }
 
-        VideoScreen.SetActive(false);
+        if (VideoScreen) VideoScreen.SetActive(false);
         MainMenu.SetActive(true);
         yield return null;
     }

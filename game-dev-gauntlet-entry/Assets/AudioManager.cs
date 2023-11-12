@@ -17,6 +17,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void PauseAll()
+    {
+        AudioListener.pause = true;
+    }
+
     public void StopAudio(AudioSource audioSource)
     {
         audioQueue.Remove(audioSource);

@@ -14,6 +14,7 @@ public class RecipeManager : MonoBehaviour
     public AudioSource successSfx;
     public AudioSource failSfx;
     public AudioSource destroySfx;
+    public AudioSource bgMusic;
 
     public int particleColorOffset = 5;
 
@@ -63,6 +64,7 @@ public class RecipeManager : MonoBehaviour
 
     public void checkIngredients()
     {
+        bgMusic.Stop();
         if (!orderManager.currentOrderPrompt)
         {
             Debug.Log("No assigned dish");
@@ -91,6 +93,7 @@ public class RecipeManager : MonoBehaviour
 
     public void failPlayer()
     {
+        bgMusic.Stop();
         failSfx.Play();
         orderManager.timerRunning = false;
         destroyAllLooseItems();
