@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Mango Bibingka
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: 63a8df17ddb36254fa2dfc68d889f37c, type: 2}
+  - {fileID: 11400000, guid: f6934b452e8cf6b4aa55552606cf1a4a, type: 2}
+  - {fileID: 11400000, guid: 823f31567b13fcd429de45ce69575f73, type: 2}
+  - {fileID: 11400000, guid: 5301ec09398ffb4449ccb4dc824bbdd3, type: 2}
+  - {fileID: 11400000, guid: 755f74cc7c58f9a48b7318367e31061a, type: 2}
+  - {fileID: 11400000, guid: 590bfeb233b967d4e8b9ddbff194a9c5, type: 2}
+  - {fileID: 11400000, guid: 1a0d80fb9afa6d04087d1085892db4bf, type: 2}
+  - {fileID: 11400000, guid: 498f8ef30cceac04cb30eb0ac255ca0a, type: 2}
+  - {fileID: 11400000, guid: 2c64a29a83156c74798bc640320a32cd, type: 2}
+  - {fileID: 11400000, guid: 6ee36267e71400446ad5c18b0202650f, type: 2}
+  - {fileID: 11400000, guid: 4e442f262fece1644bd6ce7ef0e5f0d4, type: 2}
+  - {fileID: 11400000, guid: 8aaf1603e3d4c0f4cb76c215de48f91b, type: 2}
+  sprite: {fileID: 21300000, guid: 82abc2c3d976df6419ce61b7d297a36b, type: 3}
+  scale: {x: 0, y: 0, z: 0}

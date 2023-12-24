@@ -8,13 +8,14 @@ using UnityEngine.UI;
 public class InitialLoad : MonoBehaviour
 {
 
-    public int TrailerTime;
-    public GameObject LoadingScreen;
-    public Slider LoadingSlider;
+    public int trailerTime;
+    public GameObject loadingScreen;
+    public Slider loadingSlider;
     
     private string sceneLevel = "MainScene";
     private void Start()
     {
+        loadingScreen.SetActive(false);
         StartCoroutine(FirstTimeCheck(sceneLevel));
     }
 
@@ -22,7 +23,7 @@ public class InitialLoad : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
         {
-            yield return new WaitForSeconds(TrailerTime);
+            yield return new WaitForSeconds(trailerTime);
             StartCoroutine(LoadAsynchronously(sceneLevel));
         }
         else if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 0)
@@ -31,22 +32,23 @@ public class InitialLoad : MonoBehaviour
         }
     }
 
-    IEnumerator LoadAsynchronously (string sceneLevel)
+    private IEnumerator LoadAsynchronously (string sceneLevel)
     {
 
         PlayerPrefs.SetInt("FirstTimePlaying", 0);
-        LoadingScreen.SetActive(true);
-        LoadingSlider.value = 0;
+        loadingScreen.SetActive(true);
+        loadingSlider.value = 0;
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneLevel);
         operation.allowSceneActivation = false;
+        yield return new WaitForSeconds(1);
         
         float progress = 0;
 
         while (!operation.isDone)
         {
             progress = Mathf.MoveTowards(progress, Mathf.Clamp01(operation.progress / 0.9f), Time.deltaTime / 3.14f);
-            LoadingSlider.value = progress;
+            loadingSlider.value = progress;
             
             if (progress >= 1f)
             {
@@ -57,7 +59,7 @@ public class InitialLoad : MonoBehaviour
             yield return null;
         }
 
-        LoadingScreen.SetActive(false);
+        loadingScreen.SetActive(false);
 
     }
 

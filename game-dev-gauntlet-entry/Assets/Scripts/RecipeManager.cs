@@ -41,10 +41,10 @@ public class RecipeManager : MonoBehaviour
     {
         DishInfo dish = orderManager.currentOrderPrompt;
             
-        for (int i = 0; i < objectsOnPlate.Count; i++)
+        /*for (int i = 0; i < objectsOnPlate.Count; i++)
         {
             Debug.Log(objectsOnPlate);
-        }    
+        }*/   
             
         if (dish.recipe.Count != objectsOnPlate.Count)
         {
@@ -77,14 +77,14 @@ public class RecipeManager : MonoBehaviour
             orderManager.currentOrderPrompt = null;
             Debug.Log("Correct Dish");
 
-            PlayerPrefs.SetInt("RoundCorrect", 1);
+            PlayerPrefs.SetInt("RoundSuccess", 1);
         }
         else
         {
             Debug.Log("Incorrect Dish");
             failPlayer();
 
-            PlayerPrefs.SetInt("RoundCorrect", 0);
+            PlayerPrefs.SetInt("RoundSuccess", 0);
         }
         orderManager.timerRunning = false;
         orderManager.currentOrderPrompt = null;

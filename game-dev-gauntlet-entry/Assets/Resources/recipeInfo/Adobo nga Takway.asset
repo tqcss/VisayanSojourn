@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Adobo nga Takway
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: 982b0c186db1b6541a705347f0f98525, type: 2}
+  - {fileID: 11400000, guid: cf84738a02877ee4ab54415d73ab821f, type: 2}
+  - {fileID: 11400000, guid: 8c4cfe38c2269c34daa26d9408866c52, type: 2}
+  - {fileID: 11400000, guid: 693d9d1b7378b684b8fe2fd2308bd77c, type: 2}
+  - {fileID: 11400000, guid: ea30e357b7b4e3e43b3ba0d35a27105f, type: 2}
+  - {fileID: 11400000, guid: 3235de090ea80594ba8e2a86bb553bd6, type: 2}
+  - {fileID: 11400000, guid: e4780fc33d0df474d95c93b7133de89a, type: 2}
+  - {fileID: 11400000, guid: 70f4b43a85c4f5441a6cc8bc4b3afe53, type: 2}
+  - {fileID: 11400000, guid: 3b21eb8f670aaf642ab6e184250a4d1d, type: 2}
+  - {fileID: 11400000, guid: 98f61892612f74a4a96892d935104810, type: 2}
+  - {fileID: 11400000, guid: eb16e20ff962b4a48a48e4acbe3c1485, type: 2}
+  sprite: {fileID: 21300000, guid: 5c2d94bf562f0a84e851ac554e8e8ce5, type: 3}
+  scale: {x: 0, y: 0, z: 0}

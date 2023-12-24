@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Apan-apan
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: 8c4cfe38c2269c34daa26d9408866c52, type: 2}
+  - {fileID: 11400000, guid: 693d9d1b7378b684b8fe2fd2308bd77c, type: 2}
+  - {fileID: 11400000, guid: c9c04064ffe523246a1380932d7cfea5, type: 2}
+  - {fileID: 11400000, guid: a6b4750e1c6d8784982236e6a9959f06, type: 2}
+  - {fileID: 11400000, guid: 3235de090ea80594ba8e2a86bb553bd6, type: 2}
+  - {fileID: 11400000, guid: 9d1570795cd91d94b8a5adedbd4b8dcf, type: 2}
+  - {fileID: 11400000, guid: 98f61892612f74a4a96892d935104810, type: 2}
+  - {fileID: 11400000, guid: 41ddcc6d4fe937049b5a56465daefff6, type: 2}
+  sprite: {fileID: 21300000, guid: eb0919fe87efc6c4787ea89376f390a8, type: 3}
+  scale: {x: 0, y: 0, z: 0}

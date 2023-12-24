@@ -9,13 +9,13 @@ public class PlayerProvince : MonoBehaviour
     public int provinceTotal;
     private int provinceUnlocked;
 
-    public Button[] LocationButton;
-    public Image[] LocationMarker;
-    public GameObject[] ObjectButton;
-    public GameObject[] MapImage;
-    public Sprite UnlockLocation;
-    public Sprite LockLocation;
-    public Button BackDescButton;
+    public Image[] locationMarker;
+    public Button[] locationButton;
+    public GameObject[] locationButtonObj;
+    public GameObject[] mapImage;
+    public Sprite unlockLocation;
+    public Sprite lockLocation;
+    public Button backDescButton;
 
     private void Awake()
     {
@@ -25,37 +25,37 @@ public class PlayerProvince : MonoBehaviour
 
     private void UpdateProvince()
     {
-        for (int i = 0; i < LocationMarker.Length; i++)
+        for (int i = 0; i < locationMarker.Length; i++)
         {
-            LocationMarker[i].sprite = LockLocation;
-            LocationButton[i].interactable = false;
-            ObjectButton[i].SetActive(false);
-            MapImage[i].SetActive(false);
+            locationMarker[i].sprite = lockLocation;
+            locationButton[i].interactable = false;
+            locationButtonObj[i].SetActive(false);
+            mapImage[i].SetActive(false);
         }
         for (int i = 0; i < PlayerPrefs.GetInt("ProvinceUnlocked", 1); i++)
         {
             if (i < provinceTotal)
             {
-                LocationMarker[i].sprite = UnlockLocation;
-                LocationButton[i].interactable = true;
-                ObjectButton[i].SetActive(true);
-                MapImage[i].SetActive(true);
+                locationMarker[i].sprite = unlockLocation;
+                locationButton[i].interactable = true;
+                locationButtonObj[i].SetActive(true);
+                mapImage[i].SetActive(true);
             }    
         }
     }
 
     public void DisableProvince()
     {
-        BackDescButton.interactable = true;
-        for (int j = 0; j < LocationMarker.Length; j++)
+        backDescButton.interactable = true;
+        for (int j = 0; j < locationMarker.Length; j++)
         {
-            LocationButton[j].interactable = false;
+            locationButton[j].interactable = false;
         }
     }
 
     public void EnableProvince()
     {
-        BackDescButton.interactable = false;
+        backDescButton.interactable = false;
         StartCoroutine(DelayEnable());
     }
 
@@ -66,7 +66,7 @@ public class PlayerProvince : MonoBehaviour
         {
             if (j < provinceTotal)
             {
-                LocationButton[j].interactable = true;
+                locationButton[j].interactable = true;
             }
         }
     }

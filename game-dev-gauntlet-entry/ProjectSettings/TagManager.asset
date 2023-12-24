@@ -12,6 +12,8 @@ TagManager:
   - orderText
   - timerBar
   - audioManager
+  - mainScript
+  - dishList
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - LooseItems
   - Water
   - UI
-  - 
+  - PostProcessing
   - 
   - 
   - 

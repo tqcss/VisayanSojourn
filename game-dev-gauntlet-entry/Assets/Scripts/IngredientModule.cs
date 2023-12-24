@@ -6,10 +6,11 @@ using UnityEngine;
 public class IngredientModule : MonoBehaviour
 {
     public List<IngredientInfo> ingredients = new List<IngredientInfo>();
+    private string[] ingredientSet = {"ingredientSetA", "ingredientSetA", "ingredientSetB", "ingredientSetB", "ingredientSetB", "ingredientSetC"};
 
     private void Awake()
     {
-        ingredients = Resources.LoadAll<IngredientInfo>("ingredientInfo").ToList();
+        ingredients = Resources.LoadAll<IngredientInfo>(ingredientSet[PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1]).ToList();
     }
 
     public IngredientInfo getIngredient(string name)

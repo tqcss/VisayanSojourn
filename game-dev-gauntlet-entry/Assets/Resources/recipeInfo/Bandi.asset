@@ -16,5 +16,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6122d055590139344b1dfac1ce569ab0, type: 2}
   - {fileID: 11400000, guid: 9d05025ff5c8bdf498ba1101a7928131, type: 2}
   - {fileID: 11400000, guid: f48cf9c7e4df9104d95eb15765ba08e5, type: 2}
-  sprite: {fileID: 0}
-  scale: {x: 0, y: 0, z: 0}
+  sprite: {fileID: 21300000, guid: d72aaf862894716448f63030014748e1, type: 3}
+  scale: {x: 1, y: 1, z: 1}

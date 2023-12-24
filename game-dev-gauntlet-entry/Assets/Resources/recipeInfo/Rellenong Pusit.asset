@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Rellenong Pusit
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: 63a8df17ddb36254fa2dfc68d889f37c, type: 2}
+  - {fileID: 11400000, guid: 4c9002c9994175b47802f6266c597835, type: 2}
+  - {fileID: 11400000, guid: 0631007882f881e40a2e5e916e712e10, type: 2}
+  - {fileID: 11400000, guid: 0631262381c4b804292f1d94e6cc5949, type: 2}
+  - {fileID: 11400000, guid: 8423107fb03822b4cb2b8105fec9ff66, type: 2}
+  - {fileID: 11400000, guid: 1a0d80fb9afa6d04087d1085892db4bf, type: 2}
+  - {fileID: 11400000, guid: 0b5ad32e1636e4e4ab725311791b043b, type: 2}
+  - {fileID: 11400000, guid: 053eec3a1602b1542b43464b2348cfe8, type: 2}
+  - {fileID: 11400000, guid: d6f872b94e6c8554481c8b19d8bf1357, type: 2}
+  - {fileID: 11400000, guid: f39579b67332d934eaccb365033e35c7, type: 2}
+  - {fileID: 11400000, guid: 4e442f262fece1644bd6ce7ef0e5f0d4, type: 2}
+  - {fileID: 11400000, guid: 3b2e30f20577a764882aae4f51223e1e, type: 2}
+  - {fileID: 11400000, guid: b3e30de5fc9f3504c937862a78646505, type: 2}
+  - {fileID: 11400000, guid: a2ebe67645b771944896bbc98dcb06c9, type: 2}
+  sprite: {fileID: 21300000, guid: e636697767296ae48ae7e9b2a22bc288, type: 3}
+  scale: {x: 0, y: 0, z: 0}

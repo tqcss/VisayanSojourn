@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ingredientDeleter : MonoBehaviour
+public class IngredientDeleter : MonoBehaviour
 {
     public GameObject particles;
     public IngredientModule ingredientModule;

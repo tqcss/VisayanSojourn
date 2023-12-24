@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Batchoy
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: cf84738a02877ee4ab54415d73ab821f, type: 2}
+  - {fileID: 11400000, guid: c31a6fdfab3ff734cab159fafc1c6820, type: 2}
+  - {fileID: 11400000, guid: 693d9d1b7378b684b8fe2fd2308bd77c, type: 2}
+  - {fileID: 11400000, guid: 982b0fe1bf2fba84786bec6932eedbf4, type: 2}
+  - {fileID: 11400000, guid: 784339223ff3a9145a83114e5fb78e48, type: 2}
+  - {fileID: 11400000, guid: a18a4a0873f58434abd4f3aa1ea03a4d, type: 2}
+  - {fileID: 11400000, guid: cbd32c4bfa9bd98459aa19885178fdb7, type: 2}
+  - {fileID: 11400000, guid: a42f029dc34f31747b146372fc167c49, type: 2}
+  - {fileID: 11400000, guid: 3235de090ea80594ba8e2a86bb553bd6, type: 2}
+  - {fileID: 11400000, guid: e4780fc33d0df474d95c93b7133de89a, type: 2}
+  - {fileID: 11400000, guid: 9d1570795cd91d94b8a5adedbd4b8dcf, type: 2}
+  - {fileID: 11400000, guid: eb16e20ff962b4a48a48e4acbe3c1485, type: 2}
+  - {fileID: 11400000, guid: 41ddcc6d4fe937049b5a56465daefff6, type: 2}
+  sprite: {fileID: 21300000, guid: fe020d000542c0047a4070bd68944202, type: 3}
+  scale: {x: 0, y: 0, z: 0}

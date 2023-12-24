@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Pancit Molo
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: cf84738a02877ee4ab54415d73ab821f, type: 2}
+  - {fileID: 11400000, guid: 8828b7265a74bfe41b6a32c1368a6f2e, type: 2}
+  - {fileID: 11400000, guid: 21b4dce9a0152164ea85279a7d1e1a54, type: 2}
+  - {fileID: 11400000, guid: c53f0d29bed5aa94c892deabc5921fe2, type: 2}
+  - {fileID: 11400000, guid: c43a3c94e89bc75449dbc804e7ed0bce, type: 2}
+  - {fileID: 11400000, guid: 693d9d1b7378b684b8fe2fd2308bd77c, type: 2}
+  - {fileID: 11400000, guid: 982b0fe1bf2fba84786bec6932eedbf4, type: 2}
+  - {fileID: 11400000, guid: b5569fb32d51300488b61664037ee408, type: 2}
+  - {fileID: 11400000, guid: e4780fc33d0df474d95c93b7133de89a, type: 2}
+  - {fileID: 11400000, guid: 8c6d6725be79d2c4c82c2f8bf824ffe6, type: 2}
+  - {fileID: 11400000, guid: 53948393934ddf549a134c6968737f8e, type: 2}
+  - {fileID: 11400000, guid: eb16e20ff962b4a48a48e4acbe3c1485, type: 2}
+  - {fileID: 11400000, guid: 313c78dc673fbfc48925487f39fec543, type: 2}
+  - {fileID: 11400000, guid: 1be9c4e3c148fb148b29cb5aeb7aaab9, type: 2}
+  sprite: {fileID: 21300000, guid: 3d267005d3f8bc54481f66501058c26d, type: 3}
+  scale: {x: 0, y: 0, z: 0}

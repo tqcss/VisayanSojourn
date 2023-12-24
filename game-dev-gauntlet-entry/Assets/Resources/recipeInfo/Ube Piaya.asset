@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Ube Piaya
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: 63a8df17ddb36254fa2dfc68d889f37c, type: 2}
+  - {fileID: 11400000, guid: 8c463214c88ebc941ac72c1f57c5a47d, type: 2}
+  - {fileID: 11400000, guid: 5b31e316bbe17e148b4e1d1421a9698a, type: 2}
+  - {fileID: 11400000, guid: 4e442f262fece1644bd6ce7ef0e5f0d4, type: 2}
+  - {fileID: 11400000, guid: 8a49b527494a8a3459e0017b93659d3f, type: 2}
+  - {fileID: 11400000, guid: 5a90e642326c39a48b8548f666773e00, type: 2}
+  - {fileID: 11400000, guid: ab8d65567b8817043afc51e96b5dca26, type: 2}
+  - {fileID: 11400000, guid: 609d51135cd44af44bd60f4b3dc252d8, type: 2}
+  sprite: {fileID: 21300000, guid: 61c29528c51ef744dbf8542faac1f64e, type: 3}
+  scale: {x: 0, y: 0, z: 0}

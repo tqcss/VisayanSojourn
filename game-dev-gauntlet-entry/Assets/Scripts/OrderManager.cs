@@ -10,14 +10,16 @@ public class OrderManager : MonoBehaviour
     public RecipeManager recipeManager;
     public SettleLevel settleLevel;
     public GameObject timerBar;
+    public Text timerText;
     public Text orderText;
+    public Image dishMonoImage;
+    public Image dishColoredImage;
 
-    public float timeDuration;
+    private float timeDuration;
+    private float timeLeft;
+    public bool timerRunning = false;
 
     public DishInfo currentOrderPrompt;
-
-    public bool timerRunning = false;
-    private float timeLeft;
 
 
 
@@ -31,7 +33,10 @@ public class OrderManager : MonoBehaviour
     {
         currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
-        startTimer();
+        dishMonoImage.sprite = currentOrderPrompt.sprite;
+        dishColoredImage.sprite = currentOrderPrompt.sprite;
+
+        timeDuration = 10 + (currentOrderPrompt.recipe.Count * 5);
     }
 
     public void startTimer()
@@ -53,11 +58,12 @@ public class OrderManager : MonoBehaviour
         {
             timeLeft -= Time.deltaTime;
             timerBar.transform.localScale = new Vector3((timeLeft / timeDuration), timerBar.transform.localScale.y, 0);
-        } else
+            timerText.text = string.Format("{0:00}", timeLeft);
+        }
+        else
         {
             settleLevel.FinishRound();
-            recipeManager.failPlayer();
-            
+            recipeManager.failPlayer(); 
         }
     }
 }

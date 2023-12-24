@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Pinamalhan na Isda
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: cf84738a02877ee4ab54415d73ab821f, type: 2}
+  - {fileID: 11400000, guid: c1ccaa8718b1ed44bb8a98341c9c7a77, type: 2}
+  - {fileID: 11400000, guid: 693d9d1b7378b684b8fe2fd2308bd77c, type: 2}
+  - {fileID: 11400000, guid: 01c99ab74e8bef34bb34af89c2d6adbc, type: 2}
+  - {fileID: 11400000, guid: e4780fc33d0df474d95c93b7133de89a, type: 2}
+  - {fileID: 11400000, guid: 98f61892612f74a4a96892d935104810, type: 2}
+  sprite: {fileID: 21300000, guid: 419c426c67c687e429b7f85414a18cc1, type: 3}
+  scale: {x: 0, y: 0, z: 0}

@@ -8,85 +8,86 @@ using TMPro;
 public class LevelLoad : MonoBehaviour
 {
 
-    public GameObject VideoScreen;
-    public GameObject MainMenu;
-    public GameObject LoadingScreen;
-    public Slider LoadingSlider;
+    public GameObject videoScreen;
+    public GameObject levelSelection;
+    public GameObject loadingScreen;
+    public Slider loadingSlider;
+    public Sprite[] loadingBgSprite;
+    public Image loadingBg;
+    public GameObject loadingBgObj;
+    public Text loadingProvinceText;
+    public Image loadingDish;
+    public int dishDistance;
 
-    public GameObject LoadingAntique;
-    public GameObject LoadingAklan;
-    public GameObject LoadingCapiz;
-    public GameObject LoadingNegrosOcc;
-    public GameObject LoadingGuimaras;
-    public GameObject LoadingIloilo;
-    public GameObject DescAntique;
-    public GameObject DescAklan;
-    public GameObject DescCapiz;
-    public GameObject DescNegrosOcc;
-    public GameObject DescGuimaras;
-    public GameObject DescIloilo;
-    public GameObject PlayButton;
-    public GameObject NotPlayButton;
+    public Sprite[] descSprite;
+    public Image provinceDesc;
+    public GameObject playButton;
+    public GameObject notPlayButton;
 
-    private string sceneLevel;
+    private int numberLevel;
+    private string sceneLevel = "KitchenR6";
     private bool canPlayAnimation = false;
-    public int AntiqueAnimSec, AklanAnimSec, CapizAnimSec, NegrosOccAnimSec, GuimarasAnimSec, IloiloAnimSec;
+    public int antiqueAnimSec, aklanAnimSec, capizAnimSec, negrosOccAnimSec, guimarasAnimSec, iloiloAnimSec;
 
     private void Start()
     {
-        StartCoroutine(PlayAnimation());
+        if (SceneManager.GetActiveScene().name == "MainScene") StartCoroutine(PlayAnimation());
+        loadingScreen.SetActive(false);
     }
 
-    public void SelectProvince (string selected)
+    public void SelectProvince (int selected)
     {
-        sceneLevel = selected;
-        UpdateDescription(sceneLevel);
-        Debug.Log(sceneLevel);
+        numberLevel = selected - 1;
+        UpdateDescription(numberLevel);
     }
     
-    public void LoadLevel (bool playLevel)
+    public void LoadLevel()
     {
-        if (sceneLevel != null)
+        if (!(PlayerPrefs.GetInt("GlobalLives", 3) <= 0))
         {
-            if (!(PlayerPrefs.GetInt("GlobalLives", 3) <= 0))
-            {
-                StartCoroutine(LoadAsynchronously(sceneLevel));
-                LoadBackgroundScreen(sceneLevel);
-            }
+            StartCoroutine(LoadAsynchronously(sceneLevel));
+            PlayerPrefs.SetInt("ProvinceCurrent", (numberLevel + 1));
+            loadingBgObj.SetActive(true);
         }
     }
 
-    public void LoadBack (string sceneLevel)
+    public void LoadBack (string scene)
     {
         Debug.Log("Go to Main");
         PlayerPrefs.SetInt("FailsBeforeWin", 0);
-        StartCoroutine(LoadAsynchronously(sceneLevel));
+        StartCoroutine(LoadAsynchronously(scene));
     }
 
-    public void LoadFinishBack (string sceneLevel)
+    public void LoadFinishBack (string scene)
     {
-        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0 && PlayerPrefs.GetInt("ProceedNextProvince", 0) == 1)
+        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0 && PlayerPrefs.GetInt("ProceedNext", 0) == 1)
         {
-            StartCoroutine(LoadAsynchronously(sceneLevel));
+            StartCoroutine(LoadAsynchronously(scene));
             canPlayAnimation = true;
-            PlayerPrefs.SetInt("ProceedNextProvince", 0);
+            PlayerPrefs.SetInt("ProceedNext", 0);
         }
     }
 
-    IEnumerator LoadAsynchronously (string sceneLevel)
+    private IEnumerator LoadAsynchronously (string scene)
     {
-        LoadingScreen.SetActive(true);
-        LoadingSlider.value = 0;
+        loadingScreen.SetActive(true);
+        loadingSlider.value = 0;
+        loadingProvinceText.text = loadingBgSprite[numberLevel].name.Replace("image_", "").Replace("_", " ").ToUpper();
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneLevel);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
         operation.allowSceneActivation = false;
+        yield return new WaitForSeconds(1);
         
         float progress = 0;
+        double firstDishPosX = loadingDish.GetComponent<RectTransform>().localPosition.x;
 
         while (!operation.isDone)
         {
             progress = Mathf.MoveTowards(progress, Mathf.Clamp01(operation.progress / 0.9f), Time.deltaTime / 3.14f);
-            LoadingSlider.value = progress;
+            loadingSlider.value = progress;
+            
+            double moveDishPosX = firstDishPosX + (progress * dishDistance);
+            loadingDish.GetComponent<RectTransform>().localPosition = new Vector3((int)moveDishPosX, loadingDish.GetComponent<RectTransform>().localPosition.y, 0);
 
             if (progress >= 1f)
             {
@@ -97,151 +98,72 @@ public class LevelLoad : MonoBehaviour
             yield return null;
         }
 
-        LoadingScreen.SetActive(false);
-        if (canPlayAnimation == true)
-        {
-            StartCoroutine(PlayAnimation());
-        }   
+        if (SceneManager.GetActiveScene().name == "MainScene") loadingScreen.SetActive(false);
+        if (canPlayAnimation == true) StartCoroutine(PlayAnimation());  
     }
 
     private IEnumerator PlayAnimation()
     {
         canPlayAnimation = false;
-        if (VideoScreen) VideoScreen.SetActive(true);
+        if (videoScreen) videoScreen.SetActive(true);
 
         if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 1 && PlayerPrefs.GetInt("FirstTimeAntique", 1) == 1)
         {
-            //Debug.Log("Play Start -> Antique Animation");
-            MainMenu.SetActive(false);
-            yield return new WaitForSeconds(AntiqueAnimSec);
+            levelSelection.SetActive(false);
+            yield return new WaitForSeconds(antiqueAnimSec);
             PlayerPrefs.SetInt("FirstTimeAntique", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 2 && PlayerPrefs.GetInt("FirstTimeAklan", 1) == 1)
         {
-            //Debug.Log("Play Antique -> Aklan Animation");
-            MainMenu.SetActive(false);
-            yield return new WaitForSeconds(AklanAnimSec);
+            levelSelection.SetActive(false);
+            yield return new WaitForSeconds(aklanAnimSec);
             PlayerPrefs.SetInt("FirstTimeAklan", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 3 && PlayerPrefs.GetInt("FirstTimeCapiz", 1) == 1)
         {
-            //Debug.Log("Play Aklan -> Capiz Animation");
-            MainMenu.SetActive(false);
-            yield return new WaitForSeconds(CapizAnimSec);
+            levelSelection.SetActive(false);
+            yield return new WaitForSeconds(capizAnimSec);
             PlayerPrefs.SetInt("FirstTimeCapiz", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 4 && PlayerPrefs.GetInt("FirstTimeNegrosOcc", 1) == 1)
         {
-            //Debug.Log("Play Capiz -> Negros Occ Animation");
-            MainMenu.SetActive(false);
-            yield return new WaitForSeconds(NegrosOccAnimSec);
+            levelSelection.SetActive(false);
+            yield return new WaitForSeconds(negrosOccAnimSec);
             PlayerPrefs.SetInt("FirstTimeNegrosOcc", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 5 && PlayerPrefs.GetInt("FirstTimeGuimaras", 1) == 1)
         {
-            //Debug.Log("Play Negros Occ -> Guimaras Animation");
-            MainMenu.SetActive(false);
-            yield return new WaitForSeconds(GuimarasAnimSec);
+            levelSelection.SetActive(false);
+            yield return new WaitForSeconds(guimarasAnimSec);
             PlayerPrefs.SetInt("FirstTimeGuimaras", 0); 
         }
         else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 6 && PlayerPrefs.GetInt("FirstTimeIloilo", 1) == 1)
         {
-            //Debug.Log("Play Guimaras -> Iloilo Animation");
-            MainMenu.SetActive(false);
-            yield return new WaitForSeconds(IloiloAnimSec);
+            levelSelection.SetActive(false);
+            yield return new WaitForSeconds(iloiloAnimSec);
             PlayerPrefs.SetInt("FirstTimeIloilo", 0); 
         }
 
-        if (VideoScreen) VideoScreen.SetActive(false);
-        MainMenu.SetActive(true);
+        if (videoScreen) videoScreen.SetActive(false);
+        levelSelection.SetActive(true);
         yield return null;
     }
 
-    public void LoadBackgroundScreen (string sceneLevel)
+    public void UpdateDescription (int numberLevel)
     {
-        LoadingAntique.SetActive(false);
-        LoadingAklan.SetActive(false);
-        LoadingCapiz.SetActive(false);
-        LoadingNegrosOcc.SetActive(false);
-        LoadingGuimaras.SetActive(false);
-        LoadingIloilo.SetActive(false);
+        provinceDesc.sprite = descSprite[numberLevel];
+        loadingBg.sprite = loadingBgSprite[numberLevel];
         
-        if (sceneLevel == "AntiqueScene") 
+        if (numberLevel < 6)
         {
-            PlayerPrefs.SetInt("ProvinceCurrent", 1);
-            LoadingAntique.SetActive(true);
-        } 
-        else if (sceneLevel == "AklanScene") 
-        {
-            PlayerPrefs.SetInt("ProvinceCurrent", 2);
-            LoadingAklan.SetActive(true);
+            playButton.SetActive(true);
+            notPlayButton.SetActive(false);
         }
-        else if (sceneLevel == "CapizScene")
+        else
         {
-            PlayerPrefs.SetInt("ProvinceCurrent", 3);
-            LoadingCapiz.SetActive(true);
+            playButton.SetActive(false);
+            notPlayButton.SetActive(true);
         }
-        else if (sceneLevel == "NegrosOccScene")
-        {
-            PlayerPrefs.SetInt("ProvinceCurrent", 4);
-            LoadingNegrosOcc.SetActive(true);
-        }
-        else if (sceneLevel == "GuimarasScene")
-        {
-            PlayerPrefs.SetInt("ProvinceCurrent", 5);
-            LoadingGuimaras.SetActive(true);
-        }
-        else if (sceneLevel == "IloiloScene")
-        {
-            PlayerPrefs.SetInt("ProvinceCurrent", 6);
-            LoadingIloilo.SetActive(true);
-        }
-    }
-
-    public void UpdateDescription (string sceneLevel)
-    {
-        DescAntique.SetActive(false);
-        DescAklan.SetActive(false);
-        DescCapiz.SetActive(false);
-        DescNegrosOcc.SetActive(false);
-        DescGuimaras.SetActive(false);
-        DescIloilo.SetActive(false);
-        if (sceneLevel == "AntiqueScene") 
-        {
-            DescAntique.SetActive(true);
-            PlayButton.SetActive(true);
-            NotPlayButton.SetActive(false);
-        } 
-        else if (sceneLevel == "AklanScene") 
-        {
-            DescAklan.SetActive(true);
-            PlayButton.SetActive(true);
-            NotPlayButton.SetActive(false);
-        }
-        else if (sceneLevel == "CapizScene")
-        {
-            DescCapiz.SetActive(true);
-            PlayButton.SetActive(false);
-            NotPlayButton.SetActive(true);
-        }
-        else if (sceneLevel == "NegrosOccScene")
-        {
-            DescNegrosOcc.SetActive(true);
-            PlayButton.SetActive(false);
-            NotPlayButton.SetActive(true);
-        }
-        else if (sceneLevel == "GuimarasScene")
-        {
-            DescGuimaras.SetActive(true);
-            PlayButton.SetActive(false);
-            NotPlayButton.SetActive(true);
-        }
-        else if (sceneLevel == "IloiloScene")
-        {
-            DescIloilo.SetActive(true);
-            PlayButton.SetActive(false);
-            NotPlayButton.SetActive(true);
-        } 
     }
 
     public void DoQuit()

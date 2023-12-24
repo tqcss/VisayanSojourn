@@ -37,7 +37,8 @@ public class IngredientManager : MonoBehaviour
         foreach (IngredientInfo ingredientInfo in ingredientModule.ingredients.OrderBy(item => item.name).ToList())
         {
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
-            newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name;
+            
+            newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name.Replace("_", " ");
             newButton.transform.GetChild(0).GetComponent<Image>().sprite = ingredientInfo.sprite;
 
             EventTrigger clickTrigger = newButton.GetComponent<EventTrigger>();
