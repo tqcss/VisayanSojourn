@@ -5,9 +5,11 @@ using UnityEngine.Video;
 
 public class VideoInitial : MonoBehaviour
 {
-    
+    public VideoPlayer videoPlayer;
     void Start()
     {
+        videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer.Prepare();
         if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
         {
             PlayVideo();
@@ -16,7 +18,6 @@ public class VideoInitial : MonoBehaviour
 
     public void PlayVideo()
     {
-        VideoPlayer videoPlayer = GetComponent<VideoPlayer>();
         if (videoPlayer)
         {
             videoPlayer.Play();

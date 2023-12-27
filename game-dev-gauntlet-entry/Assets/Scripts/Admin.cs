@@ -4,49 +4,56 @@ using UnityEngine;
 
 public class Admin : MonoBehaviour
 {
+    private PlayerLives playerLives;
+    private PlayerProvince playerProvince;
     
-    public int livesTotal;
-    public int provinceTotal;
-    public void DeleteSavedData ()
+    private void Awake()
+    {
+        playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        playerProvince = GameObject.FindGameObjectWithTag("mainScript").GetComponent<PlayerProvince>();
+    }
+
+    public void DeleteSavedData()
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
     }
 
-    public void IncreaseLives ()
+    public void IncreaseLives()
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) < livesTotal))
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) < playerLives.livesTotal)
         {
-            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesTotal) + 1);
+            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) + 1);
             PlayerPrefs.Save();
         }
     }
 
-    public void DecreaseLives ()
+    public void DecreaseLives()
     {
-        if ((PlayerPrefs.GetInt("GlobalLives", livesTotal) > 0))
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)
         {
-            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesTotal) - 1);
+            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) - 1);
             PlayerPrefs.Save();
         }
     }
 
-    public void IncreaseLevel ()
+    public void IncreaseLevel()
     {
-        if ((PlayerPrefs.GetInt("ProvinceUnlocked", 1) < provinceTotal))
+        if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) < playerProvince.provinceTotal)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();
+            playerProvince.UpdateProvince();
         }
     }
 
-    public void DecreaseLevel ()
+    public void DecreaseLevel()
     {
-        if ((PlayerPrefs.GetInt("ProvinceUnlocked", 1) > 1))
+        if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) > 1)
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) - 1);
             PlayerPrefs.Save();
+            playerProvince.UpdateProvince();
         }
     }
-
 }

@@ -9,6 +9,7 @@ public class RecipeManager : MonoBehaviour
     private IngredientManager ingredientManager;
     private IngredientModule ingredientModule;
     private OrderManager orderManager;
+    private PlayerLives playerLives;
     private GameObject particles;
 
     public AudioSource successSfx;
@@ -23,6 +24,7 @@ public class RecipeManager : MonoBehaviour
         ingredientManager = GameObject.FindWithTag("ingredientManager").GetComponent<IngredientManager>();
         ingredientModule = GameObject.FindWithTag("ingredientModule").GetComponent<IngredientModule>();
         orderManager = GameObject.FindWithTag("orderManager").GetComponent<OrderManager>();
+        playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
         particles = Resources.Load("Prefabs/particleSystem", typeof(GameObject)) as GameObject;
         dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
     }
@@ -40,25 +42,15 @@ public class RecipeManager : MonoBehaviour
     private bool recipeMatch()
     {
         DishInfo dish = orderManager.currentOrderPrompt;
-            
-        /*for (int i = 0; i < objectsOnPlate.Count; i++)
-        {
-            Debug.Log(objectsOnPlate);
-        }*/   
-            
+
         if (dish.recipe.Count != objectsOnPlate.Count)
-        {
             return false;
-        }
 
         objectsOnPlate.Sort();
         for (int i = 0; i < dish.recipe.Count; i++)
-        {
             if (dish.recipe[i].name != objectsOnPlate[i])
-            {
                 return false;
-            }
-        }
+        
         return true;
     }
 
@@ -75,15 +67,11 @@ public class RecipeManager : MonoBehaviour
         {
             successSfx.Play();
             orderManager.currentOrderPrompt = null;
-            Debug.Log("Correct Dish");
-
             PlayerPrefs.SetInt("RoundSuccess", 1);
         }
         else
         {
-            Debug.Log("Incorrect Dish");
             failPlayer();
-
             PlayerPrefs.SetInt("RoundSuccess", 0);
         }
         orderManager.timerRunning = false;
@@ -97,9 +85,9 @@ public class RecipeManager : MonoBehaviour
         failSfx.Play();
         orderManager.timerRunning = false;
         destroyAllLooseItems();
-        if ((PlayerPrefs.GetInt("GlobalLives", 3) > 0))
+        if ((PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0))
         {
-            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", 3) - 1);
+            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) - 1);
             PlayerPrefs.SetInt("FailsBeforeWin", PlayerPrefs.GetInt("FailsBeforeWin", 0) + 1);
             PlayerPrefs.Save();
         }

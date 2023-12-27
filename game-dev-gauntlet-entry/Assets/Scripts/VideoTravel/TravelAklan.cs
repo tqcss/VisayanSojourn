@@ -5,9 +5,11 @@ using UnityEngine.Video;
 
 public class TravelAklan : MonoBehaviour
 {
-    
+    public VideoPlayer videoPlayer;
     void Awake()
     {
+        videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer.Prepare();
         if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 2 && PlayerPrefs.GetInt("FirstTimeAklan", 1) == 1)
         {
             PlayVideo();
@@ -16,7 +18,6 @@ public class TravelAklan : MonoBehaviour
 
     public void PlayVideo()
     {
-        VideoPlayer videoPlayer = GetComponent<VideoPlayer>();
         if (videoPlayer)
         {
             videoPlayer.Play();

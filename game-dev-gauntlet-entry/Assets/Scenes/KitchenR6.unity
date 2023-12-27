@@ -4698,8 +4698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a258147918b54244b931ed14bab8cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recipeManager: {fileID: 265308393}
-  settleLevel: {fileID: 306851231}
   timerBar: {fileID: 1219910308}
   timerText: {fileID: 1506016192}
   orderText: {fileID: 741033487}
@@ -4752,14 +4750,14 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 3dd8b1dba77c2744084d9d1e03ef07a2, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: eb359b3d17e6dac459c0bf41ba1dc75a, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
   m_DataSource: 0
-  m_TimeUpdateMode: 2
+  m_TimeUpdateMode: 1
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
   m_TargetAudioSources: []
@@ -9183,7 +9181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 3dd8b1dba77c2744084d9d1e03ef07a2, type: 2}
+  m_Texture: {fileID: 8400000, guid: eb359b3d17e6dac459c0bf41ba1dc75a, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -9225,7 +9223,7 @@ RectTransform:
   m_GameObject: {fileID: 1825181949}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000798, y: 1.0000798, z: 1.0000798}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1204708184}
@@ -9465,7 +9463,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d72aaf862894716448f63030014748e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9922,9 +9920,9 @@ RectTransform:
   m_Children:
   - {fileID: 1807329368}
   - {fileID: 511609359}
+  - {fileID: 1695508710}
   - {fileID: 1229134433}
   - {fileID: 580152709}
-  - {fileID: 1695508710}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

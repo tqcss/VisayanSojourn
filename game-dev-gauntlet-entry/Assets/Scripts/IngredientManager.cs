@@ -60,21 +60,15 @@ public class IngredientManager : MonoBehaviour
         {
             Collider2D collider = Physics2D.OverlapPoint(mousePosition, m_DragLayers);
             if (!collider)
-            {
                 return;
-            }
 
             body = collider.attachedRigidbody;
             if (!body)
-            {
                 return;
-            }
             // Debug.Log(body.name);
 
             if (m_TargetJoint)
-            {
                 Destroy(m_TargetJoint);
-            }
 
             m_TargetJoint = body.gameObject.AddComponent<TargetJoint2D>();
             m_TargetJoint.dampingRatio = m_Damping;
@@ -87,17 +81,15 @@ public class IngredientManager : MonoBehaviour
             m_TargetJoint = null;
 
             if (body && body.gameObject.transform.position.x <= deadZoneX)
-            {
                 Destroy(body.gameObject);
-            }
+
             body = null;
             return;
         }
 
         if (m_TargetJoint)
-        {
             m_TargetJoint.target = mousePosition;
-        }
+
     }
 
     public void spawnIngredient(IngredientInfo ingredientInfo)
@@ -110,14 +102,10 @@ public class IngredientManager : MonoBehaviour
         newIngredient.name = ingredientInfo.name;
 
         if (ingredientInfo.randomRotation)
-        {
             newIngredient.transform.rotation = Quaternion.Euler(0, 0, (Random.Range(0f, 360f)));
-        }
 
         if (ingredientInfo.sprite == null)
-        {
             return;
-        }
 
         newIngredient.transform.localScale = new Vector3(ingredientInfo.scaleX, ingredientInfo.scaleY, 0);
         newIngredient.GetComponent<SpriteRenderer>().sprite = ingredientInfo.sprite;

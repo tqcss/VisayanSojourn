@@ -16,12 +16,9 @@ public class IngredientModule : MonoBehaviour
     public IngredientInfo getIngredient(string name)
     {
         foreach (IngredientInfo ingredient in ingredients)
-        {
             if (ingredient.name == name)
-            {
                 return ingredient;
-            }
-        }
+
         Debug.LogWarning($"No ingredient found with the name '{name}'");
         return null;
     }

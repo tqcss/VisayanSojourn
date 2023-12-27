@@ -5,11 +5,11 @@ using UnityEngine.Video;
 
 public class PlayScroll : MonoBehaviour
 {
-
     public VideoPlayer videoPlayer;
     void Awake()
     {
         videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer.Prepare();
         PlayVideo();
     }
 

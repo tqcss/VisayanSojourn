@@ -7,7 +7,6 @@ using TMPro;
 
 public class LevelLoad : MonoBehaviour
 {
-
     public GameObject videoScreen;
     public GameObject levelSelection;
     public GameObject loadingScreen;
@@ -18,27 +17,35 @@ public class LevelLoad : MonoBehaviour
     public Text loadingProvinceText;
     public Image loadingDish;
     public int dishDistance;
-
     public Sprite[] descSprite;
     public Image provinceDesc;
     public GameObject playButton;
     public GameObject notPlayButton;
-
-    private int numberLevel;
+    public int[] animationSeconds;
+    private string[] firstTime = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
     private string sceneLevel = "KitchenR6";
+    private int numberLevel;
     private bool canPlayAnimation = false;
-    public int antiqueAnimSec, aklanAnimSec, capizAnimSec, negrosOccAnimSec, guimarasAnimSec, iloiloAnimSec;
+    
+    private PlayerLives playerLives;
+    private PlayerProvince playerProvince;
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name == "MainScene") StartCoroutine(PlayAnimation());
+        playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        playerProvince = GameObject.FindGameObjectWithTag("mainScript").GetComponent<PlayerProvince>();
+        Application.runInBackground = true;
+        
+        if (SceneManager.GetActiveScene().name == "MainScene") 
+            StartCoroutine(PlayAnimation());
         loadingScreen.SetActive(false);
     }
 
-    public void SelectProvince (int selected)
+    public void SelectProvince(int selected)
     {
         numberLevel = selected - 1;
         UpdateDescription(numberLevel);
+        playerProvince.DisableProvince();
     }
     
     public void LoadLevel()
@@ -51,14 +58,14 @@ public class LevelLoad : MonoBehaviour
         }
     }
 
-    public void LoadBack (string scene)
+    public void LoadBack(string scene)
     {
         Debug.Log("Go to Main");
         PlayerPrefs.SetInt("FailsBeforeWin", 0);
         StartCoroutine(LoadAsynchronously(scene));
     }
 
-    public void LoadFinishBack (string scene)
+    public void LoadFinishBack(string scene)
     {
         if (PlayerPrefs.GetInt("GlobalLives", 3) > 0 && PlayerPrefs.GetInt("ProceedNext", 0) == 1)
         {
@@ -68,7 +75,7 @@ public class LevelLoad : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadAsynchronously (string scene)
+    private IEnumerator LoadAsynchronously(string scene)
     {
         loadingScreen.SetActive(true);
         loadingSlider.value = 0;
@@ -98,63 +105,40 @@ public class LevelLoad : MonoBehaviour
             yield return null;
         }
 
-        if (SceneManager.GetActiveScene().name == "MainScene") loadingScreen.SetActive(false);
-        if (canPlayAnimation == true) StartCoroutine(PlayAnimation());  
+        if (SceneManager.GetActiveScene().name == "MainScene") 
+            loadingScreen.SetActive(false);
+        if (canPlayAnimation == true) 
+            StartCoroutine(PlayAnimation());  
     }
 
     private IEnumerator PlayAnimation()
     {
         canPlayAnimation = false;
-        if (videoScreen) videoScreen.SetActive(true);
+        if (videoScreen) 
+            videoScreen.SetActive(true);
 
-        if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 1 && PlayerPrefs.GetInt("FirstTimeAntique", 1) == 1)
+        int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
+        if (PlayerPrefs.GetInt(firstTime[provinceUnlocked - 1], 1) == 1)
         {
             levelSelection.SetActive(false);
-            yield return new WaitForSeconds(antiqueAnimSec);
-            PlayerPrefs.SetInt("FirstTimeAntique", 0); 
-        }
-        else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 2 && PlayerPrefs.GetInt("FirstTimeAklan", 1) == 1)
-        {
-            levelSelection.SetActive(false);
-            yield return new WaitForSeconds(aklanAnimSec);
-            PlayerPrefs.SetInt("FirstTimeAklan", 0); 
-        }
-        else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 3 && PlayerPrefs.GetInt("FirstTimeCapiz", 1) == 1)
-        {
-            levelSelection.SetActive(false);
-            yield return new WaitForSeconds(capizAnimSec);
-            PlayerPrefs.SetInt("FirstTimeCapiz", 0); 
-        }
-        else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 4 && PlayerPrefs.GetInt("FirstTimeNegrosOcc", 1) == 1)
-        {
-            levelSelection.SetActive(false);
-            yield return new WaitForSeconds(negrosOccAnimSec);
-            PlayerPrefs.SetInt("FirstTimeNegrosOcc", 0); 
-        }
-        else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 5 && PlayerPrefs.GetInt("FirstTimeGuimaras", 1) == 1)
-        {
-            levelSelection.SetActive(false);
-            yield return new WaitForSeconds(guimarasAnimSec);
-            PlayerPrefs.SetInt("FirstTimeGuimaras", 0); 
-        }
-        else if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 6 && PlayerPrefs.GetInt("FirstTimeIloilo", 1) == 1)
-        {
-            levelSelection.SetActive(false);
-            yield return new WaitForSeconds(iloiloAnimSec);
-            PlayerPrefs.SetInt("FirstTimeIloilo", 0); 
+            yield return new WaitForSeconds(animationSeconds[provinceUnlocked - 1]);
+            PlayerPrefs.SetInt(firstTime[provinceUnlocked - 1], 0);
         }
 
-        if (videoScreen) videoScreen.SetActive(false);
+        if (videoScreen) 
+            videoScreen.SetActive(false);
+
         levelSelection.SetActive(true);
         yield return null;
     }
 
-    public void UpdateDescription (int numberLevel)
+    public void UpdateDescription(int numberLevel)
     {
         provinceDesc.sprite = descSprite[numberLevel];
         loadingBg.sprite = loadingBgSprite[numberLevel];
         
-        if (numberLevel < 6)
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) <= playerLives.livesTotal &&
+            PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)
         {
             playButton.SetActive(true);
             notPlayButton.SetActive(false);

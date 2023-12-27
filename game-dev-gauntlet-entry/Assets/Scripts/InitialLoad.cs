@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 public class InitialLoad : MonoBehaviour
 {
-
     public int trailerTime;
     public GameObject loadingScreen;
     public Slider loadingSlider;
-    
     private string sceneLevel = "MainScene";
+    
     private void Start()
     {
+        Application.runInBackground = true;
         loadingScreen.SetActive(false);
         StartCoroutine(FirstTimeCheck(sceneLevel));
     }

@@ -5,9 +5,11 @@ using UnityEngine.Video;
 
 public class TravelCapiz : MonoBehaviour
 {
-    
+    public VideoPlayer videoPlayer;
     void Awake()
     {
+        videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer.Prepare();
         if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == 3 && PlayerPrefs.GetInt("FirstTimeCapiz", 1) == 1)
         {
             PlayVideo();
@@ -16,7 +18,7 @@ public class TravelCapiz : MonoBehaviour
 
     public void PlayVideo()
     {
-        VideoPlayer videoPlayer = GetComponent<VideoPlayer>();
+        videoPlayer = GetComponent<VideoPlayer>();
         if (videoPlayer)
         {
             videoPlayer.Play();

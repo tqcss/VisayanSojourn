@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class OrderManager : MonoBehaviour
 {
     private List<DishInfo> dishes = new List<DishInfo>();
-    public RecipeManager recipeManager;
-    public SettleLevel settleLevel;
+    private RecipeManager recipeManager;
+    private SettleLevel settleLevel;
     public GameObject timerBar;
     public Text timerText;
     public Text orderText;
@@ -21,12 +21,11 @@ public class OrderManager : MonoBehaviour
 
     public DishInfo currentOrderPrompt;
 
-
-
     void Start()
     {
         dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
         recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
+        settleLevel = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleLevel>();
     }
 
     public void changeOrderPrompt(DishInfo dish)
@@ -41,7 +40,6 @@ public class OrderManager : MonoBehaviour
 
     public void startTimer()
     {
-        Debug.Log("Timer Started");
         timeLeft = timeDuration;
         timerBar.transform.localScale = new Vector3(1, timerBar.transform.localScale.y, 0);
         timerRunning = true;
@@ -50,9 +48,7 @@ public class OrderManager : MonoBehaviour
     void Update()
     {
         if (!timerRunning)
-        {
             return;
-        }
         
         if (timeLeft > 0)
         {
