@@ -11,10 +11,13 @@ public class InitialLoad : MonoBehaviour
     public GameObject loadingScreen;
     public Slider loadingSlider;
     private string sceneLevel = "MainScene";
+    private VideoRender videoRender;
     
     private void Start()
     {
+        videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         Application.runInBackground = true;
+
         loadingScreen.SetActive(false);
         StartCoroutine(FirstTimeCheck(sceneLevel));
     }
@@ -23,6 +26,7 @@ public class InitialLoad : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
         {
+            videoRender.PlayIntro();
             yield return new WaitForSeconds(trailerTime);
             StartCoroutine(LoadAsynchronously(sceneLevel));
         }

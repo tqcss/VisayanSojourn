@@ -10,6 +10,7 @@ public class RecipeManager : MonoBehaviour
     private IngredientModule ingredientModule;
     private OrderManager orderManager;
     private PlayerLives playerLives;
+    private SettleLevel settleLevel;
     private GameObject particles;
 
     public AudioSource successSfx;
@@ -25,6 +26,7 @@ public class RecipeManager : MonoBehaviour
         ingredientModule = GameObject.FindWithTag("ingredientModule").GetComponent<IngredientModule>();
         orderManager = GameObject.FindWithTag("orderManager").GetComponent<OrderManager>();
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        settleLevel = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleLevel>();
         particles = Resources.Load("Prefabs/particleSystem", typeof(GameObject)) as GameObject;
         dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
     }
@@ -39,7 +41,7 @@ public class RecipeManager : MonoBehaviour
         objectsOnPlate.Remove(collision.gameObject.name);
     }
 
-    private bool recipeMatch()
+    private bool RecipeMatch()
     {
         DishInfo dish = orderManager.currentOrderPrompt;
 
@@ -54,7 +56,7 @@ public class RecipeManager : MonoBehaviour
         return true;
     }
 
-    public void checkIngredients()
+    public void CheckIngredients()
     {
         bgMusic.Stop();
         if (!orderManager.currentOrderPrompt)
@@ -63,48 +65,45 @@ public class RecipeManager : MonoBehaviour
             return;
         }
 
-        if (recipeMatch())
+        if (RecipeMatch())
         {
             successSfx.Play();
             orderManager.currentOrderPrompt = null;
-            PlayerPrefs.SetInt("RoundSuccess", 1);
+            settleLevel.FinishRound(true);
         }
         else
         {
-            failPlayer();
-            PlayerPrefs.SetInt("RoundSuccess", 0);
+            FailPlayer();
+            settleLevel.FinishRound(false);
         }
         orderManager.timerRunning = false;
         orderManager.currentOrderPrompt = null;
-        destroyAllLooseItems();
+        DestroyAllLooseItems();
     }
 
-    public void failPlayer()
+    public void FailPlayer()
     {
         bgMusic.Stop();
         failSfx.Play();
         orderManager.timerRunning = false;
-        destroyAllLooseItems();
-        if ((PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0))
+        DestroyAllLooseItems();
+        
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)
         {
             PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) - 1);
             PlayerPrefs.SetInt("FailsBeforeWin", PlayerPrefs.GetInt("FailsBeforeWin", 0) + 1);
             PlayerPrefs.Save();
         }
-        else
-        {
-            Debug.Log("No more lives.");
-        }
     }
 
-    private void destroyAllLooseItems()
+    private void DestroyAllLooseItems()
     {
         destroySfx.Play();
         foreach (GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
         {
             GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);
             var maintemp = newParticle.GetComponent<ParticleSystem>().main;
-            maintemp.startColor = new ParticleSystem.MinMaxGradient(ingredientModule.getIngredient(ingredient.name).particleColorA, ingredientModule.getIngredient(ingredient.name).particleColorB);
+            maintemp.startColor = new ParticleSystem.MinMaxGradient(ingredientModule.GetIngredient(ingredient.name).particleColorA, ingredientModule.GetIngredient(ingredient.name).particleColorB);
             Destroy(ingredient);
             newParticle.GetComponent<ParticleSystem>().Play();
         }

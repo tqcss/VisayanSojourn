@@ -15,6 +15,7 @@ TagManager:
   - mainScript
   - dishList
   - playerLives
+  - videoRender
   layers:
   - Default
   - TransparentFX

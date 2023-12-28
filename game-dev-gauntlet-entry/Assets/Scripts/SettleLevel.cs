@@ -27,6 +27,7 @@ public class SettleLevel : MonoBehaviour
     private LevelLoad levelLoad;
     private OrderManager orderManager;
     private PlayerLives playerLives;
+    private VideoRender videoRender;
 
     public int maximumRound;
     public int currentRound;
@@ -37,6 +38,8 @@ public class SettleLevel : MonoBehaviour
         levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
+        
         currentRound = 1;
         StartCoroutine(PlayAnimation(true));
     }
@@ -52,9 +55,12 @@ public class SettleLevel : MonoBehaviour
         roundFinishUI.SetActive(false);
         levelLoad.loadingScreen.SetActive(false);
         
-        if (firstPlay) 
+        if (firstPlay)
+        {
+            videoRender.PlayScroll();
             yield return new WaitForSeconds(scrollTimeSec);
-
+        }
+        
         dishList.PromptOrder();
         startButton.SetActive(true);
         DisplayRecipe();
@@ -81,15 +87,15 @@ public class SettleLevel : MonoBehaviour
         startSfx.Play();
         recipeScroll.SetActive(false);
         kitchenUI.SetActive(true);
-        orderManager.startTimer();
+        orderManager.StartTimer();
     }
 
-    public void FinishRound()
+    public void FinishRound(bool success)
     {
         roundFinishUI.SetActive(true);
-        if (PlayerPrefs.GetInt("RoundSuccess", 0) == 1)
+        if (success)
         {
-            if ((PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0))
+            if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)
             {
                 messageText.text = "ROUND SUCCESS";
                 nextButton.SetActive(true);
@@ -100,11 +106,10 @@ public class SettleLevel : MonoBehaviour
                 else 
                     backButton.SetActive(false);
             }
-            PlayerPrefs.SetInt("RoundSuccess", 0);
         }
-        else if (PlayerPrefs.GetInt("RoundSuccess", 0) == 0)
+        else
         {
-            if ((PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0))
+            if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)
             {
                 messageText.text = "ROUND FAIL";
                 prevButton.SetActive(true);
@@ -131,8 +136,9 @@ public class SettleLevel : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == PlayerPrefs.GetInt("ProvinceCurrent", 1))
                 PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
-            PlayerPrefs.SetInt("ProceedNext", 1);
-            PlayerPrefs.Save();
+            
+            levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1;
+            levelLoad.LoadFinishBack(levelLoad.mainScene);
             kitchenUI.SetActive(false);
             roundFinishUI.SetActive(false);
         }
@@ -147,8 +153,7 @@ public class SettleLevel : MonoBehaviour
     {
         kitchenUI.SetActive(false);
         roundFinishUI.SetActive(false);
-        
-        levelLoad.loadingProvinceText.text = levelLoad.loadingBgSprite[PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1].name.Replace("image_", "").Replace("_", " ").ToUpper();
-        levelLoad.loadingBg.sprite = levelLoad.loadingBgSprite[PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1];
+        levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1;
+        levelLoad.LoadBack(levelLoad.mainScene);
     }
 }

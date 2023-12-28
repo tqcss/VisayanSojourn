@@ -18,6 +18,7 @@ public class PlayerLives : MonoBehaviour
     public Sprite emptyHeart;
     public Text timerCDText;
     
+    private LevelLoad levelLoad;
     private static GameObject sampleInstance;
     private void Awake()
     {
@@ -26,6 +27,8 @@ public class PlayerLives : MonoBehaviour
 
         sampleInstance = gameObject;
         DontDestroyOnLoad(sampleInstance);
+
+        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
     }
 
     private void Start()
@@ -143,7 +146,7 @@ public class PlayerLives : MonoBehaviour
 
     public void UpdateDisplay()
     {
-        if (SceneManager.GetActiveScene().name == "MainScene")
+        if (SceneManager.GetActiveScene().name == levelLoad.mainScene)
         {
             for (int i = 0; i < lifeSet.Length; i++)
                 lifeSet[i].sprite = emptyHeart;
@@ -165,7 +168,7 @@ public class PlayerLives : MonoBehaviour
                 }
             } 
             else if (PlayerPrefs.GetInt("GlobalLives", livesTotal) == livesTotal)
-                timerCDText.text = "";
+                timerCDText.text = "FULL";
         }
     }
 

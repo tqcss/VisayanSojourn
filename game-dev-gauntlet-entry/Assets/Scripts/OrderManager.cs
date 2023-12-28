@@ -28,7 +28,7 @@ public class OrderManager : MonoBehaviour
         settleLevel = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleLevel>();
     }
 
-    public void changeOrderPrompt(DishInfo dish)
+    public void ChangeOrderPrompt(DishInfo dish)
     {
         currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
@@ -38,7 +38,7 @@ public class OrderManager : MonoBehaviour
         timeDuration = 10 + (currentOrderPrompt.recipe.Count * 5);
     }
 
-    public void startTimer()
+    public void StartTimer()
     {
         timeLeft = timeDuration;
         timerBar.transform.localScale = new Vector3(1, timerBar.transform.localScale.y, 0);
@@ -58,8 +58,8 @@ public class OrderManager : MonoBehaviour
         }
         else
         {
-            settleLevel.FinishRound();
-            recipeManager.failPlayer(); 
+            settleLevel.FinishRound(false);
+            recipeManager.FailPlayer(); 
         }
     }
 }

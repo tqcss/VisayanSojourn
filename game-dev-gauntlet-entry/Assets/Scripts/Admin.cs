@@ -17,6 +17,7 @@ public class Admin : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
+        playerProvince.UpdateProvince();
     }
 
     public void IncreaseLives()

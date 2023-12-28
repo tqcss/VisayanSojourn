@@ -866,7 +866,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 25, y: 0}
+  m_SizeDelta: {x: 35, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &159214221
 MonoBehaviour:
@@ -911,8 +911,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 991925410}
   m_HandleRect: {fileID: 991925409}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.13500002
+  m_Value: 0.99999946
+  m_Size: 0.9
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2239,7 +2239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945bae4206268a647b21ff1a657b5bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoPlayer: {fileID: 913200520}
 --- !u!114 &306851231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2302,12 +2301,10 @@ MonoBehaviour:
   provinceDesc: {fileID: 0}
   playButton: {fileID: 0}
   notPlayButton: {fileID: 0}
-  antiqueAnimSec: 0
-  aklanAnimSec: 0
-  capizAnimSec: 0
-  negrosOccAnimSec: 0
-  guimarasAnimSec: 0
-  iloiloAnimSec: 0
+  animationSeconds: 
+  mainScene: MainScene
+  kitchenScene: KitchenR6
+  levelId: 0
 --- !u!4 &306851234
 Transform:
   m_ObjectHideFlags: 0
@@ -4731,9 +4728,10 @@ GameObject:
   - component: {fileID: 913200522}
   - component: {fileID: 913200520}
   - component: {fileID: 913200521}
+  - component: {fileID: 913200523}
   m_Layer: 0
-  m_Name: ScrollPlayer
-  m_TagString: Untagged
+  m_Name: VideoRender
+  m_TagString: videoRender
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4784,7 +4782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945bae4206268a647b21ff1a657b5bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoPlayer: {fileID: 913200520}
 --- !u!4 &913200522
 Transform:
   m_ObjectHideFlags: 0
@@ -4800,6 +4797,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &913200523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913200519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f0385d27f1bf46499bb0f197cfe6967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  videoClip:
+  - {fileID: 32900000, guid: 591a4374b48f44c4ebcbf3c79fecbfe8, type: 3}
+  videoPlayer: {fileID: 913200520}
 --- !u!1 &916050582
 GameObject:
   m_ObjectHideFlags: 0
@@ -5236,7 +5248,7 @@ GameObject:
   - component: {fileID: 991925411}
   - component: {fileID: 991925410}
   m_Layer: 5
-  m_Name: Handle
+  m_Name: handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5916,7 +5928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1122205053}
   m_Layer: 5
-  m_Name: Sliding Area
+  m_Name: area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6135,8 +6147,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140, y: -2000}
-  m_SizeDelta: {x: 240, y: 4000}
+  m_AnchoredPosition: {x: 150, y: -300}
+  m_SizeDelta: {x: 230, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1179744175
 MonoBehaviour:
@@ -6626,19 +6638,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 265308393}
         m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
-        m_MethodName: checkIngredients
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 306851231}
-        m_TargetAssemblyTypeName: SettleLevel, Assembly-CSharp
-        m_MethodName: FinishRound
+        m_MethodName: CheckIngredients
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8202,30 +8202,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 306851232}
-        m_TargetAssemblyTypeName: LevelLoad, Assembly-CSharp
-        m_MethodName: LoadFinishBack
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: MainScene
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 306851230}
-        m_TargetAssemblyTypeName: PlayScroll, Assembly-CSharp
-        m_MethodName: PlayVideo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1716702059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8949,18 +8925,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 306851232}
-        m_TargetAssemblyTypeName: LevelLoad, Assembly-CSharp
-        m_MethodName: LoadBack
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: MainScene
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 306851231}
         m_TargetAssemblyTypeName: SettleLevel, Assembly-CSharp
         m_MethodName: GoBackToMain
@@ -9136,7 +9100,7 @@ GameObject:
   - component: {fileID: 1807329370}
   - component: {fileID: 1807329369}
   m_Layer: 5
-  m_Name: video
+  m_Name: videoTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10915,7 +10879,6 @@ SceneRoots:
   - {fileID: 589447891}
   - {fileID: 901243046}
   - {fileID: 265308395}
-  - {fileID: 34495689}
   - {fileID: 913200522}
   - {fileID: 1975628788}
   - {fileID: 1082286990}
@@ -10923,3 +10886,4 @@ SceneRoots:
   - {fileID: 1899059705}
   - {fileID: 961006877}
   - {fileID: 230049671}
+  - {fileID: 34495689}

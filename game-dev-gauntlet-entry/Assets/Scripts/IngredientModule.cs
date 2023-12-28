@@ -13,7 +13,7 @@ public class IngredientModule : MonoBehaviour
         ingredients = Resources.LoadAll<IngredientInfo>(ingredientSet[PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1]).ToList();
     }
 
-    public IngredientInfo getIngredient(string name)
+    public IngredientInfo GetIngredient(string name)
     {
         foreach (IngredientInfo ingredient in ingredients)
             if (ingredient.name == name)

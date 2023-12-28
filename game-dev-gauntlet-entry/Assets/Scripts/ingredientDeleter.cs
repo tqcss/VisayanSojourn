@@ -11,7 +11,7 @@ public class IngredientDeleter : MonoBehaviour
         destroySfx.Play();
         GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);
         var maintemp = newParticle.GetComponent<ParticleSystem>().main;
-        maintemp.startColor = new ParticleSystem.MinMaxGradient(ingredientModule.getIngredient(ingredient.gameObject.name).particleColorA, ingredientModule.getIngredient(ingredient.gameObject.name).particleColorB);
+        maintemp.startColor = new ParticleSystem.MinMaxGradient(ingredientModule.GetIngredient(ingredient.gameObject.name).particleColorA, ingredientModule.GetIngredient(ingredient.gameObject.name).particleColorB);
         Destroy(ingredient.gameObject);
         newParticle.GetComponent<ParticleSystem>().Play();
     }

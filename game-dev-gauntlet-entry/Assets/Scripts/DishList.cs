@@ -35,27 +35,27 @@ public class DishList : MonoBehaviour
         switch (PlayerPrefs.GetInt("ProvinceCurrent", 1))
         {
             case 1:
-                orderManager.changeOrderPrompt(dishAntique[settleLevel.currentRound - 1]);
+                orderManager.ChangeOrderPrompt(dishAntique[settleLevel.currentRound - 1]);
                 settleLevel.maximumRound = dishAntique.Length;
                 break;
             case 2:
-                orderManager.changeOrderPrompt(dishAklan[settleLevel.currentRound - 1]);
+                orderManager.ChangeOrderPrompt(dishAklan[settleLevel.currentRound - 1]);
                 settleLevel.maximumRound = dishAklan.Length;
                 break;
             case 3:
-                orderManager.changeOrderPrompt(dishCapiz[settleLevel.currentRound - 1]);
+                orderManager.ChangeOrderPrompt(dishCapiz[settleLevel.currentRound - 1]);
                 settleLevel.maximumRound = dishCapiz.Length;
                 break;
             case 4:
-                orderManager.changeOrderPrompt(dishNegrosOccidental[settleLevel.currentRound - 1]);
+                orderManager.ChangeOrderPrompt(dishNegrosOccidental[settleLevel.currentRound - 1]);
                 settleLevel.maximumRound = dishNegrosOccidental.Length;
                 break;
             case 5:
-                orderManager.changeOrderPrompt(dishGuimaras[settleLevel.currentRound - 1]);
+                orderManager.ChangeOrderPrompt(dishGuimaras[settleLevel.currentRound - 1]);
                 settleLevel.maximumRound = dishGuimaras.Length;
                 break;
             case 6:
-                orderManager.changeOrderPrompt(dishIloilo[settleLevel.currentRound - 1]);
+                orderManager.ChangeOrderPrompt(dishIloilo[settleLevel.currentRound - 1]);
                 settleLevel.maximumRound = dishIloilo.Length;
                 break;
         }

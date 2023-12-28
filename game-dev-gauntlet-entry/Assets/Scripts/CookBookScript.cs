@@ -28,7 +28,7 @@ public class CookBookScript : MonoBehaviour
        
     }
 
-    private bool hasPageRelative(int b)
+    private bool HasPageRelative(int b)
     {
         try
         {
@@ -79,7 +79,7 @@ public class CookBookScript : MonoBehaviour
                 return;
             }
 
-            if (Input.GetMouseButtonDown(0) && !turningPage && hasPageRelative(-2))
+            if (Input.GetMouseButtonDown(0) && !turningPage && HasPageRelative(-2))
             {
                 turningPage = true;
                 lastPage = pageNumber;
@@ -88,7 +88,7 @@ public class CookBookScript : MonoBehaviour
                 Debug.Log("page: " + pageNumber);
             }
 
-            if (Input.GetMouseButtonDown(1) && !turningPage && hasPageRelative(1))
+            if (Input.GetMouseButtonDown(1) && !turningPage && HasPageRelative(1))
             {
                 turningPage = true;
                 lastPage = pageNumber;

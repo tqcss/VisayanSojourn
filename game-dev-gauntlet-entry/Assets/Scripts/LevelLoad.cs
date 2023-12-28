@@ -23,12 +23,14 @@ public class LevelLoad : MonoBehaviour
     public GameObject notPlayButton;
     public int[] animationSeconds;
     private string[] firstTime = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
-    private string sceneLevel = "KitchenR6";
-    private int numberLevel;
-    private bool canPlayAnimation = false;
+    public string mainScene = "MainScene";
+    public string kitchenScene = "KitchenR6";
+    public int levelId;
+    private bool canPlayTravel = false;
     
     private PlayerLives playerLives;
     private PlayerProvince playerProvince;
+    private VideoRender videoRender;
 
     private void Start()
     {
@@ -36,50 +38,53 @@ public class LevelLoad : MonoBehaviour
         playerProvince = GameObject.FindGameObjectWithTag("mainScript").GetComponent<PlayerProvince>();
         Application.runInBackground = true;
         
-        if (SceneManager.GetActiveScene().name == "MainScene") 
+        if (SceneManager.GetActiveScene().name == mainScene) 
+        {
+            videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
             StartCoroutine(PlayAnimation());
+        }
+            
         loadingScreen.SetActive(false);
     }
 
     public void SelectProvince(int selected)
     {
-        numberLevel = selected - 1;
-        UpdateDescription(numberLevel);
+        levelId = selected - 1;
+        UpdateDescription(levelId);
         playerProvince.DisableProvince();
     }
     
     public void LoadLevel()
     {
-        if (!(PlayerPrefs.GetInt("GlobalLives", 3) <= 0))
+        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0)
         {
-            StartCoroutine(LoadAsynchronously(sceneLevel));
-            PlayerPrefs.SetInt("ProvinceCurrent", (numberLevel + 1));
+            StartCoroutine(LoadAsynchronously(kitchenScene));
+            PlayerPrefs.SetInt("ProvinceCurrent", (levelId + 1));
             loadingBgObj.SetActive(true);
         }
     }
 
     public void LoadBack(string scene)
     {
-        Debug.Log("Go to Main");
         PlayerPrefs.SetInt("FailsBeforeWin", 0);
         StartCoroutine(LoadAsynchronously(scene));
     }
 
     public void LoadFinishBack(string scene)
     {
-        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0 && PlayerPrefs.GetInt("ProceedNext", 0) == 1)
+        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0)
         {
             StartCoroutine(LoadAsynchronously(scene));
-            canPlayAnimation = true;
-            PlayerPrefs.SetInt("ProceedNext", 0);
+            canPlayTravel = true;
         }
     }
 
     private IEnumerator LoadAsynchronously(string scene)
     {
         loadingScreen.SetActive(true);
+        loadingProvinceText.text = loadingBgSprite[levelId].name.Replace("image_", "").Replace("_", " ").ToUpper();
+        loadingBg.sprite = loadingBgSprite[levelId];
         loadingSlider.value = 0;
-        loadingProvinceText.text = loadingBgSprite[numberLevel].name.Replace("image_", "").Replace("_", " ").ToUpper();
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
         operation.allowSceneActivation = false;
@@ -105,15 +110,15 @@ public class LevelLoad : MonoBehaviour
             yield return null;
         }
 
-        if (SceneManager.GetActiveScene().name == "MainScene") 
+        if (SceneManager.GetActiveScene().name == mainScene) 
             loadingScreen.SetActive(false);
-        if (canPlayAnimation == true) 
+        if (canPlayTravel) 
             StartCoroutine(PlayAnimation());  
     }
 
     private IEnumerator PlayAnimation()
     {
-        canPlayAnimation = false;
+        canPlayTravel = false;
         if (videoScreen) 
             videoScreen.SetActive(true);
 
@@ -121,6 +126,7 @@ public class LevelLoad : MonoBehaviour
         if (PlayerPrefs.GetInt(firstTime[provinceUnlocked - 1], 1) == 1)
         {
             levelSelection.SetActive(false);
+            videoRender.PlayTravel(provinceUnlocked);
             yield return new WaitForSeconds(animationSeconds[provinceUnlocked - 1]);
             PlayerPrefs.SetInt(firstTime[provinceUnlocked - 1], 0);
         }
@@ -132,10 +138,9 @@ public class LevelLoad : MonoBehaviour
         yield return null;
     }
 
-    public void UpdateDescription(int numberLevel)
+    public void UpdateDescription(int levelId)
     {
-        provinceDesc.sprite = descSprite[numberLevel];
-        loadingBg.sprite = loadingBgSprite[numberLevel];
+        provinceDesc.sprite = descSprite[levelId];
         
         if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) <= playerLives.livesTotal &&
             PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)

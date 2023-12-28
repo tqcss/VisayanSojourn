@@ -47,9 +47,12 @@ public class IngredientManager : MonoBehaviour
                 eventID = EventTriggerType.PointerDown
             };
 
-            clickEvent.callback.AddListener((data) => { spawnIngredient(ingredientInfo); });
+            clickEvent.callback.AddListener((data) => { SpawnIngredient(ingredientInfo); });
             clickTrigger.triggers.Add(clickEvent);
         }
+        uiContent.GetComponent<RectTransform>().sizeDelta = 
+            new Vector2(uiContent.GetComponent<RectTransform>().sizeDelta.x, 
+            (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(ingredientModule.ingredients.Count / 2.0f));
     }
 
     void Update() // LOOSE ITEM BEHAVIOR
@@ -92,7 +95,7 @@ public class IngredientManager : MonoBehaviour
 
     }
 
-    public void spawnIngredient(IngredientInfo ingredientInfo)
+    public void SpawnIngredient(IngredientInfo ingredientInfo)
     {
         spawnSfx.Play();
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
