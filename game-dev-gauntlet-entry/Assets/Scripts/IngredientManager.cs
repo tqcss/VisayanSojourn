@@ -55,7 +55,7 @@ public class IngredientManager : MonoBehaviour
             (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(ingredientModule.ingredients.Count / 2.0f));
     }
 
-    void Update() // LOOSE ITEM BEHAVIOR
+    private void Update() // LOOSE ITEM BEHAVIOR
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         

@@ -292,9 +292,8 @@ MonoBehaviour:
   provinceDesc: {fileID: 195767628}
   playButton: {fileID: 844481658}
   notPlayButton: {fileID: 1531329353}
-  animationSeconds: 060000000600000005000000080000000600000005000000
   mainScene: MainScene
-  kitchenScene: KitchenR6
+  kitchenScene: KitchenScene
   levelId: 0
 --- !u!4 &60175709
 Transform:
@@ -852,8 +851,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 184, y: -281.40002}
-  m_SizeDelta: {x: -785.525, y: -592.196}
+  m_AnchoredPosition: {x: 185, y: -282.5}
+  m_SizeDelta: {x: -790, y: -595}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &319767324
 GameObject:
@@ -1035,7 +1034,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1843,8 +1842,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 595943855}
-  - component: {fileID: 595943854}
   - component: {fileID: 595943856}
+  - component: {fileID: 595943854}
+  - component: {fileID: 595943857}
   m_Layer: 0
   m_Name: VideoRender
   m_TagString: videoRender
@@ -1915,14 +1915,110 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f0385d27f1bf46499bb0f197cfe6967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoClip:
-  - {fileID: 32900000, guid: edef0467de8eff949a091b2ee15d642f, type: 3}
-  - {fileID: 32900000, guid: 37ed32bc6e63d1642911f5c8386bafd2, type: 3}
-  - {fileID: 32900000, guid: c6c673df1c2087046ae66d32fbb831e0, type: 3}
-  - {fileID: 32900000, guid: 31cc0a74de988c342a0ecf40ad3940c8, type: 3}
-  - {fileID: 32900000, guid: 5f502f5f84f1ede449a8942c1d37543c, type: 3}
-  - {fileID: 32900000, guid: 305af4d5614cca046ade9334a6d49f8a, type: 3}
+  videoFile:
+  - travel_antique.mp4
+  - travel_aklan.mp4
+  - travel_capiz.mp4
+  - travel_negros_occ.mp4
+  - travel_guimaras.mp4
+  - travel_iloilo.mp4
   videoPlayer: {fileID: 595943854}
+--- !u!82 &595943857
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595943853}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &609298942
 GameObject:
   m_ObjectHideFlags: 0
@@ -5521,7 +5617,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
           m_FloatArgument: 0
-          m_StringArgument: AntiqueScene
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 323486794}

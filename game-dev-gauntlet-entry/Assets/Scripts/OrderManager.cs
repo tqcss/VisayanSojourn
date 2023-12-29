@@ -21,7 +21,7 @@ public class OrderManager : MonoBehaviour
 
     public DishInfo currentOrderPrompt;
 
-    void Start()
+    private void Start()
     {
         dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
         recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
@@ -45,7 +45,7 @@ public class OrderManager : MonoBehaviour
         timerRunning = true;
     }
 
-    void Update()
+    private void Update()
     {
         if (!timerRunning)
             return;

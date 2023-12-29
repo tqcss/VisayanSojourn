@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: 0a2a1e044271fec4d805da10c51b860f
   - enabled: 1
-    path: Assets/Scenes/KitchenR6.unity
+    path: Assets/Scenes/KitchenScene.unity
     guid: 41f2b89c2bb538844a62cfe263945246
-  - enabled: 0
-    path: Assets/Scenes/[BETA]Kitchen.unity
-    guid: 168d262c55483e641b58625145a83a9c
   m_configObjects: {}

@@ -41,10 +41,10 @@ public class SettleLevel : MonoBehaviour
         videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         
         currentRound = 1;
-        StartCoroutine(PlayAnimation(true));
+        PlayAnimation(true);
     }
 
-    private IEnumerator PlayAnimation(bool firstPlay)
+    private void PlayAnimation(bool firstPlay)
     {
         recipeScroll.SetActive(true);
         dishNameTextObj.SetActive(false);
@@ -55,22 +55,16 @@ public class SettleLevel : MonoBehaviour
         roundFinishUI.SetActive(false);
         levelLoad.loadingScreen.SetActive(false);
         
-        if (firstPlay)
-        {
-            videoRender.PlayScroll();
-            yield return new WaitForSeconds(scrollTimeSec);
-        }
-        
-        dishList.PromptOrder();
-        startButton.SetActive(true);
-        DisplayRecipe();
+        if (firstPlay) videoRender.PlayScroll();
     }
 
-    private void DisplayRecipe()
+    public void DisplayRecipe()
     {
+        dishList.PromptOrder();
         dishNameTextObj.SetActive(true);
         recipeTextObj.SetActive(true);
         dishMonoImage.SetActive(true);
+        startButton.SetActive(true);
         
         dishNameText.text = orderManager.currentOrderPrompt.name;
         string currentRecipeText = "Ingredients: \n";
@@ -130,7 +124,7 @@ public class SettleLevel : MonoBehaviour
         if (currentRound < maximumRound)
         {
             currentRound++;
-            StartCoroutine(PlayAnimation(false));
+            PlayAnimation(false);
         }
         else
         {
@@ -146,7 +140,7 @@ public class SettleLevel : MonoBehaviour
 
     public void OntoPreviousRound()
     {
-        StartCoroutine(PlayAnimation(false));
+        PlayAnimation(false);
     }
 
     public void GoBackToMain()

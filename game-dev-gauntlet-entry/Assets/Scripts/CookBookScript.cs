@@ -18,7 +18,7 @@ public class CookBookScript : MonoBehaviour
     private int lastPage = 1;
     private int pageNumber = 1;
 
-    void Start()
+    private void Start()
     {
         c_uiImage = cookBookUi.GetComponent<Image>();
         c_uiBookImage = book.GetComponent<Image>();
@@ -41,7 +41,7 @@ public class CookBookScript : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (!shown && Input.GetKeyDown(KeyCode.Space))
         {

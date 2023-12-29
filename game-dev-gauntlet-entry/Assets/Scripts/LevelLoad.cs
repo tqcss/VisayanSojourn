@@ -21,10 +21,9 @@ public class LevelLoad : MonoBehaviour
     public Image provinceDesc;
     public GameObject playButton;
     public GameObject notPlayButton;
-    public int[] animationSeconds;
     private string[] firstTime = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
     public string mainScene = "MainScene";
-    public string kitchenScene = "KitchenR6";
+    public string kitchenScene = "KitchenScene";
     public int levelId;
     private bool canPlayTravel = false;
     
@@ -41,7 +40,7 @@ public class LevelLoad : MonoBehaviour
         if (SceneManager.GetActiveScene().name == mainScene) 
         {
             videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
-            StartCoroutine(PlayAnimation());
+            PlayAnimation();
         }
             
         loadingScreen.SetActive(false);
@@ -110,32 +109,32 @@ public class LevelLoad : MonoBehaviour
             yield return null;
         }
 
-        if (SceneManager.GetActiveScene().name == mainScene) 
-            loadingScreen.SetActive(false);
-        if (canPlayTravel) 
-            StartCoroutine(PlayAnimation());  
+        if (SceneManager.GetActiveScene().name == mainScene) loadingScreen.SetActive(false);
+        if (canPlayTravel) PlayAnimation();  
     }
 
-    private IEnumerator PlayAnimation()
+    private void PlayAnimation()
     {
         canPlayTravel = false;
-        if (videoScreen) 
-            videoScreen.SetActive(true);
+        if (videoScreen) videoScreen.SetActive(true);
 
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         if (PlayerPrefs.GetInt(firstTime[provinceUnlocked - 1], 1) == 1)
         {
             levelSelection.SetActive(false);
             videoRender.PlayTravel(provinceUnlocked);
-            yield return new WaitForSeconds(animationSeconds[provinceUnlocked - 1]);
             PlayerPrefs.SetInt(firstTime[provinceUnlocked - 1], 0);
         }
+        else
+        {
+            AfterTravel();
+        }
+    }
 
-        if (videoScreen) 
-            videoScreen.SetActive(false);
-
+    public void AfterTravel()
+    {
+        if (videoScreen) videoScreen.SetActive(false);
         levelSelection.SetActive(true);
-        yield return null;
     }
 
     public void UpdateDescription(int levelId)
