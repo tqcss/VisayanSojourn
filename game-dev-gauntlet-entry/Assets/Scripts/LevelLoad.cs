@@ -33,6 +33,10 @@ public class LevelLoad : MonoBehaviour
 
     private void Start()
     {
+        #if UNITY_ANDROID
+            Screen.SetResolution(640, 360, true);
+        #endif
+        
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
         playerProvince = GameObject.FindGameObjectWithTag("mainScript").GetComponent<PlayerProvince>();
         Application.runInBackground = true;
@@ -59,6 +63,7 @@ public class LevelLoad : MonoBehaviour
         {
             StartCoroutine(LoadAsynchronously(kitchenScene));
             PlayerPrefs.SetInt("ProvinceCurrent", (levelId + 1));
+            levelSelection.SetActive(false);
             loadingBgObj.SetActive(true);
         }
     }

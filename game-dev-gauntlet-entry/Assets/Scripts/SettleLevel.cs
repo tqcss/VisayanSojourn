@@ -8,7 +8,6 @@ public class SettleLevel : MonoBehaviour
 {
     public GameObject kitchenUI;
     public GameObject recipeScroll;
-    public int scrollTimeSec;
     public GameObject startButton;
     public Text dishNameText;
     public GameObject dishNameTextObj;
@@ -56,6 +55,7 @@ public class SettleLevel : MonoBehaviour
         levelLoad.loadingScreen.SetActive(false);
         
         if (firstPlay) videoRender.PlayScroll();
+        else DisplayRecipe();
     }
 
     public void DisplayRecipe()
@@ -129,12 +129,12 @@ public class SettleLevel : MonoBehaviour
         else
         {
             if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) == PlayerPrefs.GetInt("ProvinceCurrent", 1))
+            {
                 PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
-            
-            levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1;
-            levelLoad.LoadFinishBack(levelLoad.mainScene);
-            kitchenUI.SetActive(false);
-            roundFinishUI.SetActive(false);
+                PlayerPrefs.Save();
+            }
+
+            GoBackToMain();
         }
     }
 

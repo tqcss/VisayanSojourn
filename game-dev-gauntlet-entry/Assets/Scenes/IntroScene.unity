@@ -188,9 +188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f77e1ff13701e4d9964483793ba29b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailerTime: 22
   loadingScreen: {fileID: 2140496696}
   loadingSlider: {fileID: 1556197539}
+  mainScene: MainScene
+  introScene: IntroScene
 --- !u!4 &262652993
 Transform:
   m_ObjectHideFlags: 0

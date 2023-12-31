@@ -15,6 +15,10 @@ public class InitialLoad : MonoBehaviour
     
     private void Start()
     {
+        #if UNITY_ANDROID
+            Screen.SetResolution(640, 360, true);
+        #endif
+        
         videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         Application.runInBackground = true;
 
@@ -33,7 +37,6 @@ public class InitialLoad : MonoBehaviour
 
     public IEnumerator LoadAsynchronously(string scene)
     {
-
         PlayerPrefs.SetInt("FirstTimePlaying", 0);
         loadingScreen.SetActive(true);
         loadingSlider.value = 0;

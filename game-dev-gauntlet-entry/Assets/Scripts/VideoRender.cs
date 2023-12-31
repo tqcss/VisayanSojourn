@@ -30,61 +30,71 @@ public class VideoRender : MonoBehaviour
     public void PlayIntro()
     {
         #if UNITY_ANDROID
-            Handheld.PlayFullScreenMovie(videoFile[0], Color.black, FullScreenMovieControlMode.CancelOnInput);
+            Handheld.PlayFullScreenMovie(videoFile[0], Color.black, FullScreenMovieControlMode.Hidden);
+            StartCoroutine(SetPlayVideoMobile());
         #endif
         
         #if UNITY_STANDALONE
             videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[0];
-            StartCoroutine(SetPlayVideo());
+            videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
+            StartCoroutine(SetPlayVideoPC());
         #endif
 
+        /*
         #if UNITY_EDITOR
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[0];
-            StartCoroutine(SetPlayVideo());
+            StartCoroutine(SetPlayVideoPC());
         #endif
+        */
     }
 
     public void PlayTravel(int provinceUnlocked)
     {
         #if UNITY_ANDROID
-            Handheld.PlayFullScreenMovie(videoFile[provinceUnlocked - 1], Color.black, FullScreenMovieControlMode.CancelOnInput);
+            Handheld.PlayFullScreenMovie(videoFile[provinceUnlocked - 1], Color.black, FullScreenMovieControlMode.Hidden);
+            StartCoroutine(SetPlayVideoMobile());
         #endif
         
         #if UNITY_STANDALONE
             videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[provinceUnlocked - 1];
-            StartCoroutine(SetPlayVideo());
+            videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[provinceUnlocked - 1];
+            StartCoroutine(SetPlayVideoPC());
         #endif
 
+        /*
         #if UNITY_EDITOR
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[provinceUnlocked - 1];
-            StartCoroutine(SetPlayVideo());
+            StartCoroutine(SetPlayVideoPC());
         #endif
+        */
     }
 
     public void PlayScroll()
     {
         #if UNITY_ANDROID
-            Handheld.PlayFullScreenMovie(videoFile[0], Color.black, FullScreenMovieControlMode.CancelOnInput);
+            Handheld.PlayFullScreenMovie(videoFile[0], Color.black, FullScreenMovieControlMode.Hidden);
+            StartCoroutine(SetPlayVideoMobile());
         #endif
         
         #if UNITY_STANDALONE
             videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[0];
-            StartCoroutine(SetPlayVideo());
+            videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
+            StartCoroutine(SetPlayVideoPC());
         #endif
 
+        /*
         #if UNITY_EDITOR
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[0];
-            StartCoroutine(SetPlayVideo());
+            StartCoroutine(SetPlayVideoPC());
         #endif
+        */
     }
 
-    public IEnumerator SetPlayVideo()
+    // SetPlayVideoPC For PC
+    public IEnumerator SetPlayVideoPC()
     {
         var audioSource = videoPlayer.GetComponent<AudioSource>();
         videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
@@ -109,5 +119,19 @@ public class VideoRender : MonoBehaviour
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
             settleLevel.DisplayRecipe();
+    }
+
+    private IEnumerator SetPlayVideoMobile()
+    {
+        // After PlayIntro()
+        if (SceneManager.GetActiveScene().name == "IntroScene")
+            StartCoroutine(initialLoad.LoadAsynchronously(initialLoad.mainScene));
+        // After PlayTravel()
+        else if (SceneManager.GetActiveScene().name == "MainScene")
+            levelLoad.AfterTravel();
+        // After PlayScroll()
+        else if (SceneManager.GetActiveScene().name == "KitchenScene")
+            settleLevel.DisplayRecipe();
+        yield return null;
     }
 }
