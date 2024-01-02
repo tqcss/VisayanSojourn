@@ -12,6 +12,7 @@ public class OrderManager : MonoBehaviour
     public GameObject timerBar;
     public Text timerText;
     public Text orderText;
+    public Image orderDisplay;
     public Image dishMonoImage;
     public Image dishColoredImage;
 
@@ -32,16 +33,17 @@ public class OrderManager : MonoBehaviour
     {
         currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
+        orderDisplay.sprite = currentOrderPrompt.sprite;
         dishMonoImage.sprite = currentOrderPrompt.sprite;
         dishColoredImage.sprite = currentOrderPrompt.sprite;
 
-        timeDuration = 10 + (currentOrderPrompt.recipe.Count * 5);
+        timeDuration = 8 + (currentOrderPrompt.recipe.Count * 4);
     }
 
     public void StartTimer()
     {
         timeLeft = timeDuration;
-        timerBar.transform.localScale = new Vector3(1, timerBar.transform.localScale.y, 0);
+        //timerBar.transform.localScale = new Vector3(1, timerBar.transform.localScale.y, 0);
         timerRunning = true;
     }
 
@@ -53,8 +55,8 @@ public class OrderManager : MonoBehaviour
         if (timeLeft > 0)
         {
             timeLeft -= Time.deltaTime;
-            timerBar.transform.localScale = new Vector3((timeLeft / timeDuration), timerBar.transform.localScale.y, 0);
-            timerText.text = string.Format("{0:00}", timeLeft);
+            //timerBar.transform.localScale = new Vector3((timeLeft / timeDuration), timerBar.transform.localScale.y, 0);
+            timerText.text = timeLeft.ToString();
         }
         else
         {

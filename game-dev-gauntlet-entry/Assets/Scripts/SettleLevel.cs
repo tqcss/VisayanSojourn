@@ -14,6 +14,7 @@ public class SettleLevel : MonoBehaviour
     public Text recipeText;
     public GameObject recipeTextObj;
     public GameObject dishMonoImage;
+    public Text livesText;
     public GameObject roundFinishUI;
     public Text messageText;
     public GameObject backButton;
@@ -81,6 +82,7 @@ public class SettleLevel : MonoBehaviour
         startSfx.Play();
         recipeScroll.SetActive(false);
         kitchenUI.SetActive(true);
+        livesText.text = PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal).ToString();
         orderManager.StartTimer();
     }
 
@@ -113,6 +115,7 @@ public class SettleLevel : MonoBehaviour
                 messageText.text = "NO MORE LIVES";
                 prevButton.SetActive(false);
             }
+            livesText.text = PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal).ToString();
             nextButton.SetActive(false);
             backButton.SetActive(true);
             dishColoredImage.SetActive(false);
