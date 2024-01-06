@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Pinamalhan na Isda
   m_EditorClassIdentifier: 
   recipe:
-  - {fileID: 11400000, guid: cf84738a02877ee4ab54415d73ab821f, type: 2}
+  - {fileID: 11400000, guid: 3d2e4f81d216cb44284cd51c3a15bebf, type: 2}
   - {fileID: 11400000, guid: c1ccaa8718b1ed44bb8a98341c9c7a77, type: 2}
-  - {fileID: 11400000, guid: 693d9d1b7378b684b8fe2fd2308bd77c, type: 2}
+  - {fileID: 11400000, guid: 088f66378282e1046b6d7f690d4e1cdd, type: 2}
   - {fileID: 11400000, guid: 01c99ab74e8bef34bb34af89c2d6adbc, type: 2}
-  - {fileID: 11400000, guid: e4780fc33d0df474d95c93b7133de89a, type: 2}
-  - {fileID: 11400000, guid: 98f61892612f74a4a96892d935104810, type: 2}
+  - {fileID: 11400000, guid: b5022b873acbce14c96897b07dce6fb1, type: 2}
+  - {fileID: 11400000, guid: e63be4e3297efc44f99ced07649116d8, type: 2}
   sprite: {fileID: 21300000, guid: 419c426c67c687e429b7f85414a18cc1, type: 3}
   scale: {x: 0, y: 0, z: 0}

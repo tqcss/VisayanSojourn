@@ -11,4 +11,5 @@ public class IngredientInfo : ScriptableObject
     public bool randomRotation;
     public Color particleColorA;
     public Color particleColorB;
+    public bool[] isIncludedInProvince = new bool[6];
 }

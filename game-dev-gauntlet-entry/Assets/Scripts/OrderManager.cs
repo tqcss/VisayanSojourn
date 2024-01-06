@@ -24,7 +24,7 @@ public class OrderManager : MonoBehaviour
 
     private void Start()
     {
-        dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
+        dishes = Resources.LoadAll<DishInfo>("RecipeInfo").ToList();
         recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
         settleLevel = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleLevel>();
     }
@@ -56,7 +56,7 @@ public class OrderManager : MonoBehaviour
         {
             timeLeft -= Time.deltaTime;
             //timerBar.transform.localScale = new Vector3((timeLeft / timeDuration), timerBar.transform.localScale.y, 0);
-            timerText.text = timeLeft.ToString();
+            timerText.text = string.Format("{0:0.0}", timeLeft);
         }
         else
         {

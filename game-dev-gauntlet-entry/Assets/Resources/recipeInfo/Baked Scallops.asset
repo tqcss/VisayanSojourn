@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Baked Scallops
   m_EditorClassIdentifier: 
   recipe:
-  - {fileID: 11400000, guid: 4c9002c9994175b47802f6266c597835, type: 2}
+  - {fileID: 11400000, guid: 3d2e4f81d216cb44284cd51c3a15bebf, type: 2}
   - {fileID: 11400000, guid: 5301ec09398ffb4449ccb4dc824bbdd3, type: 2}
   - {fileID: 11400000, guid: 755f74cc7c58f9a48b7318367e31061a, type: 2}
   - {fileID: 11400000, guid: 61541ac7a9547264fbfc886029881c1c, type: 2}
   - {fileID: 11400000, guid: ba507427771e72a498fde436e39a613e, type: 2}
-  - {fileID: 11400000, guid: 4e442f262fece1644bd6ce7ef0e5f0d4, type: 2}
+  - {fileID: 11400000, guid: b5022b873acbce14c96897b07dce6fb1, type: 2}
   - {fileID: 11400000, guid: fa2509f8abd0d5d498e9f6e047ae867b, type: 2}
   sprite: {fileID: 21300000, guid: 439607a0a1cf6df409328673bd490a15, type: 3}
   scale: {x: 0, y: 0, z: 0}

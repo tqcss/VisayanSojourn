@@ -28,7 +28,7 @@ public class RecipeManager : MonoBehaviour
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
         settleLevel = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleLevel>();
         particles = Resources.Load("Prefabs/particleSystem", typeof(GameObject)) as GameObject;
-        dishes = Resources.LoadAll<DishInfo>("recipeInfo").ToList();
+        dishes = Resources.LoadAll<DishInfo>("RecipeInfo").ToList();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

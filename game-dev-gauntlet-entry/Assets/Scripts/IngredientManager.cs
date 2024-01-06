@@ -12,6 +12,7 @@ public class IngredientManager : MonoBehaviour
     private GameObject ingredientButton;
     private GameObject ingredientBase;
     public GameObject uiContent; // parent of ingredientButton
+    public Scrollbar scrollBar;
     public AudioSource spawnSfx;
 
     
@@ -37,7 +38,7 @@ public class IngredientManager : MonoBehaviour
         foreach (IngredientInfo ingredientInfo in ingredientModule.ingredients.OrderBy(item => item.name).ToList())
         {
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
-            
+                
             newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name.Replace("_", " ");
             newButton.transform.GetChild(0).GetComponent<Image>().sprite = ingredientInfo.sprite;
 
@@ -53,6 +54,7 @@ public class IngredientManager : MonoBehaviour
         uiContent.GetComponent<RectTransform>().sizeDelta = 
             new Vector2(uiContent.GetComponent<RectTransform>().sizeDelta.x, 
             (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(ingredientModule.ingredients.Count / 2.0f));
+        scrollBar.value = 1.0f;
     }
 
     private void Update() // LOOSE ITEM BEHAVIOR
