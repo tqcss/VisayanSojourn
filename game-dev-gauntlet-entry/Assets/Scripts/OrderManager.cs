@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class OrderManager : MonoBehaviour
 {
     private List<DishInfo> dishes = new List<DishInfo>();
+    private LevelLoad levelLoad;
     private RecipeManager recipeManager;
-    private SettleLevel settleLevel;
+    private SettleKitchen settleKitchen;
+    private SettleRestaurant settleRestaurant;
     public GameObject timerBar;
     public Text timerText;
     public Text orderText;
@@ -25,8 +28,10 @@ public class OrderManager : MonoBehaviour
     private void Start()
     {
         dishes = Resources.LoadAll<DishInfo>("RecipeInfo").ToList();
+        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
-        settleLevel = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleLevel>();
+        settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
+        settleRestaurant = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleRestaurant>();
     }
 
     public void ChangeOrderPrompt(DishInfo dish)
@@ -34,10 +39,20 @@ public class OrderManager : MonoBehaviour
         currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
         orderDisplay.sprite = currentOrderPrompt.sprite;
-        dishMonoImage.sprite = currentOrderPrompt.sprite;
         dishColoredImage.sprite = currentOrderPrompt.sprite;
-
+        
         timeDuration = 8 + (currentOrderPrompt.recipe.Count * 4);
+
+        if (SceneManager.GetActiveScene().name == levelLoad.kitchenScene) 
+            dishMonoImage.sprite = currentOrderPrompt.sprite;
+    }
+
+    public float SellCompute()
+    {
+        float sellTotal = 0;
+        for (int i = 0; i < currentOrderPrompt.recipe.Count; i++)
+            sellTotal += currentOrderPrompt.recipe[i].sellPoint;
+        return sellTotal;
     }
 
     public void StartTimer()
@@ -60,8 +75,12 @@ public class OrderManager : MonoBehaviour
         }
         else
         {
-            settleLevel.FinishRound(false);
             recipeManager.FailPlayer(); 
+            
+            if (SceneManager.GetActiveScene().name == levelLoad.kitchenScene) 
+                settleKitchen.EndRound(false);
+            else if (SceneManager.GetActiveScene().name == levelLoad.restaurantScene) 
+                settleRestaurant.EndOrder(false);
         }
     }
 }

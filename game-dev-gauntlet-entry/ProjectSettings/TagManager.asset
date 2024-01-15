@@ -16,6 +16,7 @@ TagManager:
   - dishList
   - playerLives
   - videoRender
+  - playerCoins
   layers:
   - Default
   - TransparentFX

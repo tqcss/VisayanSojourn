@@ -10,7 +10,7 @@ public class VideoRender : MonoBehaviour
     public VideoPlayer videoPlayer;
     private InitialLoad initialLoad;
     private LevelLoad levelLoad;
-    private SettleLevel settleLevel;
+    private SettleKitchen settleKitchen;
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class VideoRender : MonoBehaviour
         {
             initialLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<InitialLoad>();
             levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-            settleLevel = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleLevel>();
+            settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
         }
         catch (UnityException)
         {
@@ -118,7 +118,7 @@ public class VideoRender : MonoBehaviour
             levelLoad.AfterTravel();
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
-            settleLevel.DisplayRecipe();
+            settleKitchen.DisplayRecipe();
     }
 
     private IEnumerator SetPlayVideoMobile()
@@ -131,7 +131,21 @@ public class VideoRender : MonoBehaviour
             levelLoad.AfterTravel();
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
-            settleLevel.DisplayRecipe();
+            settleKitchen.DisplayRecipe();
         yield return null;
+    }
+
+    public void SkipVideo()
+    {
+        if (SceneManager.GetActiveScene().name == "IntroScene")
+        {
+            StopCoroutine(SetPlayVideoPC());
+            videoPlayer.Stop();
+        }
+        else if (SceneManager.GetActiveScene().name == "KitchenScene")
+        {
+            StopCoroutine(SetPlayVideoPC());
+            videoPlayer.time = (long)(videoPlayer.frame);
+        }
     }
 }

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/KitchenScene.unity
     guid: 41f2b89c2bb538844a62cfe263945246
+  - enabled: 1
+    path: Assets/Scenes/RestaurantScene.unity
+    guid: 964ad112a6b39484cb9bd5f31391b803
   m_configObjects: {}

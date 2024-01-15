@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerProvince : MonoBehaviour
 {
+    public int provinceUnlocked;
     public int provinceTotal;
     public Image[] locationMarker;
     public Button[] locationButton;
@@ -17,10 +18,15 @@ public class PlayerProvince : MonoBehaviour
 
     private void Awake()
     {
-        UpdateProvince();
+        UpdateDisplay();
     }
 
-    public void UpdateProvince()
+    private void Update()
+    {
+        provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
+    }
+
+    public void UpdateDisplay()
     {
         for (int i = 0; i < locationMarker.Length; i++)
         {

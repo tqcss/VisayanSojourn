@@ -19,11 +19,12 @@ public class LevelLoad : MonoBehaviour
     public int dishDistance;
     public Sprite[] descSprite;
     public Image provinceDesc;
-    public GameObject playButton;
-    public GameObject notPlayButton;
+    public GameObject playKitchenButton;
+    public GameObject unplayKitchenButton;
     private string[] firstTime = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
     public string mainScene = "MainScene";
     public string kitchenScene = "KitchenScene";
+    public string restaurantScene = "RestaurantScene";
     public int levelId;
     private bool canPlayTravel = false;
     
@@ -34,7 +35,7 @@ public class LevelLoad : MonoBehaviour
     private void Start()
     {
         #if UNITY_ANDROID
-            Screen.SetResolution(640, 360, true);
+            Screen.SetResolution(360, 640, true);
         #endif
         
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
@@ -57,7 +58,7 @@ public class LevelLoad : MonoBehaviour
         playerProvince.DisableProvince();
     }
     
-    public void LoadLevel()
+    public void LoadKitchen()
     {
         if (PlayerPrefs.GetInt("GlobalLives", 3) > 0)
         {
@@ -66,6 +67,14 @@ public class LevelLoad : MonoBehaviour
             levelSelection.SetActive(false);
             loadingBgObj.SetActive(true);
         }
+    }
+
+    public void LoadRestaurant()
+    {
+        StartCoroutine(LoadAsynchronously(restaurantScene));
+        PlayerPrefs.SetInt("ProvinceCurrent", (levelId + 1));
+        levelSelection.SetActive(false);
+        loadingBgObj.SetActive(true);
     }
 
     public void LoadBack(string scene)
@@ -146,16 +155,16 @@ public class LevelLoad : MonoBehaviour
     {
         provinceDesc.sprite = descSprite[levelId];
         
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) <= playerLives.livesTotal &&
-            PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) <= playerLives.livesMax &&
+            PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
         {
-            playButton.SetActive(true);
-            notPlayButton.SetActive(false);
+            playKitchenButton.SetActive(true);
+            unplayKitchenButton.SetActive(false);
         }
         else
         {
-            playButton.SetActive(false);
-            notPlayButton.SetActive(true);
+            playKitchenButton.SetActive(false);
+            unplayKitchenButton.SetActive(true);
         }
     }
 

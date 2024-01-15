@@ -7,16 +7,17 @@ using UnityEngine.UI;
 
 public class PlayerLives : MonoBehaviour
 {
-    public int livesTotal;
+    public int globalLives;
+    public int livesMax;
     public int lifeMaxCooldown;
     private float lifeCooldown;
     private bool inCooldown = false;
-
-    public Image[] lifeSet;
     public Sprite fullHeart;
     public Sprite halfHeart;
     public Sprite emptyHeart;
-    public Text timerCDText;
+    public Image livesImage;
+    public Text livesText;
+    public Text livesCooldownText;
     
     private LevelLoad levelLoad;
     private static GameObject sampleInstance;
@@ -54,13 +55,13 @@ public class PlayerLives : MonoBehaviour
                 
                 while (timeLeftFromOffline > 0)
                 {
-                    if (PlayerPrefs.GetInt("GlobalLives", livesTotal) >= livesTotal)
+                    if (PlayerPrefs.GetInt("GlobalLives", livesMax) >= livesMax)
                         timeLeftFromOffline = 0;
 
                     if (timeLeftFromOffline > PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown))
                     {
                         timeLeftFromOffline -= PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown);
-                        PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesTotal) + 1);
+                        PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesMax) + 1);
                         PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
                         PlayerPrefs.Save();
                         UpdateDisplay();
@@ -84,13 +85,13 @@ public class PlayerLives : MonoBehaviour
             PlayerPrefs.SetInt("FailsBeforeWin", 0);
             while (timeLeftFromDiscount > 0)
             {
-                if (PlayerPrefs.GetInt("GlobalLives", livesTotal) >= livesTotal)
+                if (PlayerPrefs.GetInt("GlobalLives", livesMax) >= livesMax)
                     timeLeftFromDiscount = 0;
 
                 if (timeLeftFromDiscount > PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown))
                 {
                     timeLeftFromDiscount -= PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown);
-                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesTotal) + 1);
+                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesMax) + 1);
                     PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
                     PlayerPrefs.Save();
                     UpdateDisplay();
@@ -107,7 +108,8 @@ public class PlayerLives : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerPrefs.GetInt("GlobalLives", livesTotal) < livesTotal)
+        globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
+        if (PlayerPrefs.GetInt("GlobalLives", livesMax) < livesMax)
         {
             if (!inCooldown)
             {
@@ -120,7 +122,7 @@ public class PlayerLives : MonoBehaviour
                     lifeCooldown -= Time.deltaTime;
                 else if (lifeCooldown <= 0)
                 {
-                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesTotal) + 1);
+                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesMax) + 1);
                     PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
                     PlayerPrefs.Save();
                     inCooldown = false;
@@ -135,7 +137,7 @@ public class PlayerLives : MonoBehaviour
                 }
             }
         }
-        else if (PlayerPrefs.GetInt("GlobalLives", livesTotal) == livesTotal)
+        else if (PlayerPrefs.GetInt("GlobalLives", livesMax) == livesMax)
         {
             UpdateDisplay();
             PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
@@ -148,27 +150,25 @@ public class PlayerLives : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == levelLoad.mainScene)
         {
-            for (int i = 0; i < lifeSet.Length; i++)
-                lifeSet[i].sprite = emptyHeart;
-
-            for (int i = 0; i < PlayerPrefs.GetInt("GlobalLives", livesTotal); i++)
-                if (i < livesTotal)
-                    lifeSet[i].sprite = fullHeart;
-
-            if ((lifeCooldown < lifeMaxCooldown / 2) && ((PlayerPrefs.GetInt("GlobalLives", livesTotal) - 1) < (livesTotal - 1)))
-                lifeSet[(PlayerPrefs.GetInt("GlobalLives", livesTotal))].sprite = halfHeart;
-
-            if (PlayerPrefs.GetInt("GlobalLives", livesTotal) < livesTotal)
+            livesText.text = PlayerPrefs.GetInt("GlobalLives", livesMax).ToString();
+            if (PlayerPrefs.GetInt("GlobalLives", livesMax) < livesMax)
             {
                 if (inCooldown)
                 {
                     int minutes = Mathf.FloorToInt(lifeCooldown / 60);
                     int seconds = Mathf.FloorToInt(lifeCooldown % 60);
-                    timerCDText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+                    livesCooldownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
                 }
+                if (PlayerPrefs.GetInt("GlobalLives", livesMax) == 0)
+                    livesImage.sprite = emptyHeart;
+                else
+                    livesImage.sprite = halfHeart;
             } 
-            else if (PlayerPrefs.GetInt("GlobalLives", livesTotal) == livesTotal)
-                timerCDText.text = "FULL";
+            else if (PlayerPrefs.GetInt("GlobalLives", livesMax) == livesMax)
+            {
+                livesCooldownText.text = "FULL";
+                livesImage.sprite = fullHeart;
+            }
         }
     }
 
@@ -177,5 +177,6 @@ public class PlayerLives : MonoBehaviour
         PlayerPrefs.SetString("SavedTime", DateTime.Now.ToString());
         PlayerPrefs.SetInt("OffCooldownCheck", 0);
         PlayerPrefs.SetInt("FailsBeforeWin", 0);
+        PlayerPrefs.Save();
     }
 }

@@ -12,4 +12,5 @@ public class IngredientInfo : ScriptableObject
     public Color particleColorA;
     public Color particleColorB;
     public bool[] isIncludedInProvince = new bool[6];
+    public float sellPoint;
 }

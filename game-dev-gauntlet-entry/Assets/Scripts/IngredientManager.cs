@@ -30,7 +30,7 @@ public class IngredientManager : MonoBehaviour
 
     private void Start()
     {
-        ingredientModule = GameObject.FindWithTag("ingredientModule").GetComponent<IngredientModule>();
+        ingredientModule = GameObject.FindGameObjectWithTag("ingredientModule").GetComponent<IngredientModule>();
         ingredientButton = Resources.Load("Prefabs/ingredientButton", typeof(GameObject)) as GameObject;
         ingredientBase = Resources.Load("Prefabs/ingredientBase", typeof(GameObject)) as GameObject;
 
@@ -51,10 +51,15 @@ public class IngredientManager : MonoBehaviour
             clickEvent.callback.AddListener((data) => { SpawnIngredient(ingredientInfo); });
             clickTrigger.triggers.Add(clickEvent);
         }
+        UpdateDisplay();
+    }
+
+    private void UpdateDisplay()
+    {
         uiContent.GetComponent<RectTransform>().sizeDelta = 
             new Vector2(uiContent.GetComponent<RectTransform>().sizeDelta.x, 
             (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(ingredientModule.ingredients.Count / 2.0f));
-        scrollBar.value = 1.0f;
+        scrollBar.value = 0.99f;
     }
 
     private void Update() // LOOSE ITEM BEHAVIOR

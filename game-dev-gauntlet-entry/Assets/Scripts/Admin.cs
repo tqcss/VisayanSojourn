@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Admin : MonoBehaviour
 {
+    private PlayerCoins playerCoins;
     private PlayerLives playerLives;
     private PlayerProvince playerProvince;
     
     private void Awake()
     {
+        playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
         playerProvince = GameObject.FindGameObjectWithTag("mainScript").GetComponent<PlayerProvince>();
     }
@@ -17,23 +19,24 @@ public class Admin : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
-        playerProvince.UpdateProvince();
+        playerCoins.UpdateDisplay();
+        playerProvince.UpdateDisplay();
     }
 
     public void IncreaseLives()
     {
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) < playerLives.livesTotal)
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) < playerLives.livesMax)
         {
-            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) + 1);
+            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) + 1);
             PlayerPrefs.Save();
         }
     }
 
     public void DecreaseLives()
     {
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) > 0)
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
         {
-            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesTotal) - 1);
+            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) - 1);
             PlayerPrefs.Save();
         }
     }
@@ -44,7 +47,7 @@ public class Admin : MonoBehaviour
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             PlayerPrefs.Save();
-            playerProvince.UpdateProvince();
+            playerProvince.UpdateDisplay();
         }
     }
 
@@ -54,7 +57,19 @@ public class Admin : MonoBehaviour
         {
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) - 1);
             PlayerPrefs.Save();
-            playerProvince.UpdateProvince();
+            playerProvince.UpdateDisplay();
         }
+    }
+
+    public void IncreaseCoins()
+    {
+        playerCoins.IncreaseCoins(10.0f);
+        playerCoins.UpdateDisplay();
+    }
+
+    public void DecreaseCoins()
+    {
+        playerCoins.DecreaseCoins(10.0f);
+        playerCoins.UpdateDisplay();
     }
 }
