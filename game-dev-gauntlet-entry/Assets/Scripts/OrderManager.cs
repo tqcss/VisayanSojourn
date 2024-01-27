@@ -18,6 +18,7 @@ public class OrderManager : MonoBehaviour
     public Image orderDisplay;
     public Image dishMonoImage;
     public Image dishColoredImage;
+    public Text dishDescription;
 
     private float timeDuration;
     private float timeLeft;
@@ -44,7 +45,10 @@ public class OrderManager : MonoBehaviour
         timeDuration = 8 + (currentOrderPrompt.recipe.Count * 4);
 
         if (SceneManager.GetActiveScene().name == levelLoad.kitchenScene) 
+        {
             dishMonoImage.sprite = currentOrderPrompt.sprite;
+            dishDescription.text = currentOrderPrompt.description;
+        }
     }
 
     public float SellCompute()

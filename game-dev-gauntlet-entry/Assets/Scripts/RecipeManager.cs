@@ -106,8 +106,7 @@ public class RecipeManager : MonoBehaviour
             if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
             {
                 PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) - 1);
-                PlayerPrefs.SetInt("FailsBeforeWin", PlayerPrefs.GetInt("FailsBeforeWin", 0) + 1);
-                PlayerPrefs.Save();
+                PlayerPrefs.SetInt("FailsBeforeSuccess", PlayerPrefs.GetInt("FailsBeforeSuccess", 0) + 1);
             }
         }
     }
@@ -134,7 +133,7 @@ public class RecipeManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
                     PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) - 1);
                 
-                PlayerPrefs.SetInt("FailsBeforeWin", 0);
+                PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
                 PlayerPrefs.Save();
             }
         }

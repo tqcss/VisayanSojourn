@@ -25,3 +25,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 352de4f36b003c5428e32e1bcff58cea, type: 2}
   sprite: {fileID: 21300000, guid: 55f230640c9926845abed8ab892038ea, type: 3}
   scale: {x: 1, y: 1, z: 1}
+  description: "Ginat-an nga Tambo kag Patuyaw is a traditional dish from Antique,
+    a province located in the side of Panay Island. This flavorful delicacy features
+    bamboo shoots (tambo) and fresh shrimps (patuyaw), cooked in coconut milk (ginat-an).
+    This dish not only tantalizes the taste buds but also reflects the resourcefulness
+    of Antique\xF1os, as it utilizes locally available ingredients. The use of bamboo
+    shoots and fresh shrimps showcases the province's connection to nature, as it
+    is renowed, the land where the mountain meets the sea, where bamboo shoots (from
+    mountain sides) and shrimps (from river or sea) are accessible as well as a variety
+    of ingredients."

@@ -56,10 +56,10 @@ public class IngredientManager : MonoBehaviour
 
     private void UpdateDisplay()
     {
-        uiContent.GetComponent<RectTransform>().sizeDelta = 
-            new Vector2(uiContent.GetComponent<RectTransform>().sizeDelta.x, 
+        uiContent.GetComponent<RectTransform>().sizeDelta = new Vector2
+            (uiContent.GetComponent<RectTransform>().sizeDelta.x, 
             (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(ingredientModule.ingredients.Count / 2.0f));
-        scrollBar.value = 0.99f;
+        scrollBar.value = 1.0f;
     }
 
     private void Update() // LOOSE ITEM BEHAVIOR

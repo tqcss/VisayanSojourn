@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8cd0590a6ead541835b66d4b72c51d, type: 3}
+  m_Name: Apan-apan na Kangkong
+  m_EditorClassIdentifier: 
+  recipe:
+  - {fileID: 11400000, guid: bad5e4b1bb800964aa8b4bba82bf49c1, type: 2}
+  - {fileID: 11400000, guid: 088f66378282e1046b6d7f690d4e1cdd, type: 2}
+  - {fileID: 11400000, guid: c2de349ed68137843a56be7c7cf352a0, type: 2}
+  - {fileID: 11400000, guid: a6b4750e1c6d8784982236e6a9959f06, type: 2}
+  - {fileID: 11400000, guid: eb4bcddc9c91c134683be571e7cd246b, type: 2}
+  - {fileID: 11400000, guid: 9d1570795cd91d94b8a5adedbd4b8dcf, type: 2}
+  - {fileID: 11400000, guid: e63be4e3297efc44f99ced07649116d8, type: 2}
+  - {fileID: 11400000, guid: 318e9ebad625e7a4cb91888973253228, type: 2}
+  sprite: {fileID: 21300000, guid: eb0919fe87efc6c4787ea89376f390a8, type: 3}
+  scale: {x: 0, y: 0, z: 0}
+  description: Apan-Apan na Kangkong, a unique Ilonggo dish, highlights the versatile
+    use of water spinach in Iloilo's culinary landscape. In this stir-fry, fresh
+    kangkong (water spinach) takes center stage, optionally, complemented by a medley
+    of flavors from pork, shrimp, and a mix of aromatic spices. This dish is not
+    just a culinary delight but a reflection of Ilonggo resourcefulness and nutritious
+    green, speaks to the province's connection to its agricultural roots. Apan-apan
+    na Kangkong is often shared during communal gatherings, embodying the Ilonggo
+    spirit of unity and the celebration of locally sourced ingredients in their diverse
+    and delicious forms.

@@ -34,7 +34,7 @@ public class VideoRender : MonoBehaviour
             StartCoroutine(SetPlayVideoMobile());
         #endif
         
-        #if UNITY_STANDALONE
+        #if UNITY_STANDALONE_WIN
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
             StartCoroutine(SetPlayVideoPC());
@@ -56,7 +56,7 @@ public class VideoRender : MonoBehaviour
             StartCoroutine(SetPlayVideoMobile());
         #endif
         
-        #if UNITY_STANDALONE
+        #if UNITY_STANDALONE_WIN
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[provinceUnlocked - 1];
             StartCoroutine(SetPlayVideoPC());
@@ -78,7 +78,7 @@ public class VideoRender : MonoBehaviour
             StartCoroutine(SetPlayVideoMobile());
         #endif
         
-        #if UNITY_STANDALONE
+        #if UNITY_STANDALONE_WIN
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
             StartCoroutine(SetPlayVideoPC());
@@ -131,7 +131,11 @@ public class VideoRender : MonoBehaviour
             levelLoad.AfterTravel();
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
+        {
             settleKitchen.DisplayRecipe();
+            settleKitchen.recipeScroll.SetActive(false);
+            settleKitchen.scroll.SetActive(true);
+        }
         yield return null;
     }
 

@@ -13,11 +13,13 @@ public class DishList : MonoBehaviour
     public DishInfo[] dishGuimaras;
     public DishInfo[] dishIloilo;
     private OrderManager orderManager;
+    private PlayerProvince playerProvince;
     private SettleKitchen settleKitchen;
 
     private void Awake()
     {
         orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
+        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
         settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
     }
 
@@ -32,7 +34,7 @@ public class DishList : MonoBehaviour
             5: Guimaras
             6: Iloilo
         */
-        switch (PlayerPrefs.GetInt("ProvinceCurrent", 1))
+        switch (PlayerPrefs.GetInt("ProvinceCurrent", 0))
         {
             case 1:
                 orderManager.ChangeOrderPrompt(dishAntique[settleKitchen.currentRound - 1]);
@@ -72,7 +74,7 @@ public class DishList : MonoBehaviour
             5: Guimaras
             6: Iloilo
         */
-        switch (PlayerPrefs.GetInt("ProvinceCurrent", 1))
+        switch (PlayerPrefs.GetInt("ProvinceCurrent", 0))
         {
             case 1:
                 orderManager.ChangeOrderPrompt(dishAntique[Random.Range(0, dishAntique.Length)]);

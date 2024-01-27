@@ -7,69 +7,65 @@ public class Admin : MonoBehaviour
     private PlayerCoins playerCoins;
     private PlayerLives playerLives;
     private PlayerProvince playerProvince;
+    private UpdateDisplayMain updateDisplayMain;
     
     private void Awake()
     {
         playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
-        playerProvince = GameObject.FindGameObjectWithTag("mainScript").GetComponent<PlayerProvince>();
+        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
     }
 
     public void DeleteSavedData()
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
-        playerCoins.UpdateDisplay();
-        playerProvince.UpdateDisplay();
     }
 
     public void IncreaseLives()
     {
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) < playerLives.livesMax)
-        {
-            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) + 1);
-            PlayerPrefs.Save();
-        }
+        int globalLives = PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax);
+        if (globalLives < playerLives.livesMax)
+            PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
     }
 
     public void DecreaseLives()
     {
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
-        {
-            PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) - 1);
-            PlayerPrefs.Save();
-        }
+        int globalLives = PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax);
+        if (globalLives > 0)
+            PlayerPrefs.SetInt("GlobalLives", globalLives - 1);
     }
 
     public void IncreaseLevel()
     {
-        if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) < playerProvince.provinceTotal)
-        {
-            PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
-            PlayerPrefs.Save();
-            playerProvince.UpdateDisplay();
-        }
+        int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
+        int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
+        
+        if (provinceCompleted != provinceUnlocked)
+            PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted + 1);
+        else if (provinceUnlocked < playerProvince.provinceTotal)
+            PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked + 1);
     }
 
     public void DecreaseLevel()
     {
-        if (PlayerPrefs.GetInt("ProvinceUnlocked", 1) > 1)
-        {
-            PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) - 1);
-            PlayerPrefs.Save();
-            playerProvince.UpdateDisplay();
-        }
+        int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
+        int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
+        
+        if (provinceCompleted != provinceUnlocked)
+            PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked - 1);
+        else if (provinceUnlocked > 1)
+            PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted - 1);
     }
 
     public void IncreaseCoins()
     {
         playerCoins.IncreaseCoins(10.0f);
-        playerCoins.UpdateDisplay();
     }
 
     public void DecreaseCoins()
     {
         playerCoins.DecreaseCoins(10.0f);
-        playerCoins.UpdateDisplay();
     }
 }

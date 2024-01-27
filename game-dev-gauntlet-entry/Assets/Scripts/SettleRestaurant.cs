@@ -27,6 +27,7 @@ public class SettleRestaurant : MonoBehaviour
     private OrderManager orderManager;
     private RecipeManager recipeManager;
     private PlayerCoins playerCoins;
+    private PlayerProvince playerProvince;
 
     private void Awake()
     {
@@ -35,9 +36,10 @@ public class SettleRestaurant : MonoBehaviour
         orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
         recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
         playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
+        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
         
         particles = Resources.Load("Prefabs/coinsParticle", typeof(GameObject)) as GameObject;
-        coinsText.text = string.Format("{0:0.00}", PlayerPrefs.GetFloat("GlobalCoins", 0));
+        coinsText.text = string.Format("{0:0.00}", playerCoins.globalCoins);
 
         chatBubble.SetActive(false);
         dishColoredImage.SetActive(false);
@@ -112,7 +114,7 @@ public class SettleRestaurant : MonoBehaviour
     public void GoBackToMain()
     {
         restaurantUI.SetActive(false);
-        levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1;
+        levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 0);
         levelLoad.LoadBack(levelLoad.mainScene);
     }
 }

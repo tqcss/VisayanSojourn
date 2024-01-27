@@ -16,10 +16,6 @@ public class InitialLoad : MonoBehaviour
     
     private void Start()
     {
-        #if UNITY_ANDROID
-            Screen.SetResolution(360, 640, true);
-        #endif
-        
         videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         Application.runInBackground = true;
 
@@ -30,13 +26,14 @@ public class InitialLoad : MonoBehaviour
 
     private IEnumerator FirstTimeCheck(string scene)
     {
-        if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
+        int firstTimePlaying = PlayerPrefs.GetInt("FirstTimePlaying", 1);
+        if (firstTimePlaying == 1)
         {
             videoRender.PlayIntro();
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(5);
             skipButton.SetActive(true);
         }
-        else if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 0)
+        else if (firstTimePlaying == 0)
             StartCoroutine(LoadAsynchronously(scene));
         
         yield return null;

@@ -8,68 +8,69 @@ using UnityEngine.UI;
 public class PlayerLives : MonoBehaviour
 {
     public int globalLives;
+    public int failsBeforeSuccess;
     public int livesMax;
     public int lifeMaxCooldown;
-    private float lifeCooldown;
-    private bool inCooldown = false;
-    public Sprite fullHeart;
-    public Sprite halfHeart;
-    public Sprite emptyHeart;
-    public Image livesImage;
-    public Text livesText;
-    public Text livesCooldownText;
+    public float lifeCooldown;
+    public bool inCooldown = false;
     
     private LevelLoad levelLoad;
-    private static GameObject sampleInstance;
+    private UpdateDisplayMain updateDisplayMain;
+    private static GameObject instancePlayerLives {set; get;}
     private void Awake()
     {
-        if (sampleInstance != null) 
-            Destroy(sampleInstance);
+        if (instancePlayerLives != null) 
+            Destroy(instancePlayerLives);
 
-        sampleInstance = gameObject;
-        DontDestroyOnLoad(sampleInstance);
+        instancePlayerLives = gameObject;
+        DontDestroyOnLoad(instancePlayerLives);
 
         levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
+
+        globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
+        failsBeforeSuccess = PlayerPrefs.GetInt("FailsBeforeSuccess", 0);
+        lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
+        updateDisplayMain.UpdateDisplayLives();
     }
 
     private void Start()
     {
-        lifeCooldown = PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown);
-
-        OfflineCooldown(PlayerPrefs.GetInt("OffCooldownCheck", 0));
-        RewardLife(PlayerPrefs.GetInt("FailsBeforeWin", 0));
-        UpdateDisplay();
+        OfflineCooldown(PlayerPrefs.GetInt("OffCooldownCheck", 1));
+        RewardLife(PlayerPrefs.GetInt("FailsBeforeSuccess", 0));
+        updateDisplayMain.UpdateDisplayLives();
     }
 
     private void OfflineCooldown(int offline)
     {
-        if (offline == 0)
+        if (offline == 1)
         {
-            PlayerPrefs.SetInt("OffCooldownCheck", 1);
+            PlayerPrefs.SetInt("OffCooldownCheck", 0);
             DateTime timeCurrent = DateTime.Now;
             if (PlayerPrefs.HasKey("SavedTime"))
             {
                 DateTime timeSaved = DateTime.Parse(PlayerPrefs.GetString("SavedTime"));
                 TimeSpan timePassed = timeCurrent - timeSaved;
-                int timeLeftFromOffline = (int)(timePassed.TotalSeconds);
+                float timeLeftFromOffline = (float)timePassed.TotalSeconds;
                 
                 while (timeLeftFromOffline > 0)
                 {
-                    if (PlayerPrefs.GetInt("GlobalLives", livesMax) >= livesMax)
+                    globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
+                    lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
+
+                    if (globalLives >= livesMax)
                         timeLeftFromOffline = 0;
 
-                    if (timeLeftFromOffline > PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown))
+                    if (timeLeftFromOffline > lifeCooldown)
                     {
-                        timeLeftFromOffline -= PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown);
-                        PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesMax) + 1);
-                        PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
-                        PlayerPrefs.Save();
-                        UpdateDisplay();
+                        timeLeftFromOffline -= lifeCooldown;
+                        PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
+                        PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
+                        updateDisplayMain.UpdateDisplayLives();
                     }
                     else
                     {
-                        PlayerPrefs.SetInt("LifeCooldown", PlayerPrefs.GetInt("LifeCooldown") - timeLeftFromOffline);
-                        PlayerPrefs.Save();
+                        PlayerPrefs.SetFloat("LifeCooldown", lifeCooldown - timeLeftFromOffline);
                         timeLeftFromOffline = 0;
                     }
                 }
@@ -77,29 +78,31 @@ public class PlayerLives : MonoBehaviour
         }
     }
 
-    private void RewardLife(int discount)
+    public void RewardLife(int discount)
     {
         if (discount > 0)
         {
-            int timeLeftFromDiscount = lifeMaxCooldown / (discount * 2);
-            PlayerPrefs.SetInt("FailsBeforeWin", 0);
+            float timeLeftFromDiscount = lifeMaxCooldown / (discount * 2);
+            PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
+
             while (timeLeftFromDiscount > 0)
             {
-                if (PlayerPrefs.GetInt("GlobalLives", livesMax) >= livesMax)
+                globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
+                lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
+                
+                if (globalLives >= livesMax)
                     timeLeftFromDiscount = 0;
 
-                if (timeLeftFromDiscount > PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown))
+                if (timeLeftFromDiscount > lifeCooldown)
                 {
-                    timeLeftFromDiscount -= PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown);
-                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesMax) + 1);
-                    PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
-                    PlayerPrefs.Save();
-                    UpdateDisplay();
+                    timeLeftFromDiscount -= lifeCooldown;
+                    PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
+                    PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
+                    updateDisplayMain.UpdateDisplayLives();
                 }
                 else
                 {
-                    PlayerPrefs.SetInt("LifeCooldown", PlayerPrefs.GetInt("LifeCooldown") - timeLeftFromDiscount);
-                    PlayerPrefs.Save();
+                    PlayerPrefs.SetFloat("LifeCooldown", lifeCooldown - timeLeftFromDiscount);
                     timeLeftFromDiscount = 0;
                 }
             }
@@ -109,11 +112,13 @@ public class PlayerLives : MonoBehaviour
     private void Update()
     {
         globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
-        if (PlayerPrefs.GetInt("GlobalLives", livesMax) < livesMax)
+        failsBeforeSuccess = PlayerPrefs.GetInt("FailsBeforeSuccess", 0);
+
+        if (globalLives < livesMax)
         {
             if (!inCooldown)
             {
-                lifeCooldown = PlayerPrefs.GetInt("LifeCooldown", lifeMaxCooldown);
+                lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
                 inCooldown = true;
             }
             else
@@ -122,61 +127,32 @@ public class PlayerLives : MonoBehaviour
                     lifeCooldown -= Time.deltaTime;
                 else if (lifeCooldown <= 0)
                 {
-                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", livesMax) + 1);
-                    PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
-                    PlayerPrefs.Save();
+                    PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
+                    PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
                     inCooldown = false;
-                    UpdateDisplay();
+                    updateDisplayMain.UpdateDisplayLives();
                 }
 
                 if (Mathf.FloorToInt(lifeCooldown % 1) == 0)
                 {
-                    PlayerPrefs.SetInt("LifeCooldown", Mathf.FloorToInt(lifeCooldown));
-                    PlayerPrefs.Save();
-                    UpdateDisplay();
+                    PlayerPrefs.SetFloat("LifeCooldown", Mathf.FloorToInt(lifeCooldown));
+                    updateDisplayMain.UpdateDisplayLives();
                 }
             }
         }
-        else if (PlayerPrefs.GetInt("GlobalLives", livesMax) == livesMax)
+        else if (globalLives == livesMax)
         {
-            UpdateDisplay();
-            PlayerPrefs.SetInt("LifeCooldown", lifeMaxCooldown);
-            PlayerPrefs.Save();
+            PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
+            updateDisplayMain.UpdateDisplayLives();
             inCooldown = false;
-        }
-    }
-
-    public void UpdateDisplay()
-    {
-        if (SceneManager.GetActiveScene().name == levelLoad.mainScene)
-        {
-            livesText.text = PlayerPrefs.GetInt("GlobalLives", livesMax).ToString();
-            if (PlayerPrefs.GetInt("GlobalLives", livesMax) < livesMax)
-            {
-                if (inCooldown)
-                {
-                    int minutes = Mathf.FloorToInt(lifeCooldown / 60);
-                    int seconds = Mathf.FloorToInt(lifeCooldown % 60);
-                    livesCooldownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-                }
-                if (PlayerPrefs.GetInt("GlobalLives", livesMax) == 0)
-                    livesImage.sprite = emptyHeart;
-                else
-                    livesImage.sprite = halfHeart;
-            } 
-            else if (PlayerPrefs.GetInt("GlobalLives", livesMax) == livesMax)
-            {
-                livesCooldownText.text = "FULL";
-                livesImage.sprite = fullHeart;
-            }
         }
     }
 
     private void OnApplicationQuit()
     {
         PlayerPrefs.SetString("SavedTime", DateTime.Now.ToString());
-        PlayerPrefs.SetInt("OffCooldownCheck", 0);
-        PlayerPrefs.SetInt("FailsBeforeWin", 0);
+        PlayerPrefs.SetInt("OffCooldownCheck", 1);
+        PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
         PlayerPrefs.Save();
     }
 }

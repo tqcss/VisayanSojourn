@@ -107,7 +107,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Server
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -120,7 +120,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Android
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -139,10 +139,10 @@ TextureImporter:
       name: location_marker
       rect:
         serializedVersion: 2
-        x: 145
-        y: 138
-        width: 125
-        height: 194
+        x: 139
+        y: 96
+        width: 154
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,8 +150,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f736be5910c48ef4697245f0a4413f79
-      internalID: -49491354
+      spriteID: f45c9e260673f8b498d6dea3237950f0
+      internalID: -1944949244
       vertices: []
       indices: 
       edges: []
@@ -167,7 +167,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      location_marker: -49491354
+      location_marker: -1944949244
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

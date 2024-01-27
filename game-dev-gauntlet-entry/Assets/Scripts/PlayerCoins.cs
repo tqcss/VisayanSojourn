@@ -8,49 +8,38 @@ using UnityEngine.UI;
 public class PlayerCoins : MonoBehaviour
 {
     public float globalCoins;
-    public Text coinsText;
 
     private LevelLoad levelLoad;
-    private static GameObject sampleInstance;
+    private UpdateDisplayMain updateDisplayMain;
+    private static GameObject instancePlayerCoins {set; get;}
     private void Awake()
     {
-        if (sampleInstance != null) 
-            Destroy(sampleInstance);
+        if (instancePlayerCoins != null) 
+            Destroy(instancePlayerCoins);
 
-        sampleInstance = gameObject;
-        DontDestroyOnLoad(sampleInstance);
+        instancePlayerCoins = gameObject;
+        DontDestroyOnLoad(instancePlayerCoins);
 
         levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-    }
-    
-    private void Start()
-    {
-        UpdateDisplay();
+        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
     }
 
     private void Update()
     {
         globalCoins = PlayerPrefs.GetFloat("GlobalCoins", 0);
-    }
-
-    public void UpdateDisplay()
-    {
-        if (SceneManager.GetActiveScene().name == levelLoad.mainScene)
-            coinsText.text = string.Format("{0:0.00}", PlayerPrefs.GetFloat("GlobalCoins", 0));
+        updateDisplayMain.UpdateDisplayCoins();
     }
 
     public void IncreaseCoins(float increase)
     {
         PlayerPrefs.SetFloat("GlobalCoins", PlayerPrefs.GetFloat("GlobalCoins", 0) + increase);
-        PlayerPrefs.Save();
     }
 
     public void DecreaseCoins(float decrease)
     {
         if (PlayerPrefs.GetFloat("GlobalCoins", 0) >= decrease)
-        {
             PlayerPrefs.SetFloat("GlobalCoins", PlayerPrefs.GetFloat("GlobalCoins", 0) - decrease);
-            PlayerPrefs.Save();
-        }
+        else
+            PlayerPrefs.SetFloat("GlobalCoins", 0);
     }
 }

@@ -9,19 +9,19 @@ public class LevelLoad : MonoBehaviour
 {
     public GameObject videoScreen;
     public GameObject levelSelection;
+    public GameObject modePanel;
+    public GameObject miscPanel;
+    public GameObject settingsPanel;
     public GameObject loadingScreen;
+    public Animator levelSelectionController;
     public Slider loadingSlider;
     public Sprite[] loadingBgSprite;
     public Image loadingBg;
     public GameObject loadingBgObj;
     public Text loadingProvinceText;
-    public Image loadingDish;
-    public int dishDistance;
-    public Sprite[] descSprite;
-    public Image provinceDesc;
-    public GameObject playKitchenButton;
-    public GameObject unplayKitchenButton;
-    private string[] firstTime = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
+    public Image loadingFloat;
+    public int floatDistance;
+    private string[] firstTimeKeyName = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
     public string mainScene = "MainScene";
     public string kitchenScene = "KitchenScene";
     public string restaurantScene = "RestaurantScene";
@@ -30,20 +30,24 @@ public class LevelLoad : MonoBehaviour
     
     private PlayerLives playerLives;
     private PlayerProvince playerProvince;
+    private UpdateDisplayMain updateDisplayMain;
     private VideoRender videoRender;
 
     private void Start()
     {
-        #if UNITY_ANDROID
-            Screen.SetResolution(360, 640, true);
-        #endif
+        Application.runInBackground = true;
+        Time.timeScale = 1.0f;
         
         playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
-        playerProvince = GameObject.FindGameObjectWithTag("mainScript").GetComponent<PlayerProvince>();
-        Application.runInBackground = true;
+        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
         
         if (SceneManager.GetActiveScene().name == mainScene) 
         {
+            modePanel.SetActive(false);
+            miscPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+            
             videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
             PlayAnimation();
         }
@@ -53,17 +57,31 @@ public class LevelLoad : MonoBehaviour
 
     public void SelectProvince(int selected)
     {
-        levelId = selected - 1;
-        UpdateDescription(levelId);
-        playerProvince.DisableProvince();
+        levelId = selected;
+        updateDisplayMain.UpdateDescription(levelId);
+
+        int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
+        if (provinceUnlocked != levelId && provinceUnlocked < levelId)
+            playerProvince.ProvincePurchasing();
+        else
+        {
+            updateDisplayMain.DisableProvince();
+            levelSelectionController.SetTrigger("OpenSelection");
+        }
+    }
+
+    public void UnselectProvince()
+    {
+        updateDisplayMain.EnableProvince();
+        levelSelectionController.SetTrigger("CloseSelection");
     }
     
     public void LoadKitchen()
     {
-        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0)
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
         {
             StartCoroutine(LoadAsynchronously(kitchenScene));
-            PlayerPrefs.SetInt("ProvinceCurrent", (levelId + 1));
+            PlayerPrefs.SetInt("ProvinceCurrent", levelId);
             levelSelection.SetActive(false);
             loadingBgObj.SetActive(true);
         }
@@ -72,20 +90,20 @@ public class LevelLoad : MonoBehaviour
     public void LoadRestaurant()
     {
         StartCoroutine(LoadAsynchronously(restaurantScene));
-        PlayerPrefs.SetInt("ProvinceCurrent", (levelId + 1));
+        PlayerPrefs.SetInt("ProvinceCurrent", levelId);
         levelSelection.SetActive(false);
         loadingBgObj.SetActive(true);
     }
 
     public void LoadBack(string scene)
     {
-        PlayerPrefs.SetInt("FailsBeforeWin", 0);
+        PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
         StartCoroutine(LoadAsynchronously(scene));
     }
 
     public void LoadFinishBack(string scene)
     {
-        if (PlayerPrefs.GetInt("GlobalLives", 3) > 0)
+        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
         {
             StartCoroutine(LoadAsynchronously(scene));
             canPlayTravel = true;
@@ -95,8 +113,8 @@ public class LevelLoad : MonoBehaviour
     private IEnumerator LoadAsynchronously(string scene)
     {
         loadingScreen.SetActive(true);
-        loadingProvinceText.text = loadingBgSprite[levelId].name.Replace("image_", "").Replace("_", " ").ToUpper();
-        loadingBg.sprite = loadingBgSprite[levelId];
+        loadingProvinceText.text = loadingBgSprite[levelId - 1].name.Replace("image_", "").Replace("_", " ").ToUpper();
+        loadingBg.sprite = loadingBgSprite[levelId - 1];
         loadingSlider.value = 0;
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
@@ -104,15 +122,15 @@ public class LevelLoad : MonoBehaviour
         yield return new WaitForSeconds(1);
         
         float progress = 0;
-        double firstDishPosX = loadingDish.GetComponent<RectTransform>().localPosition.x;
+        double firstFloatPosX = loadingFloat.GetComponent<RectTransform>().localPosition.x;
 
         while (!operation.isDone)
         {
             progress = Mathf.MoveTowards(progress, Mathf.Clamp01(operation.progress / 0.9f), Time.deltaTime / 3.14f);
             loadingSlider.value = progress;
             
-            double moveDishPosX = firstDishPosX + (progress * dishDistance);
-            loadingDish.GetComponent<RectTransform>().localPosition = new Vector3((int)moveDishPosX, loadingDish.GetComponent<RectTransform>().localPosition.y, 0);
+            double moveDishPosX = firstFloatPosX + (progress * floatDistance);
+            loadingFloat.GetComponent<RectTransform>().localPosition = new Vector3((int)moveDishPosX, loadingFloat.GetComponent<RectTransform>().localPosition.y, 0);
 
             if (progress >= 1f)
             {
@@ -127,17 +145,18 @@ public class LevelLoad : MonoBehaviour
         if (canPlayTravel) PlayAnimation();  
     }
 
-    private void PlayAnimation()
+    public void PlayAnimation()
     {
         canPlayTravel = false;
         if (videoScreen) videoScreen.SetActive(true);
 
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
-        if (PlayerPrefs.GetInt(firstTime[provinceUnlocked - 1], 1) == 1)
+        if (PlayerPrefs.GetInt(firstTimeKeyName[provinceUnlocked - 1], 1) == 1)
         {
+            levelSelection.SetActive(true);
             levelSelection.SetActive(false);
             videoRender.PlayTravel(provinceUnlocked);
-            PlayerPrefs.SetInt(firstTime[provinceUnlocked - 1], 0);
+            PlayerPrefs.SetInt(firstTimeKeyName[provinceUnlocked - 1], 0);
         }
         else
         {
@@ -149,27 +168,12 @@ public class LevelLoad : MonoBehaviour
     {
         if (videoScreen) videoScreen.SetActive(false);
         levelSelection.SetActive(true);
-    }
 
-    public void UpdateDescription(int levelId)
-    {
-        provinceDesc.sprite = descSprite[levelId];
-        
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) <= playerLives.livesMax &&
-            PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
+        if (SceneManager.GetActiveScene().name == mainScene) 
         {
-            playKitchenButton.SetActive(true);
-            unplayKitchenButton.SetActive(false);
+            modePanel.SetActive(true);
+            miscPanel.SetActive(true);
+            settingsPanel.SetActive(true);
         }
-        else
-        {
-            playKitchenButton.SetActive(false);
-            unplayKitchenButton.SetActive(true);
-        }
-    }
-
-    public void DoQuit()
-    {
-        Application.Quit();
     }
 }
