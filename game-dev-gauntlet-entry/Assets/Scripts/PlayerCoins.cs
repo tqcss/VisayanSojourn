@@ -9,34 +9,41 @@ public class PlayerCoins : MonoBehaviour
 {
     public float globalCoins;
 
-    private LevelLoad levelLoad;
-    private UpdateDisplayMain updateDisplayMain;
-    private static GameObject instancePlayerCoins {set; get;}
+    private UpdateDisplayMain _updateDisplayMain;
+    private static GameObject s_instance {set; get;}
+
     private void Awake()
     {
-        if (instancePlayerCoins != null) 
-            Destroy(instancePlayerCoins);
+        // Will not Destroy the Script When on the Next Scene
+        if (s_instance != null) 
+            Destroy(s_instance);
+        s_instance = gameObject;
+        DontDestroyOnLoad(s_instance);
 
-        instancePlayerCoins = gameObject;
-        DontDestroyOnLoad(instancePlayerCoins);
+        // Referencing the Scripts from GameObjects
+        _updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
+    }
 
-        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
+    private void Start()
+    {
+        _updateDisplayMain.UpdateDisplayCoins();
     }
 
     private void Update()
     {
         globalCoins = PlayerPrefs.GetFloat("GlobalCoins", 0);
-        updateDisplayMain.UpdateDisplayCoins();
+        _updateDisplayMain.UpdateDisplayCoins();
     }
 
     public void IncreaseCoins(float increase)
     {
+        // Increase Coins by Amount Prompted
         PlayerPrefs.SetFloat("GlobalCoins", PlayerPrefs.GetFloat("GlobalCoins", 0) + increase);
     }
 
     public void DecreaseCoins(float decrease)
     {
+        // Decrease Coins by Amount Prompted
         if (PlayerPrefs.GetFloat("GlobalCoins", 0) >= decrease)
             PlayerPrefs.SetFloat("GlobalCoins", PlayerPrefs.GetFloat("GlobalCoins", 0) - decrease);
         else

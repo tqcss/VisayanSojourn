@@ -10,6 +10,7 @@ public class IngredientModule : MonoBehaviour
 
     private void Awake()
     {
+        // Only Adds Ingredients Correspond to the Current Province
         allIngredients = Resources.LoadAll<IngredientInfo>("IngredientInfo").ToList();
         foreach (IngredientInfo ingredientInfo in allIngredients)
             if (ingredientInfo.isIncludedInProvince[PlayerPrefs.GetInt("ProvinceCurrent", 1) - 1])
@@ -18,6 +19,7 @@ public class IngredientModule : MonoBehaviour
 
     public IngredientInfo GetIngredient(string name)
     {
+        // Checking Ingredients
         foreach (IngredientInfo ingredient in ingredients)
             if (ingredient.name == name)
                 return ingredient;    

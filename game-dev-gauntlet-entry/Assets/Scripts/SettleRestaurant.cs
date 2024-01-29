@@ -20,35 +20,36 @@ public class SettleRestaurant : MonoBehaviour
     public string[] correctMessage;
     public string[] incorrectMessage;
     public float sellTotal;
+    private GameObject coinsParticle;
 
-    private GameObject particles;
-    private DishList dishList;
-    private LevelLoad levelLoad;
-    private OrderManager orderManager;
-    private RecipeManager recipeManager;
-    private PlayerCoins playerCoins;
-    private PlayerProvince playerProvince;
+    private AudioManager _audioManager;
+    private DishList _dishList;
+    private LevelLoad _levelLoad;
+    private OrderManager _orderManager;
+    private PlayerCoins _playerCoins;
 
     private void Awake()
     {
-        dishList = GameObject.FindGameObjectWithTag("dishList").GetComponent<DishList>();
-        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-        orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
-        recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
-        playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
-        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        // Referencing the Scripts from GameObjects
+        _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _dishList = GameObject.FindGameObjectWithTag("dishList").GetComponent<DishList>();
+        _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+        _orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
+        _playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
         
-        particles = Resources.Load("Prefabs/coinsParticle", typeof(GameObject)) as GameObject;
-        coinsText.text = string.Format("{0:0.00}", playerCoins.globalCoins);
+        coinsParticle = Resources.Load("Prefabs/coinsParticle", typeof(GameObject)) as GameObject;
+        coinsText.text = string.Format("{0:0.00}", _playerCoins.globalCoins);
 
         chatBubble.SetActive(false);
         dishColoredImage.SetActive(false);
         plate.SetActive(true);
         StartCoroutine(StartOrder());
+        _audioManager.PlayBackgroundMusic(_audioManager.restaurantMusic);
     }
 
     public IEnumerator StartOrder()
     {
+        // Start Customer's Order
         orderText.SetActive(false);
         orderDisplay.SetActive(false);
         checkButton.SetActive(false);
@@ -57,16 +58,17 @@ public class SettleRestaurant : MonoBehaviour
         orderText.SetActive(true);
         orderDisplay.SetActive(true);
         checkButton.SetActive(true);
-        dishList.RandomPromptOrder();
-        orderManager.StartTimer();
+        _dishList.RandomPromptOrder();
+        _orderManager.StartTimer();
         ChatOrder();
     }
 
     public void EndOrder(bool success)
     {
+        // End Customer's Order
         if (success)
         {
-            sellTotal = orderManager.SellCompute();
+            sellTotal = _orderManager.SellCompute();
             StartCoroutine(RewardCoins());
             StartCoroutine(ChatResponse(true));
             StartCoroutine(StartOrder());
@@ -80,12 +82,14 @@ public class SettleRestaurant : MonoBehaviour
 
     public void ChatOrder()
     {
+        // Display the Order of a Customer
         chatBubble.SetActive(true);
-        chatText.text = orderMessage[Random.Range(0, orderMessage.Length)] + orderManager.currentOrderPrompt.name + "?";
+        chatText.text = orderMessage[Random.Range(0, orderMessage.Length)] + _orderManager.currentOrderPrompt.name + "?";
     }
 
     public IEnumerator ChatResponse(bool success)
     {
+        // Display the Response of a Customer
         if (success)
         {
             chatText.text = correctMessage[Random.Range(0, correctMessage.Length)] + string.Format("{0:0.00}", sellTotal) + " coins.";
@@ -93,8 +97,10 @@ public class SettleRestaurant : MonoBehaviour
             plate.SetActive(false);
         }
         else
+        {
             chatText.text = incorrectMessage[Random.Range(0, incorrectMessage.Length)];
-        
+        }
+
         yield return new WaitForSeconds((int)(waitTimeArrival / 2));
         chatBubble.SetActive(false);
         dishColoredImage.SetActive(false);
@@ -103,18 +109,21 @@ public class SettleRestaurant : MonoBehaviour
 
     public IEnumerator RewardCoins()
     {
-        GameObject newParticle = Instantiate(particles, chatBubble.transform.position, Quaternion.identity);
+        // Instantiate coinsParticle when Rewarded
+        GameObject newParticle = Instantiate(coinsParticle, chatBubble.transform.position, Quaternion.identity);
         newParticle.GetComponent<ParticleSystem>().Play();
         
+        // Increase Coins by calculated sellTotal
         yield return new WaitForSeconds(1);
-        playerCoins.IncreaseCoins(sellTotal);
+        _playerCoins.IncreaseCoins(sellTotal);
         coinsText.text = string.Format("{0:0.00}", PlayerPrefs.GetFloat("GlobalCoins", 0));
     }
 
     public void GoBackToMain()
     {
+        _audioManager.StopMusic();
         restaurantUI.SetActive(false);
-        levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 0);
-        levelLoad.LoadBack(levelLoad.mainScene);
+        _levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 0);
+        _levelLoad.LoadBack(_levelLoad.mainScene);
     }
 }

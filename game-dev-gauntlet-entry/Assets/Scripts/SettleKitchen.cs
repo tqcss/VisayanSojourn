@@ -11,6 +11,7 @@ public class SettleKitchen : MonoBehaviour
     public GameObject recipeScroll;
     public GameObject scroll;
     public GameObject skipButton;
+    public GameObject backButton;
     public GameObject startButton;
     public GameObject dishNameTextObj;
     public GameObject recipeTextObj;
@@ -24,35 +25,37 @@ public class SettleKitchen : MonoBehaviour
     public GameObject homeButton;
     public GameObject restartButton;
     public GameObject nextButton;
-    private bool successRound = false;
-    
-    public AudioSource startSfx;
-    private DishList dishList;
-    private LevelLoad levelLoad;
-    private OrderManager orderManager;
-    private PlayerLives playerLives;
-    private PlayerProvince playerProvince;
-    private VideoRender videoRender;
-
     public int maximumRound;
     public int currentRound;
+    private bool successRound = false;
+    
+    private AudioManager _audioManager;
+    private DishList _dishList;
+    private LevelLoad _levelLoad;
+    private OrderManager _orderManager;
+    private PlayerLives _playerLives;
+    private PlayerProvince _playerProvince;
+    private VideoRender _videoRender;
 
     private void Awake()
     {
-        dishList = GameObject.FindGameObjectWithTag("dishList").GetComponent<DishList>();
-        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-        orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
-        playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
-        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
-        videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
+        // Referencing the Scripts from GameObjects
+        _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _dishList = GameObject.FindGameObjectWithTag("dishList").GetComponent<DishList>();
+        _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+        _orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
+        _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        _playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         
-        currentRound = (CheckCurrentRound()) ? PlayerPrefs.GetInt(playerProvince.recipeDoneKeyName[PlayerPrefs.GetInt("ProvinceCurrent", 0) - 1], 1) : 1;
+        currentRound = (CheckCurrentRound()) ? PlayerPrefs.GetInt(_playerProvince.recipeDoneKeyName[PlayerPrefs.GetInt("ProvinceCurrent", 0) - 1], 1) : 1;
         skipButton.SetActive(false);
         StartCoroutine(PlayAnimation(true));
     }
 
     private bool CheckCurrentRound()
     {
+        // Checks if Not on the Previous Round as the Current Unlocked Province
         return PlayerPrefs.GetInt("ProvinceCurrent", 0) == PlayerPrefs.GetInt("ProvinceUnlocked", 1) &&
                PlayerPrefs.GetInt("ProvinceCurrent", 0) != PlayerPrefs.GetInt("ProvinceCompleted", 0);
     }
@@ -64,55 +67,66 @@ public class SettleKitchen : MonoBehaviour
         dishNameTextObj.SetActive(false);
         recipeTextObj.SetActive(false);
         dishMonoImage.SetActive(false);
+        backButton.SetActive(false);
         startButton.SetActive(false);
         kitchenUI.SetActive(false);
         roundFinishUI.SetActive(false);
-        levelLoad.loadingScreen.SetActive(false);
+        _levelLoad.loadingScreen.SetActive(false);
         
         if (firstPlay) 
         {
-            videoRender.PlayScroll();
+            // Play Animation Video of Recipe Scroll
+            _videoRender.PlayScroll();
             yield return new WaitForSeconds(2);
             skipButton.SetActive(true);
         }
-        else 
+        else
+        {
             DisplayRecipe();
+        }
         
         yield return null;
     }
 
     public void DisplayRecipe()
     {
-        dishList.PromptOrder();
+        // Display the Dish and its Recipe
+        _dishList.PromptOrder();
         skipButton.SetActive(false);
         dishNameTextObj.SetActive(true);
         recipeTextObj.SetActive(true);
         dishMonoImage.SetActive(true);
+        backButton.SetActive(true);
         startButton.SetActive(true);
         
-        dishNameText.text = orderManager.currentOrderPrompt.name;
+        dishNameText.text = _orderManager.currentOrderPrompt.name;
         string currentRecipeText = "Ingredients: \n";
-        for (int i = 0; i < orderManager.currentOrderPrompt.recipe.Count; i++)
+        for (int i = 0; i < _orderManager.currentOrderPrompt.recipe.Count; i++)
         {
-            currentRecipeText = currentRecipeText + "  • " + 
-                                orderManager.currentOrderPrompt.recipe[i].name.Replace("_", " ") + "\n";
+            currentRecipeText = currentRecipeText + "  • " + _orderManager.currentOrderPrompt.recipe[i].name.Replace("_", " ") + "\n";
             recipeText.text = currentRecipeText;
         }
     }
 
     public void StartRound()
     {
-        startSfx.Play();
+        // Start when startButton is Pressed
+        _audioManager.PlayBackgroundMusic(_audioManager.kitchenMusic);
+        _audioManager.startSfx.Play();
+
         recipeScroll.SetActive(false);
         kitchenUI.SetActive(true);
-        livesText.text = PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax).ToString();
-        orderManager.StartTimer();
+        livesText.text = PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax).ToString();
+        _orderManager.StartTimer();
     }
 
     public void EndRound(bool success)
     {
+        // End when checkButton is Pressed
+        _audioManager.StopMusic();
+        
         roundFinishUI.SetActive(true);
-        int globalLives = PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax);
+        int globalLives = PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax);
         
         if (success)
         {
@@ -125,7 +139,7 @@ public class SettleKitchen : MonoBehaviour
                 descriptionPanel.SetActive(true);
                 homeButton.SetActive((currentRound < maximumRound) ? true : false);
 
-                playerLives.RewardLife(PlayerPrefs.GetInt("FailsBeforeSuccess", 0));
+                _playerLives.RewardLife(PlayerPrefs.GetInt("FailsBeforeSuccess", 0), CheckCurrentRound());
             }
         }
         else
@@ -144,17 +158,23 @@ public class SettleKitchen : MonoBehaviour
     public void OntoNextRound()
     {
         int provinceCurrent = PlayerPrefs.GetInt("ProvinceCurrent", 0);
+        int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         
         currentRound++;
         if (CheckCurrentRound()) 
-            PlayerPrefs.SetInt(playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
+            PlayerPrefs.SetInt(_playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
 
         if (currentRound <= maximumRound)
+        {
+            // Go to the Next Round
             StartCoroutine(PlayAnimation(false));
+        }
         else
         {
-            PlayerPrefs.SetInt("ProvinceCompleted", PlayerPrefs.GetInt("ProvinceCompleted", 0) + 1);
+            // If Completed, Go to Main
+            if (provinceCurrent == provinceUnlocked)
+                PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted + 1);
             GoBackToMain();
         }
 
@@ -163,37 +183,39 @@ public class SettleKitchen : MonoBehaviour
 
     public void RestartRound()
     {
+        // Restart the Round
         successRound = false;
         StartCoroutine(PlayAnimation(false));
     }
 
     public void GoBackToMain()
     {
+        _audioManager.StopMusic();
         int provinceCurrent = PlayerPrefs.GetInt("ProvinceCurrent", 0);
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
-        
-        if (successRound = true && currentRound <= maximumRound)
+
+        if (successRound && currentRound <= maximumRound)
         {
             currentRound++;
             if (CheckCurrentRound()) 
-                PlayerPrefs.SetInt(playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
+                PlayerPrefs.SetInt(_playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
         }
 
         successRound = false;
         kitchenUI.SetActive(false);
         roundFinishUI.SetActive(false);
-        levelLoad.levelId = provinceCurrent;
-        levelLoad.LoadBack(levelLoad.mainScene);
+        _levelLoad.levelId = provinceCurrent;
+        _levelLoad.LoadBack(_levelLoad.mainScene);
     }
 
     private void OnApplicationQuit()
     {
         int provinceCurrent = PlayerPrefs.GetInt("ProvinceCurrent", 0);
-        if (successRound = true && currentRound < maximumRound)
+        if (successRound && currentRound < maximumRound)
         {
             currentRound++;
             if (CheckCurrentRound()) 
-                PlayerPrefs.SetInt(playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
+                PlayerPrefs.SetInt(_playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
         }
     }
 }

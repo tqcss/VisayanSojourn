@@ -8,19 +8,16 @@ using System.Linq;
 
 public class IngredientManager : MonoBehaviour
 {
-    private IngredientModule ingredientModule;
     private GameObject ingredientButton;
     private GameObject ingredientBase;
-    public GameObject uiContent; // parent of ingredientButton
+    public GameObject uiContent; // Parent of ingredientButton
     public Scrollbar scrollBar;
-    public AudioSource spawnSfx;
-
     
-    // FOR DRAG AND DROP PHYSICS
-    public LayerMask m_DragLayers; // layer dedicated for loose items
+    // For Drag and Drop Physics
+    public LayerMask m_DragLayers; // Layer dedicated for loose items
     public int deadZoneX = -11;
     private TargetJoint2D m_TargetJoint;
-    private Rigidbody2D body; // loose item held by mouse - rigidbody2d component
+    private Rigidbody2D body; // Loose item held by mouse - rigidbody2D component
 
     [Range(0.0f, 100.0f)]
     public float m_Damping = 1.0f;
@@ -28,14 +25,19 @@ public class IngredientManager : MonoBehaviour
     [Range(0.0f, 100.0f)]
     public float m_Frequency = 5.0f;
 
+    private AudioManager _audioManager;
+    private IngredientModule _ingredientModule;
+
     private void Start()
     {
-        ingredientModule = GameObject.FindGameObjectWithTag("ingredientModule").GetComponent<IngredientModule>();
+        // Referencing the Scripts from GameObjects
+        _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _ingredientModule = GameObject.FindGameObjectWithTag("ingredientModule").GetComponent<IngredientModule>();
         ingredientButton = Resources.Load("Prefabs/ingredientButton", typeof(GameObject)) as GameObject;
         ingredientBase = Resources.Load("Prefabs/ingredientBase", typeof(GameObject)) as GameObject;
 
-        // INGREDIENT SLOT LOADER
-        foreach (IngredientInfo ingredientInfo in ingredientModule.ingredients.OrderBy(item => item.name).ToList())
+        // Ingredient Slot Loader
+        foreach (IngredientInfo ingredientInfo in _ingredientModule.ingredients.OrderBy(item => item.name).ToList())
         {
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
                 
@@ -56,14 +58,16 @@ public class IngredientManager : MonoBehaviour
 
     private void UpdateDisplay()
     {
+        // Update the Cell Size of Ingredient Slots and ScrollBar 
         uiContent.GetComponent<RectTransform>().sizeDelta = new Vector2
             (uiContent.GetComponent<RectTransform>().sizeDelta.x, 
-            (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(ingredientModule.ingredients.Count / 2.0f));
+            (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(_ingredientModule.ingredients.Count / 2.0f));
         scrollBar.value = 1.0f;
     }
 
-    private void Update() // LOOSE ITEM BEHAVIOR
+    private void Update()
     {
+        // Loose Item Behavior
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
         if (Input.GetMouseButtonDown(0))
@@ -75,7 +79,6 @@ public class IngredientManager : MonoBehaviour
             body = collider.attachedRigidbody;
             if (!body)
                 return;
-            // Debug.Log(body.name);
 
             if (m_TargetJoint)
                 Destroy(m_TargetJoint);
@@ -104,7 +107,8 @@ public class IngredientManager : MonoBehaviour
 
     public void SpawnIngredient(IngredientInfo ingredientInfo)
     {
-        spawnSfx.Play();
+        // Spawns Ingredient when Dragged from the Slot
+        _audioManager.popSfx.Play();
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 

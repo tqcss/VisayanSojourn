@@ -14,35 +14,35 @@ public class PlayerLives : MonoBehaviour
     public float lifeCooldown;
     public bool inCooldown = false;
     
-    private LevelLoad levelLoad;
-    private UpdateDisplayMain updateDisplayMain;
-    private static GameObject instancePlayerLives {set; get;}
+    private UpdateDisplayMain _updateDisplayMain;
+    private static GameObject s_instance {set; get;}
+    
     private void Awake()
     {
-        if (instancePlayerLives != null) 
-            Destroy(instancePlayerLives);
+        // Will not Destroy the Script When on the Next Scene
+        if (s_instance != null) 
+            Destroy(s_instance);
+        s_instance = gameObject;
+        DontDestroyOnLoad(s_instance);
 
-        instancePlayerLives = gameObject;
-        DontDestroyOnLoad(instancePlayerLives);
-
-        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
+        // Referencing the Scripts from GameObjects
+        _updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
 
         globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
         failsBeforeSuccess = PlayerPrefs.GetInt("FailsBeforeSuccess", 0);
         lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
-        updateDisplayMain.UpdateDisplayLives();
+        _updateDisplayMain.UpdateDisplayLives();
     }
 
     private void Start()
     {
         OfflineCooldown(PlayerPrefs.GetInt("OffCooldownCheck", 1));
-        RewardLife(PlayerPrefs.GetInt("FailsBeforeSuccess", 0));
-        updateDisplayMain.UpdateDisplayLives();
+        _updateDisplayMain.UpdateDisplayLives();
     }
 
     private void OfflineCooldown(int offline)
     {
+        // Decrease Life Cooldown or Increase Lives based on the Offline Time
         if (offline == 1)
         {
             PlayerPrefs.SetInt("OffCooldownCheck", 0);
@@ -55,22 +55,24 @@ public class PlayerLives : MonoBehaviour
                 
                 while (timeLeftFromOffline > 0)
                 {
-                    globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
-                    lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
+                    int globalLivesCurrent = PlayerPrefs.GetInt("GlobalLives", livesMax);
+                    float lifeCooldownCurrent = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
 
-                    if (globalLives >= livesMax)
+                    if (globalLivesCurrent >= livesMax)
                         timeLeftFromOffline = 0;
 
-                    if (timeLeftFromOffline > lifeCooldown)
+                    if (timeLeftFromOffline > lifeCooldownCurrent)
                     {
-                        timeLeftFromOffline -= lifeCooldown;
-                        PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
+                        timeLeftFromOffline -= lifeCooldownCurrent;
+                        PlayerPrefs.SetInt("GlobalLives", globalLivesCurrent + 1);
                         PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
-                        updateDisplayMain.UpdateDisplayLives();
+                        lifeCooldown = 0;
+                        _updateDisplayMain.UpdateDisplayLives();
                     }
                     else
                     {
-                        PlayerPrefs.SetFloat("LifeCooldown", lifeCooldown - timeLeftFromOffline);
+                        PlayerPrefs.SetFloat("LifeCooldown", lifeCooldownCurrent - timeLeftFromOffline);
+                        lifeCooldown = lifeCooldownCurrent - timeLeftFromOffline;
                         timeLeftFromOffline = 0;
                     }
                 }
@@ -78,31 +80,34 @@ public class PlayerLives : MonoBehaviour
         }
     }
 
-    public void RewardLife(int discount)
+    public void RewardLife(int discount, bool recentRound)
     {
-        if (discount > 0)
+        // Decrease Life Cooldown based on Fails Before Success
+        if (discount > 0 && recentRound)
         {
             float timeLeftFromDiscount = lifeMaxCooldown / (discount * 2);
             PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
 
             while (timeLeftFromDiscount > 0)
             {
-                globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
-                lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
+                int globalLivesCurrent = PlayerPrefs.GetInt("GlobalLives", livesMax);
+                float lifeCooldownCurrent = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
                 
-                if (globalLives >= livesMax)
+                if (globalLivesCurrent >= livesMax)
                     timeLeftFromDiscount = 0;
 
-                if (timeLeftFromDiscount > lifeCooldown)
+                if (timeLeftFromDiscount > lifeCooldownCurrent)
                 {
-                    timeLeftFromDiscount -= lifeCooldown;
-                    PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
+                    timeLeftFromDiscount -= lifeCooldownCurrent;
+                    PlayerPrefs.SetInt("GlobalLives", globalLivesCurrent + 1);
                     PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
-                    updateDisplayMain.UpdateDisplayLives();
+                    lifeCooldown = 0;
+                    _updateDisplayMain.UpdateDisplayLives();
                 }
                 else
                 {
-                    PlayerPrefs.SetFloat("LifeCooldown", lifeCooldown - timeLeftFromDiscount);
+                    PlayerPrefs.SetFloat("LifeCooldown", lifeCooldownCurrent - timeLeftFromDiscount);
+                    lifeCooldown = lifeCooldownCurrent - timeLeftFromDiscount;
                     timeLeftFromDiscount = 0;
                 }
             }
@@ -114,37 +119,41 @@ public class PlayerLives : MonoBehaviour
         globalLives = PlayerPrefs.GetInt("GlobalLives", livesMax);
         failsBeforeSuccess = PlayerPrefs.GetInt("FailsBeforeSuccess", 0);
 
+        // Life Cooldown
         if (globalLives < livesMax)
         {
             if (!inCooldown)
             {
-                lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", lifeMaxCooldown);
                 inCooldown = true;
             }
             else
             {
                 if (lifeCooldown > 0)
+                {
                     lifeCooldown -= Time.deltaTime;
+                }
                 else if (lifeCooldown <= 0)
                 {
                     PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
                     PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
+                    lifeCooldown = lifeMaxCooldown;
                     inCooldown = false;
-                    updateDisplayMain.UpdateDisplayLives();
+                    _updateDisplayMain.UpdateDisplayLives();
                 }
 
                 if (Mathf.FloorToInt(lifeCooldown % 1) == 0)
                 {
                     PlayerPrefs.SetFloat("LifeCooldown", Mathf.FloorToInt(lifeCooldown));
-                    updateDisplayMain.UpdateDisplayLives();
+                    _updateDisplayMain.UpdateDisplayLives();
                 }
             }
         }
-        else if (globalLives == livesMax)
+        else
         {
             PlayerPrefs.SetFloat("LifeCooldown", lifeMaxCooldown);
-            updateDisplayMain.UpdateDisplayLives();
+            lifeCooldown = lifeMaxCooldown;
             inCooldown = false;
+            _updateDisplayMain.UpdateDisplayLives();
         }
     }
 

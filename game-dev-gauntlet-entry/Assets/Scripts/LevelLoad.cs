@@ -9,11 +9,11 @@ public class LevelLoad : MonoBehaviour
 {
     public GameObject videoScreen;
     public GameObject levelSelection;
+    public Animator levelSelectionController;
     public GameObject modePanel;
     public GameObject miscPanel;
     public GameObject settingsPanel;
     public GameObject loadingScreen;
-    public Animator levelSelectionController;
     public Slider loadingSlider;
     public Sprite[] loadingBgSprite;
     public Image loadingBg;
@@ -21,35 +21,39 @@ public class LevelLoad : MonoBehaviour
     public Text loadingProvinceText;
     public Image loadingFloat;
     public int floatDistance;
-    private string[] firstTimeKeyName = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
+    public string[] firstTimeKeyName = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
     public string mainScene = "MainScene";
     public string kitchenScene = "KitchenScene";
     public string restaurantScene = "RestaurantScene";
     public int levelId;
-    private bool canPlayTravel = false;
+    private bool canPlayAnimation = false;
     
-    private PlayerLives playerLives;
-    private PlayerProvince playerProvince;
-    private UpdateDisplayMain updateDisplayMain;
-    private VideoRender videoRender;
+    private AudioManager _audioManager;
+    private PlayerLives _playerLives;
+    private PlayerProvince _playerProvince;
+    private UpdateDisplayMain _updateDisplayMain;
+    private VideoRender _videoRender;
 
     private void Start()
     {
         Application.runInBackground = true;
         Time.timeScale = 1.0f;
         
-        playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
-        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
-        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
+        // Referencing the Scripts from GameObjects
+        _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        _playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        _updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
         
         if (SceneManager.GetActiveScene().name == mainScene) 
         {
+            _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
             modePanel.SetActive(false);
             miscPanel.SetActive(false);
             settingsPanel.SetActive(false);
             
-            videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
             PlayAnimation();
+            _audioManager.PlayBackgroundMusic(_audioManager.mainMusic);
         }
             
         loadingScreen.SetActive(false);
@@ -57,28 +61,40 @@ public class LevelLoad : MonoBehaviour
 
     public void SelectProvince(int selected)
     {
+        // Execute if Province is Selected
         levelId = selected;
-        updateDisplayMain.UpdateDescription(levelId);
+        _updateDisplayMain.UpdateDescription(levelId);
 
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         if (provinceUnlocked != levelId && provinceUnlocked < levelId)
-            playerProvince.ProvincePurchasing();
+        {
+            // Execute if the Selected Province is Locked
+            _playerProvince.ProvincePurchasing();
+        }
         else
         {
-            updateDisplayMain.DisableProvince();
-            levelSelectionController.SetTrigger("OpenSelection");
+            if (levelId <= provinceUnlocked)
+            {
+                // Execute if the Selected Province is Unlocked
+                _updateDisplayMain.DisableProvince();
+                levelSelectionController.SetTrigger("OpenSelection");
+                _audioManager.PlayThemeMusic(_audioManager.provinceThemeMusic[levelId - 1], levelId);
+            }
         }
     }
 
     public void UnselectProvince()
     {
-        updateDisplayMain.EnableProvince();
+        // Execute if Province is Deselected
+        _updateDisplayMain.EnableProvince();
         levelSelectionController.SetTrigger("CloseSelection");
+        _audioManager.PlayBackgroundMusic(_audioManager.mainMusic);
     }
     
     public void LoadKitchen()
     {
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
+        // Prepare Load for Kitchen Scene
+        if (PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) > 0)
         {
             StartCoroutine(LoadAsynchronously(kitchenScene));
             PlayerPrefs.SetInt("ProvinceCurrent", levelId);
@@ -89,6 +105,7 @@ public class LevelLoad : MonoBehaviour
 
     public void LoadRestaurant()
     {
+        // Prepare Load for Restaurant Scene
         StartCoroutine(LoadAsynchronously(restaurantScene));
         PlayerPrefs.SetInt("ProvinceCurrent", levelId);
         levelSelection.SetActive(false);
@@ -97,21 +114,27 @@ public class LevelLoad : MonoBehaviour
 
     public void LoadBack(string scene)
     {
+        // Prepare Load to go Back to Main
         PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
         StartCoroutine(LoadAsynchronously(scene));
     }
 
     public void LoadFinishBack(string scene)
     {
-        if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
+        // Prepare Load to go Back to Main
+        if (PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) > 0)
         {
             StartCoroutine(LoadAsynchronously(scene));
-            canPlayTravel = true;
+            canPlayAnimation = true;
         }
     }
 
     private IEnumerator LoadAsynchronously(string scene)
     {
+        _audioManager.StopMusic();
+        _audioManager.startSfx.Play();
+        
+        // Loading Screen
         loadingScreen.SetActive(true);
         loadingProvinceText.text = loadingBgSprite[levelId - 1].name.Replace("image_", "").Replace("_", " ").ToUpper();
         loadingBg.sprite = loadingBgSprite[levelId - 1];
@@ -142,20 +165,20 @@ public class LevelLoad : MonoBehaviour
         }
 
         if (SceneManager.GetActiveScene().name == mainScene) loadingScreen.SetActive(false);
-        if (canPlayTravel) PlayAnimation();  
+        if (canPlayAnimation) PlayAnimation();  
     }
 
     public void PlayAnimation()
     {
-        canPlayTravel = false;
+        // Play Animation Video of Traveling from One to the Next
+        canPlayAnimation = false;
         if (videoScreen) videoScreen.SetActive(true);
 
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         if (PlayerPrefs.GetInt(firstTimeKeyName[provinceUnlocked - 1], 1) == 1)
         {
-            levelSelection.SetActive(true);
             levelSelection.SetActive(false);
-            videoRender.PlayTravel(provinceUnlocked);
+            _videoRender.PlayTravel(provinceUnlocked);
             PlayerPrefs.SetInt(firstTimeKeyName[provinceUnlocked - 1], 0);
         }
         else

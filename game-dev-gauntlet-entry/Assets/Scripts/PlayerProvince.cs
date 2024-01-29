@@ -14,21 +14,27 @@ public class PlayerProvince : MonoBehaviour
     public string[] recipeDoneKeyName = {"RecipeDoneAntique", "RecipeDoneAklan", "RecipeDoneCapiz", "RecipeDoneNegrosOcc", "RecipeDoneGuimaras", "RecipeDoneIloilo"};
     public int[] recipeDoneValue;
 
-    private LevelLoad levelLoad;
-    private PlayerCoins playerCoins;
-    private UpdateDisplayMain updateDisplayMain;
-    private static GameObject instancePlayerProvince {set; get;}
+    private LevelLoad _levelLoad;
+    private PlayerCoins _playerCoins;
+    private UpdateDisplayMain _updateDisplayMain;
+    private static GameObject s_instance {set; get;}
+    
     private void Awake()
     {
-        if (instancePlayerProvince != null) 
-            Destroy(instancePlayerProvince);
-
-        instancePlayerProvince = gameObject;
-        DontDestroyOnLoad(instancePlayerProvince);
+        // Will not Destroy the Script When on the Next Scene
+        if (s_instance != null) 
+            Destroy(s_instance);
+        s_instance = gameObject;
+        DontDestroyOnLoad(s_instance);
         
-        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-        playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
-        updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
+        _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+        _playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
+        _updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
+    }
+
+    private void Start()
+    {
+        _updateDisplayMain.UpdateDisplayProvince();
     }
 
     private void Update()
@@ -38,7 +44,7 @@ public class PlayerProvince : MonoBehaviour
         provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         for (int i = 0; i < recipeDoneKeyName.Length; i++)
             recipeDoneValue[i] = PlayerPrefs.GetInt(recipeDoneKeyName[i], 1);
-        updateDisplayMain.UpdateDisplayProvince();
+        _updateDisplayMain.UpdateDisplayProvince();
     }
 
     public void ProvincePurchasing()
@@ -46,9 +52,9 @@ public class PlayerProvince : MonoBehaviour
         int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
         if (PlayerPrefs.GetFloat("GlobalCoins", 0) >= provinceCost[provinceCompleted])
         {
-            playerCoins.DecreaseCoins(provinceCost[provinceCompleted]);
+            _playerCoins.DecreaseCoins(provinceCost[provinceCompleted]);
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
-            levelLoad.PlayAnimation();
+            _levelLoad.PlayAnimation();
         }
     }
 }

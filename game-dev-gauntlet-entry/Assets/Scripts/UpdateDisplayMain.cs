@@ -26,6 +26,7 @@ public class UpdateDisplayMain : MonoBehaviour
     public Sprite unlockLocation;
     public Sprite lockLocation;
     public Button backDescButton;
+    private bool enableInteract = true;
 
     // ModePanel
     public Sprite[] descSprite;
@@ -35,91 +36,94 @@ public class UpdateDisplayMain : MonoBehaviour
     public GameObject unplayKitchenButton;
     public GameObject unplayRestaurantButton;
 
-    private LevelLoad levelLoad;
-    private PlayerCoins playerCoins;
-    private PlayerLives playerLives;
-    private PlayerProvince playerProvince;
+    private LevelLoad _levelLoad;
+    private PlayerLives _playerLives;
+    private PlayerProvince _playerProvince;
+    
     private void Awake()
     {
-        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-        playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
-        playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
-        playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        // Referencing the Scripts from GameObjects
+        _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+        _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        _playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
     }
 
     public void UpdateDisplayCoins()
     {
-        if (SceneManager.GetActiveScene().name == levelLoad.mainScene)
+        // Update Coin Display on the Main Scene
+        if (SceneManager.GetActiveScene().name == _levelLoad.mainScene)
             coinsText.text = string.Format("{0:0.00}", PlayerPrefs.GetFloat("GlobalCoins", 0));
     }
 
     public void UpdateDisplayLives()
     {
-        if (SceneManager.GetActiveScene().name == levelLoad.mainScene)
+        // Update Lives Display on the Main Scene
+        if (SceneManager.GetActiveScene().name == _levelLoad.mainScene)
         {
-            int globalLives = PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax);
-            float lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", playerLives.lifeMaxCooldown);
-            livesText.text = globalLives.ToString();
-            if (globalLives < playerLives.livesMax)
+            int globalLives = PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax);
+            float lifeCooldown = PlayerPrefs.GetFloat("LifeCooldown", _playerLives.lifeMaxCooldown);
+            
+            if (globalLives < _playerLives.livesMax)
             {
-                if (playerLives.inCooldown)
+                if (_playerLives.inCooldown)
                 {
                     int minutes = Mathf.FloorToInt(lifeCooldown / 60);
                     int seconds = Mathf.FloorToInt(lifeCooldown % 60);
                     livesCooldownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
                 }
             } 
-            else if (globalLives == playerLives.livesMax)
+            else if (globalLives == _playerLives.livesMax)
             {
                 livesCooldownText.text = "FULL";
             }
+            
+            livesText.text = globalLives.ToString();
             livesImage.sprite = heartSprite[globalLives];
         }
     }
 
     public void UpdateDisplayProvince()
     {
-        if (SceneManager.GetActiveScene().name == levelLoad.mainScene)
+        // Update Province Display on the Main Scene
+        if (SceneManager.GetActiveScene().name == _levelLoad.mainScene)
         {
             int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
             int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
 
-            for (int i = 0; i < playerProvince.provinceTotal; i++)
+            for (int i = 0; i < _playerProvince.provinceTotal; i++)
             {
-                locationButton[i].interactable = false;
-                locationButtonObj[i].SetActive(false);
+                bool isProvinceUnlocked = i < provinceUnlocked;
+                locationMarker[i].sprite = (isProvinceUnlocked) ? unlockLocation : null;
+                locationButton[i].interactable = (isProvinceUnlocked) ? enableInteract : false;
+                locationButtonObj[i].SetActive((isProvinceUnlocked) ? true : false);
+                provinceCostObj[i].SetActive(false);
             }
-            for (int i = 0; i < provinceUnlocked; i++)
-            {
-                if (i < playerProvince.provinceTotal)
-                {
-                    locationMarker[i].sprite = unlockLocation;
-                    locationButton[i].interactable = true;
-                    locationButtonObj[i].SetActive(true);
-                    provinceCostObj[i].SetActive(false);
-                }    
-            }
-            if (provinceCompleted == provinceUnlocked && provinceUnlocked < playerProvince.provinceTotal)
+            
+            if (provinceCompleted == provinceUnlocked && provinceUnlocked < _playerProvince.provinceTotal)
             {
                 locationButtonObj[provinceCompleted].SetActive(true);
                 locationButton[provinceCompleted].interactable = true;
                 locationMarker[provinceCompleted].sprite = lockLocation;
                 provinceCostObj[provinceCompleted].SetActive(true);
-                provinceCostText[provinceCompleted].text = playerProvince.provinceCost[provinceCompleted].ToString();
+                provinceCostText[provinceCompleted].text = _playerProvince.provinceCost[provinceCompleted].ToString();
             }
+            
             mapImage.sprite = mapSprite[provinceUnlocked - 1];
         }
     }
 
     public void DisableProvince()
     {
+        // Disable Location Marker Interaction if it is pressed
         backDescButton.interactable = true;
-        for (int j = 0; j < playerProvince.provinceTotal; j++)
+        enableInteract = false;
+        for (int j = 0; j < _playerProvince.provinceTotal; j++)
             locationButton[j].interactable = false;
     }
 
     public void EnableProvince()
     {
+        // Disable Location Marker Interaction if backButton is pressed
         backDescButton.interactable = false;
         StartCoroutine(DelayEnable());
     }
@@ -128,17 +132,19 @@ public class UpdateDisplayMain : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         for (int j = 0; j < PlayerPrefs.GetInt("ProvinceUnlocked", 1); j++)
-            if (j < playerProvince.provinceTotal)
+            if (j < _playerProvince.provinceTotal)
                 locationButton[j].interactable = true;
+        enableInteract = true;
     }
 
     public void UpdateDescription(int levelId)
     {
+        // Update Description Interface based on Selected Province
         provinceDesc.sprite = descSprite[levelId - 1];
 
-        int globalLives = PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax);
-        playKitchenButton.SetActive((globalLives <= playerLives.livesMax && globalLives > 0) ? true : false);
-        unplayKitchenButton.SetActive((globalLives <= playerLives.livesMax && globalLives > 0) ? false : true);
+        int globalLives = PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax);
+        playKitchenButton.SetActive((globalLives <= _playerLives.livesMax && globalLives > 0) ? true : false);
+        unplayKitchenButton.SetActive((globalLives <= _playerLives.livesMax && globalLives > 0) ? false : true);
 
         int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
         playRestaurantButton.SetActive((levelId <= provinceCompleted) ? true : false);

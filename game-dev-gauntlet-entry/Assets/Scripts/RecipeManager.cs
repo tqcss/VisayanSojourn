@@ -7,33 +7,28 @@ public class RecipeManager : MonoBehaviour
 {
     private List<string> objectsOnPlate = new List<string>();
     private List<DishInfo> dishes = new List<DishInfo>();
-    private IngredientManager ingredientManager;
-    private IngredientModule ingredientModule;
-    private LevelLoad levelLoad;
-    private OrderManager orderManager;
-    private PlayerLives playerLives;
-    private SettleKitchen settleKitchen;
-    private SettleRestaurant settleRestaurant;
-    private GameObject particles;
-
-    public AudioSource successSfx;
-    public AudioSource failSfx;
-    public AudioSource destroySfx;
-    public AudioSource bgMusic;
-
+    private GameObject dishParticle;
     public int particleColorOffset = 5;
+    
+    private AudioManager _audioManager;
+    private IngredientModule _ingredientModule;
+    private LevelLoad _levelLoad;
+    private OrderManager _orderManager;
+    private PlayerLives _playerLives;
+    private SettleKitchen _settleKitchen;
+    private SettleRestaurant _settleRestaurant;
 
     private void Start()
     {
-        ingredientManager = GameObject.FindGameObjectWithTag("ingredientManager").GetComponent<IngredientManager>();
-        ingredientModule = GameObject.FindGameObjectWithTag("ingredientModule").GetComponent<IngredientModule>();
-        levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-        orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
-        playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
-        settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
-        settleRestaurant = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleRestaurant>();
+        _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _ingredientModule = GameObject.FindGameObjectWithTag("ingredientModule").GetComponent<IngredientModule>();
+        _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+        _orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
+        _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
+        _settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
+        _settleRestaurant = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleRestaurant>();
         
-        particles = Resources.Load("Prefabs/dishParticle", typeof(GameObject)) as GameObject;
+        dishParticle = Resources.Load("Prefabs/dishParticle", typeof(GameObject)) as GameObject;
         dishes = Resources.LoadAll<DishInfo>("RecipeInfo").ToList();
     }
 
@@ -49,7 +44,8 @@ public class RecipeManager : MonoBehaviour
 
     private bool RecipeMatch()
     {
-        DishInfo dish = orderManager.currentOrderPrompt;
+        // Checks if Ingredients on the Plate are Matched to the Prompted Dish's Recipe
+        DishInfo dish = _orderManager.currentOrderPrompt;
 
         if (dish.recipe.Count != objectsOnPlate.Count)
             return false;
@@ -64,8 +60,8 @@ public class RecipeManager : MonoBehaviour
 
     public void CheckIngredients()
     {
-        bgMusic.Stop();
-        if (!orderManager.currentOrderPrompt)
+        // Execute if checkButton was Pressed
+        if (!_orderManager.currentOrderPrompt)
         {
             Debug.Log("No assigned dish");
             return;
@@ -73,39 +69,39 @@ public class RecipeManager : MonoBehaviour
 
         if (RecipeMatch())
         {
-            successSfx.Play();
+            _audioManager.successSfx.Play();
             
-            if (SceneManager.GetActiveScene().name == levelLoad.kitchenScene) 
-                settleKitchen.EndRound(true);
-            else if (SceneManager.GetActiveScene().name == levelLoad.restaurantScene) 
-                settleRestaurant.EndOrder(true);
+            if (SceneManager.GetActiveScene().name == _levelLoad.kitchenScene) 
+                _settleKitchen.EndRound(true);
+            else if (SceneManager.GetActiveScene().name == _levelLoad.restaurantScene) 
+                _settleRestaurant.EndOrder(true);
         }
         else
         {
             FailPlayer();
             
-            if (SceneManager.GetActiveScene().name == levelLoad.kitchenScene) 
-                settleKitchen.EndRound(false);
-            else if (SceneManager.GetActiveScene().name == levelLoad.restaurantScene) 
-                settleRestaurant.EndOrder(false);
+            if (SceneManager.GetActiveScene().name == _levelLoad.kitchenScene) 
+                _settleKitchen.EndRound(false);
+            else if (SceneManager.GetActiveScene().name == _levelLoad.restaurantScene) 
+                _settleRestaurant.EndOrder(false);
         }
-        orderManager.timerRunning = false;
-        orderManager.currentOrderPrompt = null;
+        _orderManager.timerRunning = false;
+        _orderManager.currentOrderPrompt = null;
         DestroyAllLooseItems();
     }
 
     public void FailPlayer()
     {
-        bgMusic.Stop();
-        failSfx.Play();
-        orderManager.timerRunning = false;
+        // Execute if Player Failed
+        _audioManager.failSfx.Play();
+        _orderManager.timerRunning = false;
         DestroyAllLooseItems();
         
-        if (SceneManager.GetActiveScene().name == levelLoad.kitchenScene)
+        if (SceneManager.GetActiveScene().name == _levelLoad.kitchenScene)
         {
-            if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
+            if (PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) > 0)
             {
-                PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) - 1);
+                PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) - 1);
                 PlayerPrefs.SetInt("FailsBeforeSuccess", PlayerPrefs.GetInt("FailsBeforeSuccess", 0) + 1);
             }
         }
@@ -113,12 +109,14 @@ public class RecipeManager : MonoBehaviour
 
     private void DestroyAllLooseItems()
     {
-        destroySfx.Play();
+        _audioManager.breakSfx.Play();
         foreach (GameObject ingredient in GameObject.FindGameObjectsWithTag("looseIngredient"))
         {
-            GameObject newParticle = Instantiate(particles, ingredient.transform.position, Quaternion.identity);
+            // Instantiate dishParticle When an Ingredient Collides on Hitbox
+            GameObject newParticle = Instantiate(dishParticle, ingredient.transform.position, Quaternion.identity);
             var maintemp = newParticle.GetComponent<ParticleSystem>().main;
-            maintemp.startColor = new ParticleSystem.MinMaxGradient(ingredientModule.GetIngredient(ingredient.name).particleColorA, ingredientModule.GetIngredient(ingredient.name).particleColorB);
+            maintemp.startColor = new ParticleSystem.MinMaxGradient(_ingredientModule.GetIngredient(ingredient.name).particleColorA, _ingredientModule.GetIngredient(ingredient.name).particleColorB);
+            
             Destroy(ingredient);
             newParticle.GetComponent<ParticleSystem>().Play();
         }
@@ -126,12 +124,12 @@ public class RecipeManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if (SceneManager.GetActiveScene().name == levelLoad.kitchenScene)
+        if (SceneManager.GetActiveScene().name == _levelLoad.kitchenScene)
         {
-            if (orderManager.timerRunning)
+            if (_orderManager.timerRunning)
             {
-                if (PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) > 0)
-                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", playerLives.livesMax) - 1);
+                if (PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) > 0)
+                    PlayerPrefs.SetInt("GlobalLives", PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) - 1);
                 
                 PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
                 PlayerPrefs.Save();

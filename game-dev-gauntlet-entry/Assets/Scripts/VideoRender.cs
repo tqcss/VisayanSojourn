@@ -8,18 +8,20 @@ public class VideoRender : MonoBehaviour
 {
     public string[] videoFile;
     public VideoPlayer videoPlayer;
-    private InitialLoad initialLoad;
-    private LevelLoad levelLoad;
-    private SettleKitchen settleKitchen;
+
+    private InitialLoad _initialLoad;
+    private LevelLoad _levelLoad;
+    private SettleKitchen _settleKitchen;
 
     private void Awake()
     {
+        // Referencing the Scripts from GameObjects
         videoPlayer = GetComponent<VideoPlayer>();
         try
         {
-            initialLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<InitialLoad>();
-            levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
-            settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
+            _initialLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<InitialLoad>();
+            _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+            _settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
         }
         catch (UnityException)
         {
@@ -112,29 +114,33 @@ public class VideoRender : MonoBehaviour
         
         // After PlayIntro()
         if (SceneManager.GetActiveScene().name == "IntroScene")
-            StartCoroutine(initialLoad.LoadAsynchronously(initialLoad.mainScene));
+            StartCoroutine(_initialLoad.LoadAsynchronously(_initialLoad.mainScene));
         // After PlayTravel()
         else if (SceneManager.GetActiveScene().name == "MainScene")
-            levelLoad.AfterTravel();
+            _levelLoad.AfterTravel();
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
-            settleKitchen.DisplayRecipe();
+            _settleKitchen.DisplayRecipe();
     }
 
     private IEnumerator SetPlayVideoMobile()
     {
         // After PlayIntro()
         if (SceneManager.GetActiveScene().name == "IntroScene")
-            StartCoroutine(initialLoad.LoadAsynchronously(initialLoad.mainScene));
+        {
+            StartCoroutine(_initialLoad.LoadAsynchronously(_initialLoad.mainScene));
+        }
         // After PlayTravel()
         else if (SceneManager.GetActiveScene().name == "MainScene")
-            levelLoad.AfterTravel();
+        {
+            _levelLoad.AfterTravel();
+        }
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
         {
-            settleKitchen.DisplayRecipe();
-            settleKitchen.recipeScroll.SetActive(false);
-            settleKitchen.scroll.SetActive(true);
+            _settleKitchen.DisplayRecipe();
+            _settleKitchen.recipeScroll.SetActive(false);
+            _settleKitchen.scroll.SetActive(true);
         }
         yield return null;
     }

@@ -12,12 +12,16 @@ public class InitialLoad : MonoBehaviour
     public GameObject skipButton;
     public string mainScene = "MainScene";
     public string introScene = "IntroScene";
-    private VideoRender videoRender;
+    
+    private VideoRender _videoRender;
     
     private void Start()
     {
-        videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         Application.runInBackground = true;
+        Time.timeScale = 1.0f;
+        
+        // Referencing the Scripts from GameObjects
+        _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
 
         skipButton.SetActive(false);
         loadingScreen.SetActive(false);
@@ -26,21 +30,26 @@ public class InitialLoad : MonoBehaviour
 
     private IEnumerator FirstTimeCheck(string scene)
     {
+        // Checks if First Time Playing
         int firstTimePlaying = PlayerPrefs.GetInt("FirstTimePlaying", 1);
         if (firstTimePlaying == 1)
         {
-            videoRender.PlayIntro();
+            // Play Animation Video of Game Intro 
+            _videoRender.PlayIntro();
             yield return new WaitForSeconds(5);
             skipButton.SetActive(true);
         }
         else if (firstTimePlaying == 0)
+        {
             StartCoroutine(LoadAsynchronously(scene));
-        
+        }
+
         yield return null;
     }
 
     public IEnumerator LoadAsynchronously(string scene)
     {
+        // Loading Screen
         PlayerPrefs.SetInt("FirstTimePlaying", 0);
         skipButton.SetActive(false);
         loadingScreen.SetActive(true);
