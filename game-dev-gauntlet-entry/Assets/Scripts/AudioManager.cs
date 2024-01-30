@@ -20,12 +20,13 @@ public class AudioManager : MonoBehaviour
     public AudioSource failSfx;
     public AudioSource breakSfx;
     public AudioSource popSfx;
+
     private static Dictionary<string, GameObject> _instances = new Dictionary<string, GameObject>();
     public string ID;
     
     private void Awake()
     {
-        // Will not Destroy the Script When on the Next Scene
+        // Will not destroy the script when on the next loaded scene
         if(_instances.ContainsKey(ID))
         {
             var existing = _instances[ID];
@@ -42,17 +43,17 @@ public class AudioManager : MonoBehaviour
         _instances[ID] = gameObject;
         DontDestroyOnLoad(gameObject);
 
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         audioSourceMusic = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
-        // Music Update
+        // Automatically update the volume for music
         volumeMusic = PlayerPrefs.GetFloat("GlobalVolumeMusic", 1);
         audioSourceMusic.volume = PlayerPrefs.GetFloat("GlobalVolumeMusic", 1);
 
-        // SFX Update
+        // Automatically update the volume for sfx
         volumeSfx = PlayerPrefs.GetFloat("GlobalVolumeSfx", 1);
         startSfx.volume = PlayerPrefs.GetFloat("GlobalVolumeSfx", 1) * 0.75f;
         successSfx.volume = PlayerPrefs.GetFloat("GlobalVolumeSfx", 1);
@@ -61,24 +62,29 @@ public class AudioManager : MonoBehaviour
         popSfx.volume = PlayerPrefs.GetFloat("GlobalVolumeSfx", 1) * 0.5f;
     }
 
-    public void PlayBackgroundMusic(AudioClip audioClip)
+    public void PlayBackgroundMusic(AudioClip audioClip, bool shouldLoop)
     {
-        // Only for Playing Background Music
+        // Set the audio source with the audio clip
+        // Only for playing background audio
         audioSourceMusic.clip = audioClip;
+        audioSourceMusic.loop = shouldLoop;
         audioSourceMusic.Play();
     }
 
-    public void PlayThemeMusic(AudioClip audioClip, int levelId)
+    public void PlayThemeMusic(AudioClip audioClip, bool shouldLoop, int levelId)
     {
-        // Only for Playing Province Theme Music
+        // Set the audio source with the audio clip
+        // Only for playing the theme of a selected province
         audioSourceMusic.clip = audioClip;
+        audioSourceMusic.loop = shouldLoop;
         audioSourceMusic.Play();
         audioSourceMusic.time = provinceThemeInitialTime[levelId - 1];
     }
 
     public void StopMusic()
     {
-        // Stops the Music
+        // Stop the music
+        audioSourceMusic.loop = false;
         audioSourceMusic.Stop();
     }
 }

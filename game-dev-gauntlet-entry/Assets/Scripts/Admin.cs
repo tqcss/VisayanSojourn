@@ -11,7 +11,7 @@ public class Admin : MonoBehaviour
     
     private void Awake()
     {
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         _playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
         _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
@@ -20,39 +20,40 @@ public class Admin : MonoBehaviour
 
     public void DeleteSavedData()
     {
-        // Delete the Data
+        // Delete the saved data from player prefs
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
     }
 
     public void IncreaseLives()
     {
-        // Increase life by one
         int globalLives = PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax);
         if (globalLives < _playerLives.livesMax)
+            // Increment the player life by one
             PlayerPrefs.SetInt("GlobalLives", globalLives + 1);
     }
 
     public void DecreaseLives()
     {
-        // Decrease life by one
         int globalLives = PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax);
         if (globalLives > 0)
+            // Decrement the player life by one
             PlayerPrefs.SetInt("GlobalLives", globalLives - 1);
     }
 
     public void IncreaseLevel()
     {
-        // Increase level by one
         int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         
         if (provinceCompleted != provinceUnlocked)
         {
+            // Increment the no. of completed province if it is not equal to the no. of unlocked province
             PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted + 1);
         }
         else if (provinceUnlocked < _playerProvince.provinceTotal)
         {
+            // Increment the no. of unlocked province if it is still less than the total no. of province
             PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked + 1);
             PlayerPrefs.SetInt(_levelLoad.firstTimeKeyName[provinceUnlocked - 1], 1);
         }
@@ -60,30 +61,31 @@ public class Admin : MonoBehaviour
 
     public void DecreaseLevel()
     {
-        // Decrease level by one
         int provinceCompleted = PlayerPrefs.GetInt("ProvinceCompleted", 0);
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         
         if (provinceCompleted != provinceUnlocked)
         {
+            // Decrement the no. of unlocked province if it is not equal to the no. of completed province
             PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked - 1);
             PlayerPrefs.SetInt(_levelLoad.firstTimeKeyName[provinceUnlocked - 1], 1);
         }
         else if (provinceUnlocked > 0)
         {
+            // Decrement the no. of completed province if the no. of unlocked province is more than 0
             PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted - 1);
         }
     }
 
     public void IncreaseCoins()
     {
-        // Increase coins by 10
+        // Increase coins by 10.0
         _playerCoins.IncreaseCoins(10.0f);
     }
 
     public void DecreaseCoins()
     {
-        // Decrease coins by 10
+        // Decrease coins by 10.0
         _playerCoins.DecreaseCoins(10.0f);
     }
 }

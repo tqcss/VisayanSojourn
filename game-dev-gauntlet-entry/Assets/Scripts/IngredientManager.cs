@@ -1,4 +1,4 @@
-
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,26 +30,30 @@ public class IngredientManager : MonoBehaviour
 
     private void Start()
     {
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
         _ingredientModule = GameObject.FindGameObjectWithTag("ingredientModule").GetComponent<IngredientModule>();
         ingredientButton = Resources.Load("Prefabs/ingredientButton", typeof(GameObject)) as GameObject;
         ingredientBase = Resources.Load("Prefabs/ingredientBase", typeof(GameObject)) as GameObject;
 
-        // Ingredient Slot Loader
+        // Load the slots of ingredients on the ingredient tab
         foreach (IngredientInfo ingredientInfo in _ingredientModule.ingredients.OrderBy(item => item.name).ToList())
         {
+            // Instantiate a button for ingredients
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
-                
+            
+            // Set children to each button to display the ingredient's name and sprite
             newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name.Replace("_", " ");
             newButton.transform.GetChild(0).GetComponent<Image>().sprite = ingredientInfo.sprite;
 
+            // Add an event trigger to each button
             EventTrigger clickTrigger = newButton.GetComponent<EventTrigger>();
             EventTrigger.Entry clickEvent = new EventTrigger.Entry()
             {
                 eventID = EventTriggerType.PointerDown
             };
 
+            // Add a listener SpawnIngredient(ingredientInfo) to each button for its functionality
             clickEvent.callback.AddListener((data) => { SpawnIngredient(ingredientInfo); });
             clickTrigger.triggers.Add(clickEvent);
         }
@@ -58,7 +62,8 @@ public class IngredientManager : MonoBehaviour
 
     private void UpdateDisplay()
     {
-        // Update the Cell Size of Ingredient Slots and ScrollBar 
+        // Update the cell size of ingredient tab based on the number of ingredient slots,
+        // and reset the scroll bar value
         uiContent.GetComponent<RectTransform>().sizeDelta = new Vector2
             (uiContent.GetComponent<RectTransform>().sizeDelta.x, 
             (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(_ingredientModule.ingredients.Count / 2.0f));
@@ -67,9 +72,11 @@ public class IngredientManager : MonoBehaviour
 
     private void Update()
     {
-        // Loose Item Behavior
+        // Loose item behavior
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
+        // Set the position of a selected ingredient based on the cursor pointed
+        // if the mouse left click is in hold position
         if (Input.GetMouseButtonDown(0))
         {
             Collider2D collider = Physics2D.OverlapPoint(mousePosition, m_DragLayers);
@@ -88,6 +95,7 @@ public class IngredientManager : MonoBehaviour
             m_TargetJoint.frequency = m_Frequency;
             m_TargetJoint.anchor = m_TargetJoint.transform.InverseTransformPoint(mousePosition);
         }
+        // Drop the selected ingredient if the mouse left click is not in hold position
         else if (Input.GetMouseButtonUp(0))
         {
             Destroy(m_TargetJoint);
@@ -107,12 +115,14 @@ public class IngredientManager : MonoBehaviour
 
     public void SpawnIngredient(IngredientInfo ingredientInfo)
     {
-        // Spawns Ingredient when Dragged from the Slot
         _audioManager.popSfx.Play();
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 
+        // Instantiate a selected ingredient when it is dragged from the ingredient slot
         GameObject newIngredient = Instantiate(ingredientBase, mousePosition, Quaternion.identity);
+
+        // Set the name, local scale, sprite, and collider size of the spawned ingredient
         newIngredient.name = ingredientInfo.name;
 
         if (ingredientInfo.randomRotation)

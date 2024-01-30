@@ -8,19 +8,20 @@ using UnityEngine.UI;
 public class PlayerCoins : MonoBehaviour
 {
     public float globalCoins;
+    public float initialCoins;
 
     private UpdateDisplayMain _updateDisplayMain;
     private static GameObject s_instance {set; get;}
 
     private void Awake()
     {
-        // Will not Destroy the Script When on the Next Scene
+        // Will not destroy the script when on the next loaded scene
         if (s_instance != null) 
             Destroy(s_instance);
         s_instance = gameObject;
         DontDestroyOnLoad(s_instance);
 
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
     }
 
@@ -31,22 +32,22 @@ public class PlayerCoins : MonoBehaviour
 
     private void Update()
     {
-        globalCoins = PlayerPrefs.GetFloat("GlobalCoins", 0);
+        // Automatically update the player global coins
+        globalCoins = PlayerPrefs.GetFloat("GlobalCoins", initialCoins);
         _updateDisplayMain.UpdateDisplayCoins();
     }
 
     public void IncreaseCoins(float increase)
     {
-        // Increase Coins by Amount Prompted
-        PlayerPrefs.SetFloat("GlobalCoins", PlayerPrefs.GetFloat("GlobalCoins", 0) + increase);
+        // Increase coins by the amount prompted
+        float globalCoins = PlayerPrefs.GetFloat("GlobalCoins", initialCoins);
+        PlayerPrefs.SetFloat("GlobalCoins", globalCoins + increase);
     }
 
     public void DecreaseCoins(float decrease)
     {
-        // Decrease Coins by Amount Prompted
-        if (PlayerPrefs.GetFloat("GlobalCoins", 0) >= decrease)
-            PlayerPrefs.SetFloat("GlobalCoins", PlayerPrefs.GetFloat("GlobalCoins", 0) - decrease);
-        else
-            PlayerPrefs.SetFloat("GlobalCoins", 0);
+        // Decrease coins by the amount prompted
+        float globalCoins = PlayerPrefs.GetFloat("GlobalCoins", initialCoins);
+        PlayerPrefs.SetFloat("GlobalCoins", (globalCoins >= decrease) ? globalCoins - decrease : 0);
     }
 }

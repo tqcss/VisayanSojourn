@@ -21,15 +21,18 @@ public class LetterBoxer : MonoBehaviour
 
     public void Awake()
     {
+        // Reference the main camera 
         camera = GetComponent<Camera>();
         AddLetterBoxingCamera();
 
+        // Initially add letter box
         if (onAwake)
             PerformSizing();
     }
 
     public void Update()
     {
+        // Automatically update the letter box size based on the settled resolution
         if (onUpdate)
             PerformSizing();
     }
@@ -47,12 +50,14 @@ public class LetterBoxer : MonoBehaviour
         Camera[] allCameras = FindObjectsOfType<Camera>();
         foreach (Camera camera in allCameras)
         {             
+            // Check if the depth of camera is equal to -100
             if (camera.depth == -100)
             {
                 Debug.LogError("Set " + camera.name + "'s depth higher than -100");
             }
         }
 
+        // Set the letter boxer camera
         letterBoxerCamera = new GameObject().AddComponent<Camera>();
         letterBoxerCamera.backgroundColor = matteColor;
         letterBoxerCamera.cullingMask = 0;

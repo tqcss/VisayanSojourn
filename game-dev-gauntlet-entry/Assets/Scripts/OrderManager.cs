@@ -28,7 +28,7 @@ public class OrderManager : MonoBehaviour
 
     private void Start()
     {
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         dishes = Resources.LoadAll<DishInfo>("RecipeInfo").ToList();
         _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         _recipeManager = GameObject.FindGameObjectWithTag("recipeManager").GetComponent<RecipeManager>();
@@ -38,24 +38,33 @@ public class OrderManager : MonoBehaviour
 
     public void ChangeOrderPrompt(DishInfo dish)
     {
-        // Change Order Prompt
+        // Change the order prompted from the DishList script
         currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
         orderDisplay.sprite = currentOrderPrompt.sprite;
         dishColoredImage.sprite = currentOrderPrompt.sprite;
-        
-        timeDuration = 8 + (currentOrderPrompt.recipe.Count * 4);
 
-        if (SceneManager.GetActiveScene().name == _levelLoad.kitchenScene) 
+        if (_levelLoad.CheckModeId() == 1) 
         {
             dishMonoImage.sprite = currentOrderPrompt.sprite;
             dishDescription.text = currentOrderPrompt.description;
+        }
+
+        // Set the time duration based on the number of ingredients of a dish
+        switch (_levelLoad.CheckModeId())
+        {
+            case 1:
+                timeDuration = 8 + (currentOrderPrompt.recipe.Count * 4);
+                break;
+            case 2:
+                timeDuration = 5 + (currentOrderPrompt.recipe.Count * 2.5f);
+                break;
         }
     }
 
     public void StartTimer()
     {
-        // Initiate Timer
+        // Initiate the timer
         timeLeft = timeDuration;
         //timerBar.transform.localScale = new Vector3(1, timerBar.transform.localScale.y, 0);
         timerRunning = true;
@@ -66,30 +75,33 @@ public class OrderManager : MonoBehaviour
         if (!timerRunning)
             return;
         
+        // Decrease the time left by deltaTime if it is more than 0
         if (timeLeft > 0)
         {
             timeLeft -= Time.deltaTime;
             //timerBar.transform.localScale = new Vector3((timeLeft / timeDuration), timerBar.transform.localScale.y, 0);
             timerText.text = string.Format("{0:0.0}", timeLeft);
         }
+        // Fail the player and end the round / order if the time reaches 0
         else
         {
-            _recipeManager.FailPlayer(); 
-            
-            if (SceneManager.GetActiveScene().name == _levelLoad.kitchenScene) 
-                _settleKitchen.EndRound(false);
-            else if (SceneManager.GetActiveScene().name == _levelLoad.restaurantScene) 
-                _settleRestaurant.EndOrder(false);
+            _recipeManager.FailPlayer();
+            _recipeManager.SetEnd(false);
         }
     }
 
-    public float SellCompute()
+    public float SellCompute(float streakBonus, float provinceBonus)
     {
-        // (Restaurant Mode)
-        // Accumulate all sellPoints of Each Ingredients
-        float sellTotal = 0;
+        float originalSellTotal = 0;
+        float overallSellTotal = 0;
+
+        // Accumulate all original sell points of each ingredient
         for (int i = 0; i < currentOrderPrompt.recipe.Count; i++)
-            sellTotal += currentOrderPrompt.recipe[i].sellPoint;
-        return sellTotal;
+            originalSellTotal += currentOrderPrompt.recipe[i].sellPoint;
+        
+        // Increase the sell point based on serve streak and current province bonuses
+        overallSellTotal = (originalSellTotal * provinceBonus) * streakBonus;
+
+        return Mathf.Round(overallSellTotal * 100.0f) * 0.01f;
     }
 }

@@ -35,19 +35,22 @@ public class SettleKitchen : MonoBehaviour
     private OrderManager _orderManager;
     private PlayerLives _playerLives;
     private PlayerProvince _playerProvince;
+    private SettingsManager _settingsManager;
     private VideoRender _videoRender;
 
     private void Awake()
     {
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
         _dishList = GameObject.FindGameObjectWithTag("dishList").GetComponent<DishList>();
         _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         _orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
         _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
         _playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        _settingsManager = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettingsManager>();
         _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         
+        // Set initial values to the variables and set the game objects
         currentRound = (CheckCurrentRound()) ? PlayerPrefs.GetInt(_playerProvince.recipeDoneKeyName[PlayerPrefs.GetInt("ProvinceCurrent", 0) - 1], 1) : 1;
         skipButton.SetActive(false);
         StartCoroutine(PlayAnimation(true));
@@ -55,13 +58,14 @@ public class SettleKitchen : MonoBehaviour
 
     private bool CheckCurrentRound()
     {
-        // Checks if Not on the Previous Round as the Current Unlocked Province
+        // Check if it is not on the previous round as the current unlocked province
         return PlayerPrefs.GetInt("ProvinceCurrent", 0) == PlayerPrefs.GetInt("ProvinceUnlocked", 1) &&
                PlayerPrefs.GetInt("ProvinceCurrent", 0) != PlayerPrefs.GetInt("ProvinceCompleted", 0);
     }
 
     private IEnumerator PlayAnimation(bool firstPlay)
     {
+        // Set the game objects
         recipeScroll.SetActive(true);
         scroll.SetActive(false);
         dishNameTextObj.SetActive(false);
@@ -75,7 +79,7 @@ public class SettleKitchen : MonoBehaviour
         
         if (firstPlay) 
         {
-            // Play Animation Video of Recipe Scroll
+            // Play the video of recipe scroll
             _videoRender.PlayScroll();
             yield return new WaitForSeconds(2);
             skipButton.SetActive(true);
@@ -90,7 +94,7 @@ public class SettleKitchen : MonoBehaviour
 
     public void DisplayRecipe()
     {
-        // Display the Dish and its Recipe
+        // Set the game objects
         _dishList.PromptOrder();
         skipButton.SetActive(false);
         dishNameTextObj.SetActive(true);
@@ -99,6 +103,7 @@ public class SettleKitchen : MonoBehaviour
         backButton.SetActive(true);
         startButton.SetActive(true);
         
+        // Display the dish and its recipe and sprite
         dishNameText.text = _orderManager.currentOrderPrompt.name;
         string currentRecipeText = "Ingredients: \n";
         for (int i = 0; i < _orderManager.currentOrderPrompt.recipe.Count; i++)
@@ -110,8 +115,8 @@ public class SettleKitchen : MonoBehaviour
 
     public void StartRound()
     {
-        // Start when startButton is Pressed
-        _audioManager.PlayBackgroundMusic(_audioManager.kitchenMusic);
+        // Start if the start button is pressed
+        _audioManager.PlayBackgroundMusic(_audioManager.kitchenMusic, true);
         _audioManager.startSfx.Play();
 
         recipeScroll.SetActive(false);
@@ -122,8 +127,9 @@ public class SettleKitchen : MonoBehaviour
 
     public void EndRound(bool success)
     {
-        // End when checkButton is Pressed
+        // End if the check button is pressed
         _audioManager.StopMusic();
+        _settingsManager.CloseSettings();
         
         roundFinishUI.SetActive(true);
         int globalLives = PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax);
@@ -133,18 +139,21 @@ public class SettleKitchen : MonoBehaviour
             successRound = true;
             if (globalLives > 0)
             {
+                // Set the game objects
                 messageText.text = endMessage[0];
                 nextButton.SetActive(true);
                 restartButton.SetActive(false);
                 descriptionPanel.SetActive(true);
                 homeButton.SetActive((currentRound < maximumRound) ? true : false);
 
+                // Set the life cooldown reward depending on the no. of fails before success
                 _playerLives.RewardLife(PlayerPrefs.GetInt("FailsBeforeSuccess", 0), CheckCurrentRound());
             }
         }
         else
         {
             successRound = false;
+            // Set the game objects
             messageText.text = (globalLives > 0) ? endMessage[1] : endMessage[2];
             restartButton.SetActive((globalLives > 0) ? true : false);
 
@@ -165,14 +174,14 @@ public class SettleKitchen : MonoBehaviour
         if (CheckCurrentRound()) 
             PlayerPrefs.SetInt(_playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
 
+        // Go to the next round if the player did not reach the maximum round
         if (currentRound <= maximumRound)
         {
-            // Go to the Next Round
             StartCoroutine(PlayAnimation(false));
         }
+        // Go to the main menu if the player reached the maximum round
         else
         {
-            // If Completed, Go to Main
             if (provinceCurrent == provinceUnlocked)
                 PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted + 1);
             GoBackToMain();
@@ -183,7 +192,7 @@ public class SettleKitchen : MonoBehaviour
 
     public void RestartRound()
     {
-        // Restart the Round
+        // Restart if the restart button is pressed
         successRound = false;
         StartCoroutine(PlayAnimation(false));
     }
@@ -194,6 +203,7 @@ public class SettleKitchen : MonoBehaviour
         int provinceCurrent = PlayerPrefs.GetInt("ProvinceCurrent", 0);
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
 
+        // Increase the no. of recipe done if the round is success and the player did not reach the maximum round
         if (successRound && currentRound <= maximumRound)
         {
             currentRound++;
@@ -201,6 +211,7 @@ public class SettleKitchen : MonoBehaviour
                 PlayerPrefs.SetInt(_playerProvince.recipeDoneKeyName[provinceCurrent - 1], currentRound);
         }
 
+        // Set the game objects
         successRound = false;
         kitchenUI.SetActive(false);
         roundFinishUI.SetActive(false);
@@ -211,6 +222,7 @@ public class SettleKitchen : MonoBehaviour
     private void OnApplicationQuit()
     {
         int provinceCurrent = PlayerPrefs.GetInt("ProvinceCurrent", 0);
+        // Increase the no. of recipe done if the round is success and the player did not reach the maximum round
         if (successRound && currentRound < maximumRound)
         {
             currentRound++;

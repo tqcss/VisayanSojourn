@@ -21,3 +21,4 @@ MonoBehaviour:
   particleColorA: {r: 0.3019608, g: 0.8235295, b: 0.043137256, a: 1}
   particleColorB: {r: 0.20000002, g: 0.5176471, b: 0.054901965, a: 1}
   isIncludedInProvince: 000000000001
+  sellPoint: 0.6

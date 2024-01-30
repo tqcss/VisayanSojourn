@@ -15,7 +15,7 @@ public class VideoRender : MonoBehaviour
 
     private void Awake()
     {
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         videoPlayer = GetComponent<VideoPlayer>();
         try
         {
@@ -41,14 +41,6 @@ public class VideoRender : MonoBehaviour
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
             StartCoroutine(SetPlayVideoPC());
         #endif
-
-        /*
-        #if UNITY_EDITOR
-            videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[0];
-            StartCoroutine(SetPlayVideoPC());
-        #endif
-        */
     }
 
     public void PlayTravel(int provinceUnlocked)
@@ -63,14 +55,6 @@ public class VideoRender : MonoBehaviour
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[provinceUnlocked - 1];
             StartCoroutine(SetPlayVideoPC());
         #endif
-
-        /*
-        #if UNITY_EDITOR
-            videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[provinceUnlocked - 1];
-            StartCoroutine(SetPlayVideoPC());
-        #endif
-        */
     }
 
     public void PlayScroll()
@@ -85,29 +69,23 @@ public class VideoRender : MonoBehaviour
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
             StartCoroutine(SetPlayVideoPC());
         #endif
-
-        /*
-        #if UNITY_EDITOR
-            videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = Application.streamingAssetsPath + "/" + videoFile[0];
-            StartCoroutine(SetPlayVideoPC());
-        #endif
-        */
     }
 
-    // SetPlayVideoPC For PC
     public IEnumerator SetPlayVideoPC()
     {
+        // Set video player for PC_WINDOWS
         var audioSource = videoPlayer.GetComponent<AudioSource>();
         videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
         videoPlayer.controlledAudioTrackCount = 1;
         videoPlayer.EnableAudioTrack(0, true);
         videoPlayer.SetTargetAudioSource(0, audioSource);
 
+        // Prepare the video player
         videoPlayer.Prepare();
         while (!videoPlayer.isPrepared)
             yield return null;
 
+        // Play the video player
         videoPlayer.Play();
         while (videoPlayer.isPlaying)
             yield return null;
@@ -147,6 +125,7 @@ public class VideoRender : MonoBehaviour
 
     public void SkipVideo()
     {
+        // Skip the video if the skip button is pressed
         if (SceneManager.GetActiveScene().name == "IntroScene")
         {
             StopCoroutine(SetPlayVideoPC());

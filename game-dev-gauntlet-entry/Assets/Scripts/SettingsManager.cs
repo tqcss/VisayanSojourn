@@ -21,10 +21,11 @@ public class SettingsManager : MonoBehaviour
 
     private void Awake()
     {
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
         _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         
+        // Set initial values to the variables and set the game objects
         float volumeMusic = PlayerPrefs.GetFloat("GlobalVolumeMusic", 1);
         volumeMusicImage.sprite = (volumeMusic > 0) ? volumeMusicSprite[1] : volumeMusicSprite[0];
         volumeMusicSlider.value = volumeMusic;
@@ -36,18 +37,18 @@ public class SettingsManager : MonoBehaviour
 
     private void Update()
     {
-        // Volume Music Settings
+        // Automatically update the music volume based on the value of the slider and update the music display
         PlayerPrefs.SetFloat("GlobalVolumeMusic", volumeMusicSlider.value);
         volumeMusicImage.sprite = (_audioManager.volumeMusic > 0) ? volumeMusicSprite[1] : volumeMusicSprite[0];
 
-        // Volume Sfx Settings
+        // Automatically update the sfx volume based on the value of the slider and update the sfx display
         PlayerPrefs.SetFloat("GlobalVolumeSfx", volumeSfxSlider.value);
         volumeSfxImage.sprite = (_audioManager.volumeSfx > 0) ? volumeSfxSprite[1] : volumeSfxSprite[0];
     }
 
     public void OpenSettings()
     {
-        // Open the Settings UI
+        // Open the settings interface
         _levelLoad.settingsPanel.SetActive(true);
         settingsController.SetTrigger("OpenSettings");
         mainSettingsPart.SetActive(true);
@@ -56,13 +57,13 @@ public class SettingsManager : MonoBehaviour
 
     public void CloseSettings()
     {        
-        // Close the Settings UI
+        // Close the settings interface
         settingsController.SetTrigger("CloseSettings");
     }
 
     public void VolumeMusicSet()
     {
-        // Set Mute or Unmute
+        // Set the music volume by muting or unmuting
         bool isVolumeGreaterZero = _audioManager.volumeMusic > 0;
         PlayerPrefs.SetFloat("GlobalVolumeMusic", (isVolumeGreaterZero) ? 0 : 0.5f);
         volumeMusicImage.sprite = (isVolumeGreaterZero) ? volumeMusicSprite[1] : volumeMusicSprite[0];
@@ -71,7 +72,7 @@ public class SettingsManager : MonoBehaviour
 
     public void VolumeSfxSet()
     {
-        // Set Mute or Unmute
+        // Set the sfx volume by muting or unmuting
         bool isVolumeGreaterZero = _audioManager.volumeSfx > 0;
         PlayerPrefs.SetFloat("GlobalVolumeSfx", (isVolumeGreaterZero) ? 0 : 0.5f);
         volumeSfxImage.sprite = (isVolumeGreaterZero) ? volumeSfxSprite[1] : volumeSfxSprite[0];
@@ -80,13 +81,14 @@ public class SettingsManager : MonoBehaviour
 
     public void DisplayCredits()
     {
-        // Display Credits on Settings
+        // Display the credits on settings interface
         mainSettingsPart.SetActive(false);
         creditsPart.SetActive(true);
     }
 
     public void DoQuit()
     {
+        // Quit the application if the quit button is pressed
         Application.Quit();
     }
 }

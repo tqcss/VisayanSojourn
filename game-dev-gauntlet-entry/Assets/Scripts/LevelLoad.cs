@@ -36,15 +36,17 @@ public class LevelLoad : MonoBehaviour
 
     private void Start()
     {
+        // Set the application as running in background, and the time scale should be in normal state
         Application.runInBackground = true;
         Time.timeScale = 1.0f;
         
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
         _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
         _playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
         _updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
         
+        // Set the game objects
         if (SceneManager.GetActiveScene().name == mainScene) 
         {
             _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
@@ -53,7 +55,7 @@ public class LevelLoad : MonoBehaviour
             settingsPanel.SetActive(false);
             
             PlayAnimation();
-            _audioManager.PlayBackgroundMusic(_audioManager.mainMusic);
+            _audioManager.PlayBackgroundMusic(_audioManager.mainMusic, true);
         }
             
         loadingScreen.SetActive(false);
@@ -61,43 +63,44 @@ public class LevelLoad : MonoBehaviour
 
     public void SelectProvince(int selected)
     {
-        // Execute if Province is Selected
+        // Execute if the province is selected
         levelId = selected;
         _updateDisplayMain.UpdateDescription(levelId);
 
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         if (provinceUnlocked != levelId && provinceUnlocked < levelId)
         {
-            // Execute if the Selected Province is Locked
+            // Execute if the selected province is locked
             _playerProvince.ProvincePurchasing();
         }
         else
         {
             if (levelId <= provinceUnlocked)
             {
-                // Execute if the Selected Province is Unlocked
+                // Execute if the selected province is unlocked
                 _updateDisplayMain.DisableProvince();
                 levelSelectionController.SetTrigger("OpenSelection");
-                _audioManager.PlayThemeMusic(_audioManager.provinceThemeMusic[levelId - 1], levelId);
+                _audioManager.PlayThemeMusic(_audioManager.provinceThemeMusic[levelId - 1], true, levelId);
             }
         }
     }
 
     public void UnselectProvince()
     {
-        // Execute if Province is Deselected
+        // Execute if the province is deselected
         _updateDisplayMain.EnableProvince();
         levelSelectionController.SetTrigger("CloseSelection");
-        _audioManager.PlayBackgroundMusic(_audioManager.mainMusic);
+        _audioManager.PlayBackgroundMusic(_audioManager.mainMusic, true);
     }
     
     public void LoadKitchen()
     {
-        // Prepare Load for Kitchen Scene
+        // Prepare load the kitchen mode if the player global life is more than 0
         if (PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) > 0)
         {
             StartCoroutine(LoadAsynchronously(kitchenScene));
             PlayerPrefs.SetInt("ProvinceCurrent", levelId);
+            
             levelSelection.SetActive(false);
             loadingBgObj.SetActive(true);
         }
@@ -105,23 +108,24 @@ public class LevelLoad : MonoBehaviour
 
     public void LoadRestaurant()
     {
-        // Prepare Load for Restaurant Scene
+        // Prepare load the restaurant mode
         StartCoroutine(LoadAsynchronously(restaurantScene));
         PlayerPrefs.SetInt("ProvinceCurrent", levelId);
+
         levelSelection.SetActive(false);
         loadingBgObj.SetActive(true);
     }
 
     public void LoadBack(string scene)
     {
-        // Prepare Load to go Back to Main
+        // Prepare load to go back to the main menu
         PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
         StartCoroutine(LoadAsynchronously(scene));
     }
 
     public void LoadFinishBack(string scene)
     {
-        // Prepare Load to go Back to Main
+        // Prepare load to go back to the main menu
         if (PlayerPrefs.GetInt("GlobalLives", _playerLives.livesMax) > 0)
         {
             StartCoroutine(LoadAsynchronously(scene));
@@ -134,12 +138,12 @@ public class LevelLoad : MonoBehaviour
         _audioManager.StopMusic();
         _audioManager.startSfx.Play();
         
-        // Loading Screen
         loadingScreen.SetActive(true);
         loadingProvinceText.text = loadingBgSprite[levelId - 1].name.Replace("image_", "").Replace("_", " ").ToUpper();
         loadingBg.sprite = loadingBgSprite[levelId - 1];
         loadingSlider.value = 0;
 
+        // Load asynchronously to the selected scene, with loading screen active
         AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
         operation.allowSceneActivation = false;
         yield return new WaitForSeconds(1);
@@ -147,13 +151,15 @@ public class LevelLoad : MonoBehaviour
         float progress = 0;
         double firstFloatPosX = loadingFloat.GetComponent<RectTransform>().localPosition.x;
 
+        // Increase the loading progress if the async operation is not yet done
         while (!operation.isDone)
         {
             progress = Mathf.MoveTowards(progress, Mathf.Clamp01(operation.progress / 0.9f), Time.deltaTime / 3.14f);
             loadingSlider.value = progress;
             
-            double moveDishPosX = firstFloatPosX + (progress * floatDistance);
-            loadingFloat.GetComponent<RectTransform>().localPosition = new Vector3((int)moveDishPosX, loadingFloat.GetComponent<RectTransform>().localPosition.y, 0);
+            // Set the position of the image float of loading screen based on the progress
+            double moveFloatPosX = firstFloatPosX + (progress * floatDistance);
+            loadingFloat.GetComponent<RectTransform>().localPosition = new Vector3((int)moveFloatPosX, loadingFloat.GetComponent<RectTransform>().localPosition.y, 0);
 
             if (progress >= 1f)
             {
@@ -170,13 +176,14 @@ public class LevelLoad : MonoBehaviour
 
     public void PlayAnimation()
     {
-        // Play Animation Video of Traveling from One to the Next
         canPlayAnimation = false;
         if (videoScreen) videoScreen.SetActive(true);
 
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
+        // Check if the player is first time unlocking the province
         if (PlayerPrefs.GetInt(firstTimeKeyName[provinceUnlocked - 1], 1) == 1)
         {
+            // Play the video of traveling from a current province to the next one
             levelSelection.SetActive(false);
             _videoRender.PlayTravel(provinceUnlocked);
             PlayerPrefs.SetInt(firstTimeKeyName[provinceUnlocked - 1], 0);
@@ -198,5 +205,27 @@ public class LevelLoad : MonoBehaviour
             miscPanel.SetActive(true);
             settingsPanel.SetActive(true);
         }
+    }
+
+    public int CheckModeId()
+    {
+        /*
+            Mode
+            1: Kitchen Mode
+            2: Restaurant Mode
+        */
+        
+        // Check the current mode and return the mode id
+        int modeId = 0;
+        switch (SceneManager.GetActiveScene().name)
+        {
+            case "KitchenScene":
+                modeId = 1;
+                break;
+            case "RestaurantScene":
+                modeId = 2;
+                break;
+        }
+        return modeId;
     }
 }

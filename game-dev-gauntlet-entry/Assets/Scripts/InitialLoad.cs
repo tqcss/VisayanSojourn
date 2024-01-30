@@ -17,12 +17,14 @@ public class InitialLoad : MonoBehaviour
     
     private void Start()
     {
+        // Set the application as running in background, and the time scale should be in normal state
         Application.runInBackground = true;
         Time.timeScale = 1.0f;
         
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
 
+        // Set the game objects
         skipButton.SetActive(false);
         loadingScreen.SetActive(false);
         StartCoroutine(FirstTimeCheck(mainScene));
@@ -30,11 +32,11 @@ public class InitialLoad : MonoBehaviour
 
     private IEnumerator FirstTimeCheck(string scene)
     {
-        // Checks if First Time Playing
+        // Check if the player is playing for the first time
         int firstTimePlaying = PlayerPrefs.GetInt("FirstTimePlaying", 1);
         if (firstTimePlaying == 1)
         {
-            // Play Animation Video of Game Intro 
+            // Play the video of the game intro
             _videoRender.PlayIntro();
             yield return new WaitForSeconds(5);
             skipButton.SetActive(true);
@@ -49,18 +51,19 @@ public class InitialLoad : MonoBehaviour
 
     public IEnumerator LoadAsynchronously(string scene)
     {
-        // Loading Screen
         PlayerPrefs.SetInt("FirstTimePlaying", 0);
         skipButton.SetActive(false);
         loadingScreen.SetActive(true);
         loadingSlider.value = 0;
 
+        // Load asynchronously to the selected scene, with loading screen active
         AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
         operation.allowSceneActivation = false;
         yield return new WaitForSeconds(1);
         
         float progress = 0;
 
+        // Increase the loading progress if the async operation is not yet done
         while (!operation.isDone)
         {
             progress = Mathf.MoveTowards(progress, Mathf.Clamp01(operation.progress / 0.9f), Time.deltaTime / 3.14f);

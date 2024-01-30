@@ -392,11 +392,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   videoScreen: {fileID: 1903839946}
   levelSelection: {fileID: 1632378128}
+  levelSelectionController: {fileID: 1632378133}
   modePanel: {fileID: 323486792}
   miscPanel: {fileID: 1776106911}
   settingsPanel: {fileID: 2107710975}
   loadingScreen: {fileID: 1131284562}
-  levelSelectionController: {fileID: 1632378133}
   loadingSlider: {fileID: 200952435}
   loadingBgSprite:
   - {fileID: 21300000, guid: b266132d2ed3a394ebe9a50d1e38d12f, type: 3}
@@ -410,6 +410,13 @@ MonoBehaviour:
   loadingProvinceText: {fileID: 1756857132}
   loadingFloat: {fileID: 1500919525}
   floatDistance: 400
+  firstTimeKeyName:
+  - FirstTimeAntique
+  - FirstTimeAklan
+  - FirstTimeCapiz
+  - FirstTimeNegrosOcc
+  - FirstTimeGuimaras
+  - FirstTimeIloilo
   mainScene: MainScene
   kitchenScene: KitchenScene
   restaurantScene: RestaurantScene
@@ -1635,7 +1642,6 @@ MonoBehaviour:
   lifeMaxCooldown: 600
   lifeCooldown: 0
   inCooldown: 0
-  ID: PlayerLives
 --- !u!1 &413446625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4499,11 +4505,11 @@ MonoBehaviour:
   provinceTotal: 6
   provinceCost:
   - 0
-  - 125
-  - 250
-  - 400
-  - 625
-  - 875
+  - 100
+  - 220
+  - 360
+  - 570
+  - 850
   recipeDoneKeyName:
   - RecipeDoneAntique
   - RecipeDoneAklan
@@ -4512,7 +4518,6 @@ MonoBehaviour:
   - RecipeDoneGuimaras
   - RecipeDoneIloilo
   recipeDoneValue: 000000000000000000000000000000000000000000000000
-  ID: PlayerProvince
 --- !u!4 &887536137
 Transform:
   m_ObjectHideFlags: 0
@@ -8713,7 +8718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   globalCoins: 0
-  ID: PlayerCoins
+  initialCoins: 10
 --- !u!1 &1496066401
 GameObject:
   m_ObjectHideFlags: 0
@@ -13169,8 +13174,8 @@ SceneRoots:
   - {fileID: 1903839950}
   - {fileID: 1632378132}
   - {fileID: 1131284566}
+  - {fileID: 1446056033}
   - {fileID: 402661936}
   - {fileID: 887536137}
-  - {fileID: 1446056033}
   - {fileID: 940407614}
   - {fileID: 2130882324}

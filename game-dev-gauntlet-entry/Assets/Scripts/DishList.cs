@@ -18,7 +18,7 @@ public class DishList : MonoBehaviour
 
     private void Awake()
     {
-        // Referencing the Scripts from GameObjects
+        // Reference the scripts from game objects
         _orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
         _settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
     }
@@ -34,6 +34,9 @@ public class DishList : MonoBehaviour
             5: Guimaras
             6: Iloilo
         */
+
+        // Prompt a dish based on the current province and the current round,
+        // then set the value of maximum round based on the number of dishes
         switch (PlayerPrefs.GetInt("ProvinceCurrent", 0))
         {
             case 1:
@@ -74,6 +77,8 @@ public class DishList : MonoBehaviour
             5: Guimaras
             6: Iloilo
         */
+
+        // Prompt a random dish from [0] to [dish[] length] based on the current province
         switch (PlayerPrefs.GetInt("ProvinceCurrent", 0))
         {
             case 1:
