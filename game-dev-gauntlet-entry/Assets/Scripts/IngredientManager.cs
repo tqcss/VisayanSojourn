@@ -8,12 +8,14 @@ using System.Linq;
 
 public class IngredientManager : MonoBehaviour
 {
+    private GameObject purchaseButton;
+    private GameObject freeButton;
     private GameObject ingredientButton;
     private GameObject ingredientBase;
     public GameObject uiContent; // Parent of ingredientButton
     public Scrollbar scrollBar;
     
-    // For Drag and Drop Physics
+    // For drag and drop physics
     public LayerMask m_DragLayers; // Layer dedicated for loose items
     public int deadZoneX = -11;
     private TargetJoint2D m_TargetJoint;
@@ -26,25 +28,47 @@ public class IngredientManager : MonoBehaviour
     public float m_Frequency = 5.0f;
 
     private AudioManager _audioManager;
+    private LevelLoad _levelLoad;
     private IngredientModule _ingredientModule;
+    private SettleRestaurant _settleRestaurant;
 
     private void Start()
     {
         // Reference the scripts from game objects
         _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         _ingredientModule = GameObject.FindGameObjectWithTag("ingredientModule").GetComponent<IngredientModule>();
-        ingredientButton = Resources.Load("Prefabs/ingredientButton", typeof(GameObject)) as GameObject;
+        _settleRestaurant = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleRestaurant>();
+
+        // Reference the prefab objects
+        purchaseButton = Resources.Load("Prefabs/purchaseIngredientButton", typeof(GameObject)) as GameObject;
+        freeButton = Resources.Load("Prefabs/freeIngredientButton", typeof(GameObject)) as GameObject;
         ingredientBase = Resources.Load("Prefabs/ingredientBase", typeof(GameObject)) as GameObject;
+
+        // Check the current mode
+        // Kitchen Mode: Ingredients should have no cost
+        // Restaurant Mode: Ingredients should have cost based on the sell point
+        switch (_levelLoad.CheckModeId())
+        {
+            case 1:
+                ingredientButton = freeButton;
+                break;
+            case 2:
+                ingredientButton = purchaseButton;
+                break;
+        }
 
         // Load the slots of ingredients on the ingredient tab
         foreach (IngredientInfo ingredientInfo in _ingredientModule.ingredients.OrderBy(item => item.name).ToList())
         {
-            // Instantiate a button for ingredients
+            // Instantiate ingredient buttons
             GameObject newButton = Instantiate(ingredientButton, uiContent.transform);
             
             // Set children to each button to display the ingredient's name and sprite
-            newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name.Replace("_", " ");
             newButton.transform.GetChild(0).GetComponent<Image>().sprite = ingredientInfo.sprite;
+            newButton.transform.GetChild(2).GetComponent<Text>().text = ingredientInfo.name.Replace("_", " ");
+            if (_levelLoad.CheckModeId() == 2)
+                newButton.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = string.Format("{0:0.00}", Mathf.Round(ingredientInfo.sellPoint * _settleRestaurant.costRatio * 100.0f) * 0.01f);
 
             // Add an event trigger to each button
             EventTrigger clickTrigger = newButton.GetComponent<EventTrigger>();
@@ -67,7 +91,7 @@ public class IngredientManager : MonoBehaviour
         uiContent.GetComponent<RectTransform>().sizeDelta = new Vector2
             (uiContent.GetComponent<RectTransform>().sizeDelta.x, 
             (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(_ingredientModule.ingredients.Count / 2.0f));
-        scrollBar.value = 1.0f;
+        scrollBar.value = 1f;
     }
 
     private void Update()
@@ -134,5 +158,9 @@ public class IngredientManager : MonoBehaviour
         newIngredient.transform.localScale = new Vector3(ingredientInfo.scaleX, ingredientInfo.scaleY, 0);
         newIngredient.GetComponent<SpriteRenderer>().sprite = ingredientInfo.sprite;
         newIngredient.GetComponent<BoxCollider2D>().size = new Vector2(ingredientInfo.colliderSizeX, ingredientInfo.colliderSizeY);
+
+        // Execute decreasing player global coins if the current mode is restaurant
+        if (_levelLoad.CheckModeId() == 2)
+            _settleRestaurant.PurchaseIngredient(ingredientInfo);
     }
 }

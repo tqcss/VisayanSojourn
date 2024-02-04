@@ -77,7 +77,7 @@ public class UpdateDisplayMain : MonoBehaviour
             } 
             else if (globalLives == _playerLives.livesMax)
             {
-                // Display "FULL" if the player has maximum life
+                // Display "full" if the player has maximum life
                 livesCooldownText.text = "FULL";
             }
             

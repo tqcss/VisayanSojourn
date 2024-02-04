@@ -86,7 +86,7 @@ public class OrderManager : MonoBehaviour
         else
         {
             _recipeManager.FailPlayer();
-            _recipeManager.SetEnd(false);
+            _recipeManager.SetEnd(false, true);
         }
     }
 

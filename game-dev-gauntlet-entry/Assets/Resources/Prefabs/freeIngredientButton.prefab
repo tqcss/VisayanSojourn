@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3842709419404140413}
   - component: {fileID: 1898353282909142720}
   m_Layer: 5
-  m_Name: text
+  m_Name: nameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 3919181131530403980}
   - component: {fileID: 751829359458731828}
   m_Layer: 5
-  m_Name: ingredientButton
+  m_Name: freeIngredientButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

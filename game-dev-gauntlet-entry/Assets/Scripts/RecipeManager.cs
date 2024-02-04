@@ -76,12 +76,12 @@ public class RecipeManager : MonoBehaviour
         if (RecipeMatch())
         {
             _audioManager.successSfx.Play();
-            SetEnd(true);
+            SetEnd(true, true);
         }
         else
         {
             FailPlayer();
-            SetEnd(false);
+            SetEnd(false, true);
         }
         
         _orderManager.timerRunning = false;
@@ -110,7 +110,7 @@ public class RecipeManager : MonoBehaviour
         }
     }
 
-    public void SetEnd(bool success)
+    public void SetEnd(bool success, bool ableToStart)
     {
         // Check the mode id of the current active mode
         switch (_levelLoad.CheckModeId())
@@ -119,7 +119,7 @@ public class RecipeManager : MonoBehaviour
                 _settleKitchen.EndRound(success);
                 break;
             case 2:
-                _settleRestaurant.EndOrder(success);
+                _settleRestaurant.EndOrder(success, ableToStart);
                 break;
         }
     }
