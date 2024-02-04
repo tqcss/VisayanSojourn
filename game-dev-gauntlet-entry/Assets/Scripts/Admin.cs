@@ -57,6 +57,7 @@ public class Admin : MonoBehaviour
             PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked + 1);
             PlayerPrefs.SetInt(_levelLoad.firstTimeKeyName[provinceUnlocked - 1], 1);
         }
+        PlayerPrefs.SetInt("UnlockedDishes", PlayerPrefs.GetInt("UnlockedDishes", 0) + 1);
     }
 
     public void DecreaseLevel()
@@ -75,6 +76,7 @@ public class Admin : MonoBehaviour
             // Decrement the no. of completed province if the no. of unlocked province is more than 0
             PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted - 1);
         }
+        PlayerPrefs.SetInt("UnlockedDishes", PlayerPrefs.GetInt("UnlockedDishes", 0) - 1);
     }
 
     public void IncreaseCoins()
