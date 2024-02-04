@@ -87,7 +87,7 @@ public class IngredientManager : MonoBehaviour
     private void UpdateDisplay()
     {
         // Update the cell size of ingredient tab based on the number of ingredient slots,
-        // and reset the scroll bar value
+        // and reset the scroll bar value (not working)
         uiContent.GetComponent<RectTransform>().sizeDelta = new Vector2
             (uiContent.GetComponent<RectTransform>().sizeDelta.x, 
             (uiContent.GetComponent<GridLayoutGroup>().cellSize.y + uiContent.GetComponent<GridLayoutGroup>().spacing.y) * Mathf.CeilToInt(_ingredientModule.ingredients.Count / 2.0f));
@@ -125,6 +125,7 @@ public class IngredientManager : MonoBehaviour
             Destroy(m_TargetJoint);
             m_TargetJoint = null;
 
+            // Destroy the ingredient if the position X is in less than the dead zone
             if (body && body.gameObject.transform.position.x <= deadZoneX)
                 Destroy(body.gameObject);
 

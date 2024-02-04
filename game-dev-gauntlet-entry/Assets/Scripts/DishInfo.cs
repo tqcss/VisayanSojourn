@@ -9,4 +9,5 @@ public class DishInfo : ScriptableObject
     public Sprite sprite;
     public Vector3 scale;
     public string description;
+    public string shortDescription;
 }

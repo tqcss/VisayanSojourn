@@ -47,7 +47,7 @@ public class OrderManager : MonoBehaviour
         if (_levelLoad.CheckModeId() == 1) 
         {
             dishMonoImage.sprite = currentOrderPrompt.sprite;
-            dishDescription.text = currentOrderPrompt.description;
+            dishDescription.text = currentOrderPrompt.shortDescription;
         }
 
         // Set the time duration based on the number of ingredients of a dish
@@ -81,6 +81,26 @@ public class OrderManager : MonoBehaviour
             timeLeft -= Time.deltaTime;
             //timerBar.transform.localScale = new Vector3((timeLeft / timeDuration), timerBar.transform.localScale.y, 0);
             timerText.text = string.Format("{0:0.0}", timeLeft);
+            
+            if (_levelLoad.CheckModeId() == 2)
+            {
+                // The customer will be on sad emotion if the current time left is less than 1/4 of the time duration
+                if (timeLeft < (timeDuration / 4.0f))
+                {
+                    switch (_settleRestaurant.genderId)
+                    {
+                        // FaceId: 1 - Sad
+                        // Execute if the customer is a man
+                        case 1:
+                            _settleRestaurant.customerFace.sprite = _settleRestaurant.manFace[1];
+                            break;
+                        // Execute if the customer is a woman
+                        case 2:
+                            _settleRestaurant.customerFace.sprite = _settleRestaurant.womanFace[1];
+                            break;
+                    }
+                }
+            }
         }
         // Fail the player and end the round / order if the time reaches 0
         else

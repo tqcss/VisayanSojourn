@@ -29,16 +29,16 @@ public class VideoRender : MonoBehaviour
         }
     }
     
-    public void PlayIntro()
+    public void PlayIntro(int firstTimePlaying)
     {
         #if UNITY_ANDROID
-            Handheld.PlayFullScreenMovie(videoFile[0], Color.black, FullScreenMovieControlMode.Hidden);
+            Handheld.PlayFullScreenMovie(videoFile[firstTimePlaying], Color.black, FullScreenMovieControlMode.Hidden);
             StartCoroutine(SetPlayVideoMobile());
         #endif
         
         #if UNITY_STANDALONE_WIN
             videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
+            videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[firstTimePlaying];
             StartCoroutine(SetPlayVideoPC());
         #endif
     }
@@ -92,7 +92,7 @@ public class VideoRender : MonoBehaviour
         
         // After PlayIntro()
         if (SceneManager.GetActiveScene().name == "IntroScene")
-            StartCoroutine(_initialLoad.LoadAsynchronously(_initialLoad.mainScene));
+            StartCoroutine(_initialLoad.DisplayTitleScreen());
         // After PlayTravel()
         else if (SceneManager.GetActiveScene().name == "MainScene")
             _levelLoad.AfterTravel();
@@ -106,7 +106,7 @@ public class VideoRender : MonoBehaviour
         // After PlayIntro()
         if (SceneManager.GetActiveScene().name == "IntroScene")
         {
-            StartCoroutine(_initialLoad.LoadAsynchronously(_initialLoad.mainScene));
+            StartCoroutine(_initialLoad.DisplayTitleScreen());
         }
         // After PlayTravel()
         else if (SceneManager.GetActiveScene().name == "MainScene")

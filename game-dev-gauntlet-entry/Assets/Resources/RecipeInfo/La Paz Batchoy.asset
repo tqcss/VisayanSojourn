@@ -26,7 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d1570795cd91d94b8a5adedbd4b8dcf, type: 2}
   - {fileID: 11400000, guid: 05bebe91d8957ff41904c582a181604f, type: 2}
   - {fileID: 11400000, guid: 318e9ebad625e7a4cb91888973253228, type: 2}
-  sprite: {fileID: 21300000, guid: fe020d000542c0047a4070bd68944202, type: 3}
+  sprite: {fileID: 21300000, guid: 93be42ca2ce908c44a2c865595058a54, type: 3}
   scale: {x: 0, y: 0, z: 0}
   description: Iloilo's culinary pride, the La Paz Batchoy, is a noodle soup renowed
     for its savory broth, tender pork, fresh noodles, and a medley of flavorful toppings.
@@ -36,3 +36,7 @@ MonoBehaviour:
     enjoyed in local eateries called "batchoyan," this dish serves as a communal
     experience, bringing people together to savor the distinctive flavors that define
     Iloilo's culinary landscape.
+  shortDescription: 'Iloilo''s culinary pride, the La Paz Batchoy, is a noodle soup
+    renowed for its savory broth, tender pork, fresh noodles, and a medley of flavorful
+    toppings. Originating from the La Paz district, this iconic dish has become a
+    symbol of Ilonggo gastronomy. '

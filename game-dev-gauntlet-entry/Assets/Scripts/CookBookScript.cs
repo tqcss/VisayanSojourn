@@ -33,11 +33,12 @@ public class CookBookScript : MonoBehaviour
     private float progression = 0;
     private bool uiVisible = false;
     private bool onAnimation = false;
-    private int currentPage = PlayerPrefs.GetInt("UnlockedDishes", 0);
+    private int currentPage;
 
     private void Start()
     {
         Debug.Log("Script Started");
+        currentPage = PlayerPrefs.GetInt("UnlockedDishes", 0);
         defaultBookPosition = book.transform.localPosition;
         hiddenBookPosition = book.transform.localPosition + Vector3.down * 720;
 

@@ -17,6 +17,14 @@ public class SettleRestaurant : MonoBehaviour
     public Text coinsText;
     public Text streakBonusText;
     public Text provinceBonusText;
+    public Image customerBody;
+    public Sprite[] manBody;
+    public Sprite[] womanBody;
+    public Image customerFace;
+    public Sprite[] manFace;
+    public Sprite[] womanFace;
+    public int genderId;
+    public int customerDistanceApart;
     public Text chatText;
     public GameObject chatBubble;
     public string[] orderMessage;
@@ -33,6 +41,7 @@ public class SettleRestaurant : MonoBehaviour
 
     private AudioManager _audioManager;
     private DishList _dishList;
+    private IngredientManager _ingredientManager;
     private LevelLoad _levelLoad;
     private OrderManager _orderManager;
     private PlayerCoins _playerCoins;
@@ -54,6 +63,7 @@ public class SettleRestaurant : MonoBehaviour
         // Set initial values to the variables and set the game objects
         _audioManager.PlayBackgroundMusic(_audioManager.restaurantMusic, true);
         coinsText.text = string.Format("{0:0.00}", _playerCoins.globalCoins);
+
         restaurantUI.SetActive(true);
         modeEndUI.SetActive(false);
         chatBubble.SetActive(false);
@@ -69,9 +79,7 @@ public class SettleRestaurant : MonoBehaviour
         // Set the game objects
         if (ableToStart)
         {
-            orderText.SetActive(false);
-            orderDisplay.SetActive(false);
-            checkButton.SetActive(false);
+            StartCoroutine(CustomerArrival());
 
             // Set the order of a customer
             yield return new WaitForSeconds(waitTimeArrival);
@@ -80,8 +88,75 @@ public class SettleRestaurant : MonoBehaviour
             checkButton.SetActive(true);
             _dishList.RandomPromptOrder();
             _orderManager.StartTimer();
-            ChatOrder();
+            CustomerOrder();
         }
+    }
+
+    public IEnumerator CustomerArrival()
+    {
+        RandomGenderId();
+        switch (genderId)
+        {
+            // FaceId: 0 - Happy
+            // Execute if the customer is a man
+            case 1:
+                customerBody.sprite = manBody[Random.Range(0, manBody.Length)];
+                customerFace.sprite = manFace[0];
+                break;
+            // Execute if the customer is a woman
+            case 2:
+                customerBody.sprite = womanBody[Random.Range(0, womanBody.Length)];
+                customerFace.sprite = womanFace[0];
+                break;
+        }
+        
+        // Get the first position of the customer
+        float firstCustomerPosX = customerBody.GetComponent<RectTransform>().localPosition.x;
+        float firstCustomerPosY = customerBody.GetComponent<RectTransform>().localPosition.y;
+        // Reset the position of the customer
+        customerBody.GetComponent<RectTransform>().localPosition = new Vector2(firstCustomerPosX - (2 * customerDistanceApart), firstCustomerPosY);
+
+        // Get the current position of the customer
+        float currentCustomerPosX = customerBody.GetComponent<RectTransform>().localPosition.x;
+        float timeArrival = 0;
+        while (timeArrival < 1f)
+        {
+            // Move the character from the origin position to the center position
+            timeArrival = Mathf.MoveTowards(timeArrival, Mathf.Clamp01(1f), Time.deltaTime / 4.0f);
+            float moveCustomerPosX = currentCustomerPosX + (timeArrival * customerDistanceApart);
+            customerBody.GetComponent<RectTransform>().localPosition = new Vector2((int)moveCustomerPosX, firstCustomerPosY);
+            yield return null;
+        }
+    }
+
+    public IEnumerator CustomerDeparture(bool ableToStart)
+    {
+        // Get the first position of the customer
+        float firstCustomerPosX = customerBody.GetComponent<RectTransform>().localPosition.x;
+        float firstCustomerPosY = customerBody.GetComponent<RectTransform>().localPosition.y;
+        
+        float timeArrival = 0;
+        while (timeArrival < 1f)
+        {
+            // Move the character from the center position to the final position
+            timeArrival = Mathf.MoveTowards(timeArrival, Mathf.Clamp01(1f), Time.deltaTime / 3.14f);
+            float moveCustomerPosX = firstCustomerPosX + (timeArrival * customerDistanceApart);
+            customerBody.GetComponent<RectTransform>().localPosition = new Vector2((int)moveCustomerPosX, firstCustomerPosY);
+            yield return null;
+        }
+
+        StartCoroutine(StartOrder(ableToStart));
+    }
+
+    public void RandomGenderId()
+    {
+        /*
+            Gender Id
+            Man: 1
+            Woman: 2
+        */
+        // Generate a random id for the gender
+        genderId = Random.Range(1, 3);
     }
 
     public void EndOrder(bool orderSuccess, bool ableToStart)
@@ -99,9 +174,11 @@ public class SettleRestaurant : MonoBehaviour
             StartCoroutine(RewardCoins());
         }
 
+        orderText.SetActive(false);
+        orderDisplay.SetActive(false);
+        checkButton.SetActive(false);
         DisplayBonus();
-        StartCoroutine(ChatResponse(orderSuccess));
-        StartCoroutine(StartOrder(ableToStart));
+        StartCoroutine(CustomerResponse(orderSuccess, ableToStart));
     }
 
     public void DisplayBonus()
@@ -133,15 +210,36 @@ public class SettleRestaurant : MonoBehaviour
         }
     }
 
-    public void ChatOrder()
+    public void ReturnIngredient(IngredientInfo ingredientInfo)
+    {
+        // Give player global coins based on the selected ingredient if that ingredient returns to the ingredient tab
+        return;
+    }
+
+    public void CustomerOrder()
     {
         // Display the order of a customer
         chatBubble.SetActive(true);
         chatText.text = orderMessage[Random.Range(0, orderMessage.Length)] + _orderManager.currentOrderPrompt.name + "?";
     }
 
-    public IEnumerator ChatResponse(bool orderSuccess)
+    public IEnumerator CustomerResponse(bool orderSuccess, bool ableToStart)
     {
+        // Display the emotion of a customer
+        switch (genderId)
+        {
+            // FaceId: 0 - Happy
+            // FaceId: 2 - Mad
+            // Execute if the customer is a man
+            case 1:
+                customerFace.sprite = (orderSuccess) ? manFace[0] : manFace[2];
+                break;
+            // Execute if the customer is a woman
+            case 2:
+                customerFace.sprite = (orderSuccess) ? womanFace[0] : womanFace[2];
+                break;
+        }
+        
         // Display the response of a customer
         chatText.text = (orderSuccess)
                         ? correctMessage[Random.Range(0, correctMessage.Length)] + string.Format("{0:0.00}", sellTotal) + " coins."
@@ -156,6 +254,7 @@ public class SettleRestaurant : MonoBehaviour
         chatBubble.SetActive(false);
         dishColoredImage.SetActive(false);
         plate.SetActive(true);
+        StartCoroutine(CustomerDeparture(ableToStart));
     }
 
     public IEnumerator RewardCoins()

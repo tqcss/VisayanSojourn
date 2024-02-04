@@ -10,6 +10,7 @@ public class PlayerProvince : MonoBehaviour
     public int provinceCompleted;
     public int provinceUnlocked;
     public int provinceTotal;
+    public float returnPercentageCost;
     public float[] provinceCost;
     public string[] recipeDoneKeyName = {"RecipeDoneAntique", "RecipeDoneAklan", "RecipeDoneCapiz", "RecipeDoneNegrosOcc", "RecipeDoneGuimaras", "RecipeDoneIloilo"};
     public int[] recipeDoneValue;
@@ -58,6 +59,11 @@ public class PlayerProvince : MonoBehaviour
         {
             // Decrease the player global coin by the cost of a purchased province and grant access to it
             _playerCoins.DecreaseCoins(provinceCost[provinceCompleted]);
+
+            // Grant player return percentage of the province cost as a service of buying
+            float returnCoins = provinceCost[provinceCompleted] * (returnPercentageCost / 100.0f);
+            _playerCoins.IncreaseCoins(returnCoins);
+
             PlayerPrefs.SetInt("ProvinceUnlocked", PlayerPrefs.GetInt("ProvinceUnlocked", 1) + 1);
             _levelLoad.PlayAnimation();
         }

@@ -20,8 +20,9 @@ public class LevelLoad : MonoBehaviour
     public GameObject loadingBgObj;
     public Text loadingProvinceText;
     public Image loadingFloat;
-    public int floatDistance;
+    public int floatDistanceApart;
     public string[] firstTimeKeyName = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
+    public string introScene = "IntroScene";
     public string mainScene = "MainScene";
     public string kitchenScene = "KitchenScene";
     public string restaurantScene = "RestaurantScene";
@@ -116,6 +117,13 @@ public class LevelLoad : MonoBehaviour
         loadingBgObj.SetActive(true);
     }
 
+    public void LoadIntro()
+    {
+        // Load the intro scene
+        _audioManager.StopMusic();
+        SceneManager.LoadScene(introScene);
+    }
+
     public void LoadBack(string scene)
     {
         // Prepare load to go back to the main menu
@@ -149,7 +157,8 @@ public class LevelLoad : MonoBehaviour
         yield return new WaitForSeconds(1);
         
         float progress = 0;
-        double firstFloatPosX = loadingFloat.GetComponent<RectTransform>().localPosition.x;
+        float firstFloatPosX = loadingFloat.GetComponent<RectTransform>().localPosition.x;
+        float firstFloatPosY = loadingFloat.GetComponent<RectTransform>().localPosition.y;
 
         // Increase the loading progress if the async operation is not yet done
         while (!operation.isDone)
@@ -158,9 +167,10 @@ public class LevelLoad : MonoBehaviour
             loadingSlider.value = progress;
             
             // Set the position of the image float of loading screen based on the progress
-            double moveFloatPosX = firstFloatPosX + (progress * floatDistance);
-            loadingFloat.GetComponent<RectTransform>().localPosition = new Vector3((int)moveFloatPosX, loadingFloat.GetComponent<RectTransform>().localPosition.y, 0);
+            float moveFloatPosX = firstFloatPosX + (progress * floatDistanceApart);
+            loadingFloat.GetComponent<RectTransform>().localPosition = new Vector2((int)moveFloatPosX, firstFloatPosY);
 
+            // Go to the prompt scene if the progress reaches 100%
             if (progress >= 1f)
             {
                 yield return new WaitForSeconds(1);
@@ -177,14 +187,17 @@ public class LevelLoad : MonoBehaviour
     public void PlayAnimation()
     {
         canPlayAnimation = false;
-        if (videoScreen) videoScreen.SetActive(true);
+        if (videoScreen)
+        { 
+            levelSelection.SetActive(false);
+            videoScreen.SetActive(true);
+        }
 
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         // Check if the player is first time unlocking the province
         if (PlayerPrefs.GetInt(firstTimeKeyName[provinceUnlocked - 1], 1) == 1)
         {
             // Play the video of traveling from a current province to the next one
-            levelSelection.SetActive(false);
             _videoRender.PlayTravel(provinceUnlocked);
             PlayerPrefs.SetInt(firstTimeKeyName[provinceUnlocked - 1], 0);
         }

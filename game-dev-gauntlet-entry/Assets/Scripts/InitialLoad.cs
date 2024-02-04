@@ -7,11 +7,17 @@ using UnityEngine.UI;
 
 public class InitialLoad : MonoBehaviour
 {
+    public GameObject introTrailerScreen;
+    public GameObject titleScreen;
     public GameObject loadingScreen;
     public Slider loadingSlider;
     public GameObject skipButton;
+    public GameObject playButton;
+    public GameObject quitButton;
     public string mainScene = "MainScene";
-    public string introScene = "IntroScene";
+    public Text versionText;
+    public GameObject versionTextObj;
+    public string version;
     
     private VideoRender _videoRender;
     
@@ -26,6 +32,7 @@ public class InitialLoad : MonoBehaviour
 
         // Set the game objects
         skipButton.SetActive(false);
+        titleScreen.SetActive(false);
         loadingScreen.SetActive(false);
         StartCoroutine(FirstTimeCheck(mainScene));
     }
@@ -34,25 +41,54 @@ public class InitialLoad : MonoBehaviour
     {
         // Check if the player is playing for the first time
         int firstTimePlaying = PlayerPrefs.GetInt("FirstTimePlaying", 1);
-        if (firstTimePlaying == 1)
-        {
-            // Play the video of the game intro
-            _videoRender.PlayIntro();
-            yield return new WaitForSeconds(5);
-            skipButton.SetActive(true);
-        }
-        else if (firstTimePlaying == 0)
-        {
-            StartCoroutine(LoadAsynchronously(scene));
-        }
+        
+        // Play the intro depending on the first time status
+        _videoRender.PlayIntro(firstTimePlaying);
+        yield return new WaitForSeconds(3);
+        skipButton.SetActive(true);
 
         yield return null;
     }
 
+    public IEnumerator DisplayTitleScreen()
+    {
+        // Display the title screen if the player is not the first time playing the game
+        if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
+        {
+            PlayerPrefs.SetInt("FirstTimePlaying", 0);
+            _videoRender.PlayIntro(0);
+            skipButton.SetActive(false);
+        }
+        else
+        {
+            // Set the game objects
+            skipButton.SetActive(false);
+            introTrailerScreen.SetActive(false);
+            titleScreen.SetActive(true);
+
+            playButton.SetActive(false);
+            quitButton.SetActive(false);
+            versionTextObj.SetActive(false);
+
+            yield return new WaitForSeconds(3);
+            playButton.SetActive(true);
+            quitButton.SetActive(true);
+            versionTextObj.SetActive(true);
+            versionText.text = "VERSION " + version;
+        }
+    }
+
+    public void LoadMain()
+    {
+        // Execute if the play button is pressed
+        titleScreen.SetActive(false);
+        StartCoroutine(LoadAsynchronously(mainScene));
+    }
+
     public IEnumerator LoadAsynchronously(string scene)
     {
-        PlayerPrefs.SetInt("FirstTimePlaying", 0);
         skipButton.SetActive(false);
+        introTrailerScreen.SetActive(false);
         loadingScreen.SetActive(true);
         loadingSlider.value = 0;
 
@@ -69,6 +105,7 @@ public class InitialLoad : MonoBehaviour
             progress = Mathf.MoveTowards(progress, Mathf.Clamp01(operation.progress / 0.9f), Time.deltaTime / 3.14f);
             loadingSlider.value = progress;
             
+            // Go to the prompt scene if the progress reaches 100%
             if (progress >= 1f)
             {
                 yield return new WaitForSeconds(1);
@@ -79,5 +116,11 @@ public class InitialLoad : MonoBehaviour
         }
 
         loadingScreen.SetActive(false);
+    }
+
+    public void DoQuit()
+    {
+        // Quit the application if the quit button is pressed
+        Application.Quit();
     }
 }

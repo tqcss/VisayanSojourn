@@ -25,12 +25,14 @@ public class SettleKitchen : MonoBehaviour
     public GameObject homeButton;
     public GameObject restartButton;
     public GameObject nextButton;
+    public GameObject heartEmpty;
     public int maximumRound;
     public int currentRound;
     private bool successRound = false;
     
     private AudioManager _audioManager;
     private DishList _dishList;
+    private IngredientManager _ingredientManager;
     private LevelLoad _levelLoad;
     private OrderManager _orderManager;
     private PlayerLives _playerLives;
@@ -143,6 +145,7 @@ public class SettleKitchen : MonoBehaviour
                 messageText.text = endMessage[0];
                 nextButton.SetActive(true);
                 restartButton.SetActive(false);
+                heartEmpty.SetActive(false);
                 descriptionPanel.SetActive(true);
                 homeButton.SetActive((currentRound < maximumRound) ? true : false);
 
@@ -156,6 +159,7 @@ public class SettleKitchen : MonoBehaviour
             // Set the game objects
             messageText.text = (globalLives > 0) ? endMessage[1] : endMessage[2];
             restartButton.SetActive((globalLives > 0) ? true : false);
+            heartEmpty.SetActive((globalLives > 0) ? false : true);
 
             livesText.text = globalLives.ToString();
             nextButton.SetActive(false);
