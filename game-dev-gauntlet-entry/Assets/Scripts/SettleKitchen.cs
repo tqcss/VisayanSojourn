@@ -82,9 +82,15 @@ public class SettleKitchen : MonoBehaviour
         if (firstPlay) 
         {
             // Play the video of recipe scroll
-            _videoRender.PlayScroll();
-            yield return new WaitForSeconds(2);
-            skipButton.SetActive(true);
+            #if UNITY_ANDROID
+                _videoRender.PlayScroll();
+            #endif
+            
+            #if UNITY_STANDALONE_WIN
+                _videoRender.PlayScroll();
+                yield return new WaitForSeconds(2);
+                skipButton.SetActive(true);
+            #endif
         }
         else
         {

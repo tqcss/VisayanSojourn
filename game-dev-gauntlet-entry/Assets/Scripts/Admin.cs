@@ -22,6 +22,8 @@ public class Admin : MonoBehaviour
     {
         // Delete the saved data from player prefs
         PlayerPrefs.DeleteAll();
+        _playerCoins.generateCooldown = _playerCoins.generateMaxCooldown;
+
         PlayerPrefs.Save();
     }
 

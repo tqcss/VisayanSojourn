@@ -385,7 +385,7 @@ MonoBehaviour:
   mainScene: MainScene
   versionText: {fileID: 1391709411}
   versionTextObj: {fileID: 1391709409}
-  version: INDEV 1.2.5b
+  version: INDEV 1.2.6
 --- !u!4 &262652993
 Transform:
   m_ObjectHideFlags: 0

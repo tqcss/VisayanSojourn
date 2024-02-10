@@ -37,7 +37,7 @@ public class PlayerLives : MonoBehaviour
 
     private void Start()
     {
-        OfflineCooldown(PlayerPrefs.GetInt("CheckOfflineCooldown", 1));
+        OfflineCooldown(PlayerPrefs.GetInt("CheckOfflineLife", 1));
         _updateDisplayMain.UpdateDisplayLives();
     }
 
@@ -46,7 +46,7 @@ public class PlayerLives : MonoBehaviour
         // Check if the user was offline
         if (offline == 1)
         {
-            PlayerPrefs.SetInt("CheckOfflineCooldown", 0);
+            PlayerPrefs.SetInt("CheckOfflineLife", 0);
             // Get the current time
             DateTime timeCurrent = DateTime.Now;
             if (PlayerPrefs.HasKey("SavedTime"))
@@ -183,7 +183,7 @@ public class PlayerLives : MonoBehaviour
     {
         // Save the current time, check if offline, and reset fails before success upon quitting
         PlayerPrefs.SetString("SavedTime", DateTime.Now.ToString());
-        PlayerPrefs.SetInt("CheckOfflineCooldown", 1);
+        PlayerPrefs.SetInt("CheckOfflineLife", 1);
         PlayerPrefs.SetInt("FailsBeforeSuccess", 0);
         PlayerPrefs.Save();
     }

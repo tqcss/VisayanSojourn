@@ -8,6 +8,7 @@ public class UpdateDisplayMain : MonoBehaviour
 {
     // PlayerCoins
     public Text coinsText;
+    public Text coinBagText;
 
     // PlayerLives
     public Sprite[] heartSprite;
@@ -55,6 +56,13 @@ public class UpdateDisplayMain : MonoBehaviour
         // Update coin display on the main scene
         if (SceneManager.GetActiveScene().name == _levelLoad.mainScene)
             coinsText.text = string.Format("{0:0.00}", PlayerPrefs.GetFloat("GlobalCoins", _playerCoins.initialCoins));
+    }
+
+    public void UpdateDisplayCoinBag()
+    {
+        // Update coin bag display on the main scene
+        if (SceneManager.GetActiveScene().name == _levelLoad.mainScene)
+            coinBagText.text = string.Format("{0:0.00}", PlayerPrefs.GetFloat("CoinsGenerated", 0));
     }
 
     public void UpdateDisplayLives()
