@@ -66,9 +66,13 @@ public class SettleRestaurant : MonoBehaviour
 
         restaurantUI.SetActive(true);
         modeEndUI.SetActive(false);
+        
+        orderText.SetActive(false);
+        orderDisplay.SetActive(false);
         chatBubble.SetActive(false);
         dishColoredImage.SetActive(false);
         plate.SetActive(true);
+        checkButton.SetActive(false);
 
         StartCoroutine(StartOrder(true));
         DisplayBonus();

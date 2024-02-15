@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: 0a2a1e044271fec4d805da10c51b860f
   - enabled: 1
+    path: Assets/Scenes/TravelScene.unity
+    guid: 27d79d0aa62a54d4d8dec3188aa6bf18
+  - enabled: 1
     path: Assets/Scenes/KitchenScene.unity
     guid: 41f2b89c2bb538844a62cfe263945246
   - enabled: 1

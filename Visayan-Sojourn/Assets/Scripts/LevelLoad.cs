@@ -10,6 +10,7 @@ public class LevelLoad : MonoBehaviour
     public GameObject videoScreen;
     public GameObject levelSelection;
     public Animator levelSelectionController;
+    
     public GameObject modePanel;
     public GameObject miscPanel;
     public GameObject settingsPanel;
@@ -22,10 +23,12 @@ public class LevelLoad : MonoBehaviour
     public Image loadingFloat;
     public int floatDistanceApart;
     public string[] firstTimeKeyName = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
+    
     public string introScene = "IntroScene";
     public string mainScene = "MainScene";
     public string kitchenScene = "KitchenScene";
     public string restaurantScene = "RestaurantScene";
+    public string travelScene = "TravelScene"; 
     public int levelId;
     private bool canPlayAnimation = false;
     
@@ -33,7 +36,6 @@ public class LevelLoad : MonoBehaviour
     private PlayerLives _playerLives;
     private PlayerProvince _playerProvince;
     private UpdateDisplayMain _updateDisplayMain;
-    private VideoRender _videoRender;
 
     private void Start()
     {
@@ -50,10 +52,9 @@ public class LevelLoad : MonoBehaviour
         // Set the game objects
         if (SceneManager.GetActiveScene().name == mainScene) 
         {
-            _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
-            modePanel.SetActive(false);
-            miscPanel.SetActive(false);
-            settingsPanel.SetActive(false);
+            modePanel.SetActive(true);
+            miscPanel.SetActive(true);
+            settingsPanel.SetActive(true);
             
             PlayAnimation();
             _audioManager.PlayBackgroundMusic(_audioManager.mainMusic, true);
@@ -186,37 +187,14 @@ public class LevelLoad : MonoBehaviour
 
     public void PlayAnimation()
     {
-        canPlayAnimation = false;
-        if (videoScreen)
-        { 
-            levelSelection.SetActive(false);
-            videoScreen.SetActive(true);
-        }
-
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         // Check if the player is first time unlocking the province
         if (PlayerPrefs.GetInt(firstTimeKeyName[provinceUnlocked - 1], 1) == 1)
         {
             // Play the video of traveling from a current province to the next one
-            _videoRender.PlayTravel(provinceUnlocked);
-            PlayerPrefs.SetInt(firstTimeKeyName[provinceUnlocked - 1], 0);
-        }
-        else
-        {
-            AfterTravel();
-        }
-    }
-
-    public void AfterTravel()
-    {
-        if (videoScreen) videoScreen.SetActive(false);
-        levelSelection.SetActive(true);
-
-        if (SceneManager.GetActiveScene().name == mainScene) 
-        {
-            modePanel.SetActive(true);
-            miscPanel.SetActive(true);
-            settingsPanel.SetActive(true);
+            SceneManager.LoadScene(travelScene);
+            modePanel.SetActive(false);
+            miscPanel.SetActive(false);
         }
     }
 

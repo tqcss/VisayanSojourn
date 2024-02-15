@@ -12,6 +12,7 @@ public class VideoRender : MonoBehaviour
     private InitialLoad _initialLoad;
     private LevelLoad _levelLoad;
     private SettleKitchen _settleKitchen;
+    private TravelManager _travelManager;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class VideoRender : MonoBehaviour
             _initialLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<InitialLoad>();
             _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
             _settleKitchen = GameObject.FindGameObjectWithTag("mainScript").GetComponent<SettleKitchen>();
+            _travelManager = GameObject.FindGameObjectWithTag("mainScript").GetComponent<TravelManager>();
         }
         catch (UnityException)
         {
@@ -94,8 +96,8 @@ public class VideoRender : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "IntroScene")
             StartCoroutine(_initialLoad.DisplayTitleScreen());
         // After PlayTravel()
-        else if (SceneManager.GetActiveScene().name == "MainScene")
-            _levelLoad.AfterTravel();
+        else if (SceneManager.GetActiveScene().name == "TravelScene")
+            _travelManager.GoBack();
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
             _settleKitchen.DisplayRecipe();
@@ -109,9 +111,9 @@ public class VideoRender : MonoBehaviour
             StartCoroutine(_initialLoad.DisplayTitleScreen());
         }
         // After PlayTravel()
-        else if (SceneManager.GetActiveScene().name == "MainScene")
+        else if (SceneManager.GetActiveScene().name == "TravelScene")
         {
-            _levelLoad.AfterTravel();
+            _travelManager.GoBack();
         }
         // After PlayScroll()
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
