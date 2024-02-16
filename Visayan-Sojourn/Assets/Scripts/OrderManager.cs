@@ -42,7 +42,7 @@ public class OrderManager : MonoBehaviour
         currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
         orderDisplay.sprite = currentOrderPrompt.sprite;
-        dishColoredImage.sprite = currentOrderPrompt.sprite;
+        dishColoredImage.sprite = currentOrderPrompt.framedSprite;
 
         if (_levelLoad.CheckModeId() == 1) 
         {
@@ -54,10 +54,10 @@ public class OrderManager : MonoBehaviour
         switch (_levelLoad.CheckModeId())
         {
             case 1:
-                timeDuration = 8 + (currentOrderPrompt.recipe.Count * 4);
+                timeDuration = 7.5f + (currentOrderPrompt.recipe.Count * 2.5f);
                 break;
             case 2:
-                timeDuration = 5 + (currentOrderPrompt.recipe.Count * 2.5f);
+                timeDuration = 4.0f + (currentOrderPrompt.recipe.Count * 2.0f);
                 break;
         }
     }

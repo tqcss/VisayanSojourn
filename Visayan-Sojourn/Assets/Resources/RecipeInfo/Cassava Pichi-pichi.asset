@@ -20,6 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 318e9ebad625e7a4cb91888973253228, type: 2}
   sprite: {fileID: 21300000, guid: a5f9f1d89da367f498612b593eee22d9, type: 3}
   scale: {x: 1, y: 1, z: 1}
+  framedSprite: {fileID: 21300000, guid: e3091040688365b449534cd19294b1a5, type: 3}
   description: Cassava Pichi-pichi is a popular Aklan delicacy made from grated cassava,
     sugar, and coconut milk. It is a symbol of unity, community, hospitality, and
     Aklan's rich agricultural heritage. The dish is often served at special occassions,
@@ -34,3 +35,4 @@ MonoBehaviour:
     and Aklan's rich agricultural heritage. One of the reasons why Cassava Pichi-pichi
     is so popular in Aklan is because it is made from cassava, a staple crop of the
     province.
+  isDishAtProvince: 000100000000

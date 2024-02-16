@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02b6ad3ce47e0904f80afe5ee2978316, type: 2}
   sprite: {fileID: 21300000, guid: a3f0390a6975d0041bb195a2b69e486c, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: d199ab5b8163778498b49d2718749ae4, type: 3}
   description: Mango Pizza, another Guimaras specialty, creatively blends the province's
     famed mangoes with the beloved pizza. By incorporating the renowed Guimaras mangoes
     into a pizza, the dish showcases the province's adaptability and willingness
@@ -32,3 +33,4 @@ MonoBehaviour:
     Guimaras mangoes into a pizza, the dish showcases the province's adaptability
     and willingness to embrace new flavors while staying true to its agricultural
     roots.
+  isDishAtProvince: 000000000100

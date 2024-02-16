@@ -27,6 +27,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 318e9ebad625e7a4cb91888973253228, type: 2}
   sprite: {fileID: 21300000, guid: 82abc2c3d976df6419ce61b7d297a36b, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 761ced638db9cb948867ce05f0321a87, type: 3}
   description: Can't leave Guimaras without trying their Mango Bibingka -- a twist
     on the traditional rice cake. Guimaras infuses its famous mangoes into the bibingka,
     creating a delectable treat that captures the essence of the province's tropical
@@ -40,3 +41,4 @@ MonoBehaviour:
     captures the essence of the province's tropical charm. Mango Bibingka embodies
     the province's dedication to incorporating its signature mangoes into traditional
     recipes.
+  isDishAtProvince: 000000000100

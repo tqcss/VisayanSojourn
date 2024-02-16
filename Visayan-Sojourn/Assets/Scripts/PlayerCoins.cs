@@ -100,7 +100,7 @@ public class PlayerCoins : MonoBehaviour
         _updateDisplayMain.UpdateDisplayCoinBag();
 
         // Check if the coin generated is less than the maximum
-        if (coinsGenerated < coinGeneratorMax)
+        if ((int)coinsGenerated < coinGeneratorMax)
         {
             if (!inCooldown)
             {

@@ -18,6 +18,7 @@ TagManager:
   - videoRender
   - playerCoins
   - playerProvince
+  - cookBookSystem
   layers:
   - Default
   - TransparentFX

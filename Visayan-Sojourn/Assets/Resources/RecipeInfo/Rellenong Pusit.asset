@@ -29,6 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a2ebe67645b771944896bbc98dcb06c9, type: 2}
   sprite: {fileID: 21300000, guid: e636697767296ae48ae7e9b2a22bc288, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: cc978ad53f7663649931102c5056670f, type: 3}
   description: Rellenong Pusit, a Capiz traditional mouthwatering delicacy, is a
     stuffed squid dish that exemplifies the province's rich seafood heritage, being
     dubbed as the Seafood Capital. Fresh squid is cleaned, filled with a savory mixture
@@ -42,3 +43,4 @@ MonoBehaviour:
     being dubbed as the Seafood Capital. Fresh squid is cleaned, filled with a savory
     mixture of its own tentacles, ground pork, and local spices, then carefully grilled
     or fried to perfection.
+  isDishAtProvince: 000001000000

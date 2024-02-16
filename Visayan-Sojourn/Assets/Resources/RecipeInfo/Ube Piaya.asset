@@ -23,6 +23,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 05bebe91d8957ff41904c582a181604f, type: 2}
   sprite: {fileID: 21300000, guid: 61c29528c51ef744dbf8542faac1f64e, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 265488395e69b624d97068dfd501cdd0, type: 3}
   description: Negros Occidental's Ube Piaya is a delightful fusion of traditional
     flavors, combining the vibrant purple goodness of ube (purple yam) with the beloved
     sweetness of piaya. The unique treat features a filling made from mashed ube
@@ -38,3 +39,4 @@ MonoBehaviour:
     and sugar, encased in a flaky, thin pastry that's cooked to golden perfection.
     This sweet delicacy pays homage to Negros Occidental's agricultural richness,
     as the province is known for producing quality ube.
+  isDishAtProvince: 000000010000

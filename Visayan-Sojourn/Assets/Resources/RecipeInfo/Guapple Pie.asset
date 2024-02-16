@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 318e9ebad625e7a4cb91888973253228, type: 2}
   sprite: {fileID: 21300000, guid: 271f12d37cd485e43b93a21952678820, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 5ad497b2332de164c90326eee1451858, type: 3}
   description: What's even better than your classic Apple Pie? The Negros Occidental's
     Guapple Pie! Featuring guapple -- a unique fruit hybrid of guava and apple --
     grown abundantly in the region. The pie filling combines the sweet and slightly
@@ -40,3 +41,4 @@ MonoBehaviour:
     and flavorful experience. This dessert has become a local favorite, embodying
     the province's commitment to showcasing its rich agricultural produce in innovative
     and delicious ways.
+  isDishAtProvince: 000000010000

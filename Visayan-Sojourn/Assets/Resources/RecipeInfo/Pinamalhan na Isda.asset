@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e63be4e3297efc44f99ced07649116d8, type: 2}
   sprite: {fileID: 21300000, guid: 419c426c67c687e429b7f85414a18cc1, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 9a4f0ea645332d045b5b0c82c315a8dd, type: 3}
   description: Pinamalhan na Isda is a traditional Ilonggo dish that features fish
     marinated and cooked in a flavorful mixture of vinegar, soy sauce, garlic, and
     spices. This method of preparation gives the dish a perfect balance of sour and
@@ -36,3 +37,4 @@ MonoBehaviour:
     and savory notes, making it a distinctive and beloved part of Ilonggo cuisine.
     The use of local ingredients and the marination process showcase the Ilonggos'
     skill in creating delicious dishes from readily available resources.
+  isDishAtProvince: 000000000001

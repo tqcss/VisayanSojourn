@@ -22,7 +22,11 @@ public class LevelLoad : MonoBehaviour
     public Text loadingProvinceText;
     public Image loadingFloat;
     public int floatDistanceApart;
-    public string[] firstTimeKeyName = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
+
+    // To check if it is the first time or not the player played the travel animation
+    public string[] primalTravelKeyNames = {"PrimalTravelAntique", "PrimalTravelAklan", "PrimalTravelCapiz", "PrimalTravelNegrosOcc", "PrimalTravelGuimaras", "PrimalTravelIloilo", ""};
+    // To check if it is the first time or not the player played the selected level
+    public string[] initialPlayedKeyNames = {"InitialPlayedAntique", "InitialPlayedAklan", "InitialPlayedCapiz", "InitialPlayedNegrosOcc", "InitialPlayedGuimaras", "InitialPlayedIloilo", ""};
     
     public string introScene = "IntroScene";
     public string mainScene = "MainScene";
@@ -55,9 +59,10 @@ public class LevelLoad : MonoBehaviour
             modePanel.SetActive(true);
             miscPanel.SetActive(true);
             settingsPanel.SetActive(true);
+            _updateDisplayMain.UpdateDisplayProvince();
             
             PlayAnimation();
-            _audioManager.PlayBackgroundMusic(_audioManager.mainMusic, true);
+            StartCoroutine(WaitForMusic());
         }
             
         loadingScreen.SetActive(false);
@@ -105,6 +110,9 @@ public class LevelLoad : MonoBehaviour
             
             levelSelection.SetActive(false);
             loadingBgObj.SetActive(true);
+
+            if (PlayerPrefs.GetInt(initialPlayedKeyNames[levelId - 1], 0) == 0)
+                PlayerPrefs.SetInt(initialPlayedKeyNames[levelId - 1], 1);
         }
     }
 
@@ -185,16 +193,21 @@ public class LevelLoad : MonoBehaviour
         if (canPlayAnimation) PlayAnimation();  
     }
 
+    public IEnumerator WaitForMusic()
+    {
+        yield return new WaitForSeconds(1);
+        _audioManager.PlayBackgroundMusic(_audioManager.mainMusic, true);
+    }
+
     public void PlayAnimation()
     {
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
+
         // Check if the player is first time unlocking the province
-        if (PlayerPrefs.GetInt(firstTimeKeyName[provinceUnlocked - 1], 1) == 1)
+        if (PlayerPrefs.GetInt(primalTravelKeyNames[provinceUnlocked - 1], 1) == 1)
         {
             // Play the video of traveling from a current province to the next one
             SceneManager.LoadScene(travelScene);
-            modePanel.SetActive(false);
-            miscPanel.SetActive(false);
         }
     }
 

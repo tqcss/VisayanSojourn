@@ -15,6 +15,7 @@ public class InitialLoad : MonoBehaviour
     public GameObject playButton;
     public GameObject quitButton;
     public string mainScene = "MainScene";
+    public string travelScene = "TravelScene";
     public Text versionText;
     public GameObject versionTextObj;
     public string version;
@@ -34,16 +35,16 @@ public class InitialLoad : MonoBehaviour
         skipButton.SetActive(false);
         titleScreen.SetActive(false);
         loadingScreen.SetActive(false);
-        StartCoroutine(FirstTimeCheck(mainScene));
+        StartCoroutine(FirstTimeCheck());
     }
 
-    private IEnumerator FirstTimeCheck(string scene)
+    private IEnumerator FirstTimeCheck()
     {
         // Check if the player is playing for the first time
         int firstTimePlaying = PlayerPrefs.GetInt("FirstTimePlaying", 1);
         
         // Play the intro depending on the first time status
-        _videoRender.PlayIntro(firstTimePlaying);
+        StartCoroutine(_videoRender.PlayIntro(firstTimePlaying));
         yield return new WaitForSeconds(3);
         skipButton.SetActive(true);
 
@@ -56,7 +57,7 @@ public class InitialLoad : MonoBehaviour
         if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
         {
             PlayerPrefs.SetInt("FirstTimePlaying", 0);
-            _videoRender.PlayIntro(0);
+            StartCoroutine(_videoRender.PlayIntro(0));
             skipButton.SetActive(false);
         }
         else
@@ -82,7 +83,7 @@ public class InitialLoad : MonoBehaviour
     {
         // Execute if the play button is pressed
         titleScreen.SetActive(false);
-        StartCoroutine(LoadAsynchronously(mainScene));
+        StartCoroutine(LoadAsynchronously(travelScene));
     }
 
     public IEnumerator LoadAsynchronously(string scene)

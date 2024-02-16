@@ -22,6 +22,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 352de4f36b003c5428e32e1bcff58cea, type: 2}
   sprite: {fileID: 21300000, guid: 3c246d1f7485a024fa173250f2018664, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 7c98cc0e9d93cdb4c8551226e6525064, type: 3}
   description: Panara is a savory delight that captures the essence of local flavors.
     This dish features ground pork or chicken mixed with vegetables, wrapped in banana
     leaves, and then deep-fried until golden brown. The result is a flavorful and
@@ -32,3 +33,4 @@ MonoBehaviour:
     flavors. This dish features ground pork or chicken mixed with vegetables, wrapped
     in banana leaves, and then deep-fried until golden brown. The result is a flavorful
     and aromatic snack, highlighting Negros Occidental's culinary ingenuity.
+  isDishAtProvince: 000000010000

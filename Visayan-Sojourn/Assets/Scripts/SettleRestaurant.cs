@@ -40,6 +40,7 @@ public class SettleRestaurant : MonoBehaviour
     private GameObject coinsParticle;
 
     private AudioManager _audioManager;
+    private CookBookScript _cookBookScript;
     private DishList _dishList;
     private IngredientManager _ingredientManager;
     private LevelLoad _levelLoad;
@@ -51,6 +52,7 @@ public class SettleRestaurant : MonoBehaviour
     {
         // Reference the scripts from game objects
         _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _cookBookScript = GameObject.FindGameObjectWithTag("cookBookSystem").GetComponent<CookBookScript>();
         _dishList = GameObject.FindGameObjectWithTag("dishList").GetComponent<DishList>();
         _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         _orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
@@ -209,6 +211,8 @@ public class SettleRestaurant : MonoBehaviour
         {
             _recipeManager.FailPlayer();
             EndOrder(false, false);
+            
+            _cookBookScript.CloseCookBook();
             _audioManager.StopMusic();
             modeEndUI.SetActive(true);
         }
@@ -279,6 +283,6 @@ public class SettleRestaurant : MonoBehaviour
         _audioManager.StopMusic();
         restaurantUI.SetActive(false);
         _levelLoad.levelId = PlayerPrefs.GetInt("ProvinceCurrent", 0);
-        _levelLoad.LoadBack(_levelLoad.mainScene);
+        _levelLoad.LoadBack(_levelLoad.travelScene);
     }
 }

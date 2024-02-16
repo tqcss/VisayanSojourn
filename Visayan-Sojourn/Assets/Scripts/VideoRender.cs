@@ -8,6 +8,7 @@ public class VideoRender : MonoBehaviour
 {
     public string[] videoFile;
     public VideoPlayer videoPlayer;
+    public bool isVideoPlaying;
 
     private InitialLoad _initialLoad;
     private LevelLoad _levelLoad;
@@ -31,49 +32,55 @@ public class VideoRender : MonoBehaviour
         }
     }
     
-    public void PlayIntro(int firstTimePlaying)
+    public IEnumerator PlayIntro(int firstTimePlaying)
     {
         #if UNITY_ANDROID
             Handheld.PlayFullScreenMovie(videoFile[firstTimePlaying], Color.black, FullScreenMovieControlMode.Hidden);
-            StartCoroutine(SetPlayVideoMobile());
+            yield return new WaitForSeconds(0.01f);
+            EndVideo();
         #endif
         
         #if UNITY_STANDALONE_WIN
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[firstTimePlaying];
-            StartCoroutine(SetPlayVideoPC());
+            StartCoroutine(PlayVideoOnPC());
+            yield return null;
         #endif
     }
 
-    public void PlayTravel(int provinceUnlocked)
+    public IEnumerator PlayTravel(int provinceUnlocked)
     {
         #if UNITY_ANDROID
             Handheld.PlayFullScreenMovie(videoFile[provinceUnlocked - 1], Color.black, FullScreenMovieControlMode.Hidden);
-            StartCoroutine(SetPlayVideoMobile());
+            yield return new WaitForSeconds(0.01f);
+            EndVideo();
         #endif
         
         #if UNITY_STANDALONE_WIN
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[provinceUnlocked - 1];
-            StartCoroutine(SetPlayVideoPC());
+            StartCoroutine(PlayVideoOnPC());
+            yield return null;
         #endif
     }
 
-    public void PlayScroll()
+    public IEnumerator PlayScroll()
     {
         #if UNITY_ANDROID
             Handheld.PlayFullScreenMovie(videoFile[0], Color.black, FullScreenMovieControlMode.Hidden);
-            StartCoroutine(SetPlayVideoMobile());
+            yield return new WaitForSeconds(0.01f);
+            EndVideo();
         #endif
         
         #if UNITY_STANDALONE_WIN
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = Application.dataPath + "/StreamingAssets" + "/" + videoFile[0];
-            StartCoroutine(SetPlayVideoPC());
+            StartCoroutine(PlayVideoOnPC());
+            yield return null;
         #endif
     }
 
-    public IEnumerator SetPlayVideoPC()
+    public IEnumerator PlayVideoOnPC()
     {
         // Set video player for PC_WINDOWS
         var audioSource = videoPlayer.GetComponent<AudioSource>();
@@ -92,18 +99,10 @@ public class VideoRender : MonoBehaviour
         while (videoPlayer.isPlaying)
             yield return null;
         
-        // After PlayIntro()
-        if (SceneManager.GetActiveScene().name == "IntroScene")
-            StartCoroutine(_initialLoad.DisplayTitleScreen());
-        // After PlayTravel()
-        else if (SceneManager.GetActiveScene().name == "TravelScene")
-            _travelManager.GoBack();
-        // After PlayScroll()
-        else if (SceneManager.GetActiveScene().name == "KitchenScene")
-            _settleKitchen.DisplayRecipe();
+        EndVideo();
     }
 
-    private IEnumerator SetPlayVideoMobile()
+    private void EndVideo()
     {
         // After PlayIntro()
         if (SceneManager.GetActiveScene().name == "IntroScene")
@@ -119,10 +118,9 @@ public class VideoRender : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
         {
             _settleKitchen.DisplayRecipe();
-            _settleKitchen.recipeScroll.SetActive(false);
+            _settleKitchen.recipeScroll.SetActive(true);
             _settleKitchen.scroll.SetActive(true);
         }
-        yield return null;
     }
 
     public void SkipVideo()
@@ -130,12 +128,12 @@ public class VideoRender : MonoBehaviour
         // Skip the video if the skip button is pressed
         if (SceneManager.GetActiveScene().name == "IntroScene")
         {
-            StopCoroutine(SetPlayVideoPC());
+            StopCoroutine(PlayVideoOnPC());
             videoPlayer.Stop();
         }
         else if (SceneManager.GetActiveScene().name == "KitchenScene")
         {
-            StopCoroutine(SetPlayVideoPC());
+            StopCoroutine(PlayVideoOnPC());
             videoPlayer.time = (long)(videoPlayer.frame);
         }
     }

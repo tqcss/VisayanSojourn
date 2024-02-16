@@ -31,6 +31,7 @@ public class SettleKitchen : MonoBehaviour
     private bool successRound = false;
     
     private AudioManager _audioManager;
+    private CookBookScript _cookBookScript;
     private DishList _dishList;
     private IngredientManager _ingredientManager;
     private LevelLoad _levelLoad;
@@ -44,6 +45,7 @@ public class SettleKitchen : MonoBehaviour
     {
         // Reference the scripts from game objects
         _audioManager = GameObject.FindGameObjectWithTag("audioManager").GetComponent<AudioManager>();
+        _cookBookScript = GameObject.FindGameObjectWithTag("cookBookSystem").GetComponent<CookBookScript>();
         _dishList = GameObject.FindGameObjectWithTag("dishList").GetComponent<DishList>();
         _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
         _orderManager = GameObject.FindGameObjectWithTag("orderManager").GetComponent<OrderManager>();
@@ -83,11 +85,11 @@ public class SettleKitchen : MonoBehaviour
         {
             // Play the video of recipe scroll
             #if UNITY_ANDROID
-                _videoRender.PlayScroll();
+                StartCoroutine(_videoRender.PlayScroll());
             #endif
             
             #if UNITY_STANDALONE_WIN
-                _videoRender.PlayScroll();
+                StartCoroutine(_videoRender.PlayScroll());
                 yield return new WaitForSeconds(2);
                 skipButton.SetActive(true);
             #endif
@@ -104,6 +106,7 @@ public class SettleKitchen : MonoBehaviour
     {
         // Set the game objects
         _dishList.PromptOrder();
+        scroll.SetActive(true);
         skipButton.SetActive(false);
         dishNameTextObj.SetActive(true);
         recipeTextObj.SetActive(true);
@@ -137,6 +140,7 @@ public class SettleKitchen : MonoBehaviour
     {
         // End if the check button is pressed
         _audioManager.StopMusic();
+        _cookBookScript.CloseCookBook();
         _settingsManager.CloseSettings();
         
         roundFinishUI.SetActive(true);
@@ -226,7 +230,7 @@ public class SettleKitchen : MonoBehaviour
         kitchenUI.SetActive(false);
         roundFinishUI.SetActive(false);
         _levelLoad.levelId = provinceCurrent;
-        _levelLoad.LoadBack(_levelLoad.mainScene);
+        _levelLoad.LoadBack(_levelLoad.travelScene);
     }
 
     private void OnApplicationQuit()

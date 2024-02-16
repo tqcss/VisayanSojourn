@@ -26,6 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 05bebe91d8957ff41904c582a181604f, type: 2}
   sprite: {fileID: 21300000, guid: 5c2d94bf562f0a84e851ac554e8e8ce5, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 4d16dbd1a0d7cac4e8413b0291e71a6c, type: 3}
   description: Adobo nga Takway, or snail adobo, is a unique dish that reflects Iloilo's
     creativity in culinary exploration. Prepared by cooking takway (water spinach
     stems) in a savory adobo sauce, this dish showcases the Ilonggo's ability to
@@ -39,3 +40,4 @@ MonoBehaviour:
     spinach stems) in a savory adobo sauce, this dish showcases the Ilonggo's ability
     to turn simple and locally available ingredients into a delectable and distinctive
     rate.
+  isDishAtProvince: 000000000001

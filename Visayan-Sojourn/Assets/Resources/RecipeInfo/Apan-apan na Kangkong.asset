@@ -23,6 +23,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 318e9ebad625e7a4cb91888973253228, type: 2}
   sprite: {fileID: 21300000, guid: eb0919fe87efc6c4787ea89376f390a8, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: f043eb48a8bbdb342a5642f3687320d8, type: 3}
   description: Apan-Apan na Kangkong, a unique Ilonggo dish, highlights the versatile
     use of water spinach in Iloilo's culinary landscape. In this stir-fry, fresh
     kangkong (water spinach) takes center stage, optionally, complemented by a medley
@@ -38,3 +39,4 @@ MonoBehaviour:
     a medley of flavors from pork, shrimp, and a mix of aromatic spices. This dish
     is not just a culinary delight but a reflection of Ilonggo resourcefulness and
     nutritious green, speaks to the province's connection to its agricultural roots.
+  isDishAtProvince: 000000000001

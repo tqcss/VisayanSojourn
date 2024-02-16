@@ -150,6 +150,7 @@ public class UpdateDisplayMain : MonoBehaviour
             if (j < _playerProvince.provinceTotal)
                 locationButton[j].interactable = true;
         enableInteract = true;
+        UpdateDisplayProvince();
     }
 
     public void UpdateDescription(int levelId)

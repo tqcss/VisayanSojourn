@@ -24,6 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 05bebe91d8957ff41904c582a181604f, type: 2}
   sprite: {fileID: 21300000, guid: 3cd21d6c5e96b1841b622ca0ea166e86, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 12841a037162fe14e81ce9c372d2f2b4, type: 3}
   description: Adobo nga Baka, another type of Adobo, is a savory beef stew popular
     in Capiz. It is a delicacy made with beef, soy sauce, vinegar, garlic, and bay
     leaves. It is simmered until the beef is tender, and the sauce has thickened.
@@ -38,3 +39,4 @@ MonoBehaviour:
     the vinegar. It is best served with steamed rice. Baka or beef is a common source
     of protein in the province and other pantry staples are already available at
     any household pantry, leading to the making of the dish.
+  isDishAtProvince: 000001000000

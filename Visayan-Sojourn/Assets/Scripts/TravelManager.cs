@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TravelManager : MonoBehaviour
 {
-    public string[] firstTimeKeyName = {"FirstTimeAntique", "FirstTimeAklan", "FirstTimeCapiz", "FirstTimeNegrosOcc", "FirstTimeGuimaras", "FirstTimeIloilo"};
+    public string[] primalTravelKeyNames = {"PrimalTravelAntique", "PrimalTravelAklan", "PrimalTravelCapiz", "PrimalTravelNegrosOcc", "PrimalTravelGuimaras", "PrimalTravelIloilo"};
     private VideoRender _videoRender;
 
     public void Awake()
@@ -13,8 +13,15 @@ public class TravelManager : MonoBehaviour
         _videoRender = GameObject.FindGameObjectWithTag("videoRender").GetComponent<VideoRender>();
         int provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         
-        _videoRender.PlayTravel(provinceUnlocked);
-        PlayerPrefs.SetInt(firstTimeKeyName[provinceUnlocked - 1], 0);
+        if (PlayerPrefs.GetInt(primalTravelKeyNames[provinceUnlocked - 1], 1) == 1)
+        {
+            StartCoroutine(_videoRender.PlayTravel(provinceUnlocked));
+            PlayerPrefs.SetInt(primalTravelKeyNames[provinceUnlocked - 1], 0);
+        }
+        else
+        {
+            GoBack();
+        }
     }
 
     public void GoBack()

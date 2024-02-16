@@ -8,6 +8,7 @@ public class Admin : MonoBehaviour
     private PlayerCoins _playerCoins;
     private PlayerLives _playerLives;
     private PlayerProvince _playerProvince;
+    private UpdateDisplayMain _updateDisplayMain;
     
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class Admin : MonoBehaviour
         _playerCoins = GameObject.FindGameObjectWithTag("playerCoins").GetComponent<PlayerCoins>();
         _playerLives = GameObject.FindGameObjectWithTag("playerLives").GetComponent<PlayerLives>();
         _playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+        _updateDisplayMain = GameObject.FindGameObjectWithTag("mainScript").GetComponent<UpdateDisplayMain>();
     }
 
     public void DeleteSavedData()
@@ -23,6 +25,7 @@ public class Admin : MonoBehaviour
         // Delete the saved data from player prefs
         PlayerPrefs.DeleteAll();
         _playerCoins.generateCooldown = _playerCoins.generateMaxCooldown;
+        _updateDisplayMain.UpdateDisplayProvince();
 
         PlayerPrefs.Save();
     }
@@ -57,9 +60,10 @@ public class Admin : MonoBehaviour
         {
             // Increment the no. of unlocked province if it is still less than the total no. of province
             PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked + 1);
-            PlayerPrefs.SetInt(_levelLoad.firstTimeKeyName[provinceUnlocked - 1], 1);
+            PlayerPrefs.SetInt(_levelLoad.primalTravelKeyNames[provinceUnlocked - 1], 1);
         }
         PlayerPrefs.SetInt("UnlockedDishes", PlayerPrefs.GetInt("UnlockedDishes", 0) + 1);
+        _updateDisplayMain.UpdateDisplayProvince();
     }
 
     public void DecreaseLevel()
@@ -71,7 +75,7 @@ public class Admin : MonoBehaviour
         {
             // Decrement the no. of unlocked province if it is not equal to the no. of completed province
             PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked - 1);
-            PlayerPrefs.SetInt(_levelLoad.firstTimeKeyName[provinceUnlocked - 1], 1);
+            PlayerPrefs.SetInt(_levelLoad.primalTravelKeyNames[provinceUnlocked - 1], 1);
         }
         else if (provinceUnlocked > 0)
         {
@@ -79,6 +83,7 @@ public class Admin : MonoBehaviour
             PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted - 1);
         }
         PlayerPrefs.SetInt("UnlockedDishes", PlayerPrefs.GetInt("UnlockedDishes", 0) - 1);
+        _updateDisplayMain.UpdateDisplayProvince();
     }
 
     public void IncreaseCoins()

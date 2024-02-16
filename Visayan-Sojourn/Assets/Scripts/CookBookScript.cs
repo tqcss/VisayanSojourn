@@ -1,12 +1,9 @@
-// spaghetti code kekw
-
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class CookBookScript : MonoBehaviour
 {
@@ -19,12 +16,17 @@ public class CookBookScript : MonoBehaviour
 
     public GameObject ingredientsUi;
     public GameObject dishImage;
-    public GameObject dishNameLabel;
     public GameObject dishIngredientsText;
+
+    public Text provinceText;
+    public Image mapHighlight;
+    public Sprite[] highlightedMaps;
 
     public GameObject dishList;
     public DishList listScript;
     private DishInfo[] allDishes;
+    private LevelLoad _levelLoad;
+    private PlayerProvince _playerProvince;
 
     private Vector3 defaultBookPosition;
     private Vector3 hiddenBookPosition;
@@ -35,9 +37,14 @@ public class CookBookScript : MonoBehaviour
     private bool onAnimation = false;
     private int currentPage;
 
+    private void Awake()
+    {
+        _levelLoad = GameObject.FindGameObjectWithTag("mainScript").GetComponent<LevelLoad>();
+        _playerProvince = GameObject.FindGameObjectWithTag("playerProvince").GetComponent<PlayerProvince>();
+    }
+    
     private void Start()
     {
-        Debug.Log("Script Started");
         currentPage = PlayerPrefs.GetInt("UnlockedDishes", 0);
         defaultBookPosition = book.transform.localPosition;
         hiddenBookPosition = book.transform.localPosition + Vector3.down * 720;
@@ -45,7 +52,7 @@ public class CookBookScript : MonoBehaviour
         listScript = dishList.transform.GetComponent<DishList>();
         allDishes = listScript.dishAntique.Concat(listScript.dishAklan).Concat(listScript.dishCapiz).Concat(listScript.dishNegrosOccidental).Concat(listScript.dishGuimaras).Concat(listScript.dishIloilo).ToArray();
 
-        changePage(0);
+        GetRecipesUnlocked();
     }
 
     private void Update()
@@ -82,64 +89,78 @@ public class CookBookScript : MonoBehaviour
         book.transform.localPosition = Vector3.Lerp(defaultBookPosition, hiddenBookPosition, progression / ANIM_SPEED);
     }
 
-    public void openCookbook()
+    public void OpenCookbook()
     {
         onAnimation = true;
         uiVisible = true;
         cookBookUi.SetActive(true);
         ingredientsUi.SetActive(false);
+        GetRecipesUnlocked();
     }
 
-    public void closeCookBook()
+    public void CloseCookBook()
     {
         onAnimation = true;
         uiVisible = false;
         buttons.SetActive(false);
     }
 
-    public void incrementPage()
+    public void IncrementPage()
     {
         currentPage++;
-        changePage(currentPage);
+        ChangePage(currentPage);
     }
 
-    public void decrementPage()
+    public void DecrementPage()
     {
         currentPage--;
-        changePage(currentPage);
+        ChangePage(currentPage);
     }
 
-    public void unlockNextRecipe()
+    public void GetRecipesUnlocked()
     { 
-        PlayerPrefs.SetInt("UnlockedDishes", PlayerPrefs.GetInt("UnlockedDishes") + 1);
-        changePage(currentPage);
+        int recipesDone = 0;
+        for (int i = 0; i < _playerProvince.recipeDoneKeyName.Length; i++)
+            recipesDone += PlayerPrefs.GetInt(_playerProvince.recipeDoneKeyName[i], 1) - 1;
+
+        int levelId = PlayerPrefs.GetInt("ProvinceCurrent", 0) - 1;
+        try
+        {
+            if (PlayerPrefs.GetInt(_levelLoad.initialPlayedKeyNames[levelId + 1], 0) == 0 &&
+                PlayerPrefs.GetInt(_playerProvince.recipeDoneKeyName[levelId], 1) > dishList.transform.GetComponent<DishList>().dishesLength)
+                recipesDone -= 1;
+        }
+        catch (UnityException) {}
+
+        PlayerPrefs.SetInt("UnlockedDishes", recipesDone);
+        ChangePage(currentPage);
     }
 
-    public void changePage(int page)
+    public void ChangePage(int page)
     {   
         if (page == 0)
-        {
             buttonLeft.transform.GetComponent<UnityEngine.UI.Button>().interactable = false;
-        }
         else if (page == 1)
-        {
             buttonLeft.transform.GetComponent<UnityEngine.UI.Button>().interactable = true;
-        }
+        
         if (page == PlayerPrefs.GetInt("UnlockedDishes"))
-        {
             buttonRight.transform.GetComponent<UnityEngine.UI.Button>().interactable = false;
-        }
         else if (page == PlayerPrefs.GetInt("UnlockedDishes") - 1)
-        {
             buttonRight.transform.GetComponent<UnityEngine.UI.Button>().interactable = true;
-        }
 
-        dishImage.transform.GetComponent<UnityEngine.UI.RawImage>().texture = allDishes[page].sprite.texture;
-        dishNameLabel.transform.GetComponent<TextMeshProUGUI>().SetText(allDishes[page].ToString().TrimEnd(" (DishInfo)").Replace('_', ' '));
-        dishIngredientsText.transform.GetComponent<TMPro.TextMeshProUGUI>().text = "";
+        dishImage.transform.GetComponent<RawImage>().texture = allDishes[page].framedSprite.texture;
+        dishIngredientsText.transform.GetComponent<TextMeshProUGUI>().text = "";
         foreach (IngredientInfo ingredient in allDishes[page].recipe)
-        {
             dishIngredientsText.transform.GetComponent<TextMeshProUGUI>().SetText(dishIngredientsText.transform.GetComponent<TextMeshProUGUI>().text + "- " + ingredient.ToString().TrimEnd(" (IngredientInfo)").Replace('_', ' ') + "\n");
+        
+        for (int i = 0; i < allDishes[page].isDishAtProvince.Length; i++)
+        {
+            if (allDishes[page].isDishAtProvince[i])
+            {
+                mapHighlight.sprite = highlightedMaps[i];
+                provinceText.text = highlightedMaps[i].name.Replace("highlighted_", "").ToUpper();
+                return;
+            }
         }
     }
 }

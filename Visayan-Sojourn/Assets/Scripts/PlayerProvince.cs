@@ -47,7 +47,6 @@ public class PlayerProvince : MonoBehaviour
         provinceUnlocked = PlayerPrefs.GetInt("ProvinceUnlocked", 1);
         for (int i = 0; i < recipeDoneKeyName.Length; i++)
             recipeDoneValue[i] = PlayerPrefs.GetInt(recipeDoneKeyName[i], 1);
-        _updateDisplayMain.UpdateDisplayProvince();
     }
 
     public void ProvincePurchasing()

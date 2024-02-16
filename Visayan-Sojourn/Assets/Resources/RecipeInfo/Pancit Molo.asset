@@ -29,6 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 313c78dc673fbfc48925487f39fec543, type: 2}
   sprite: {fileID: 21300000, guid: 3d267005d3f8bc54481f66501058c26d, type: 3}
   scale: {x: 0, y: 0, z: 0}
+  framedSprite: {fileID: 21300000, guid: 9a9759285e782fc45a1adcbf4c40e87d, type: 3}
   description: Pancit Molo is a savory dumpling soup originating from Molo, Iloilo,
     known for its rich broth, delicate wontons filled with ground meat, and thin
     egg noodles. This dish is a culinary masterpiece that captures the essence of
@@ -44,3 +45,4 @@ MonoBehaviour:
     of Ilonggo comfort food. The meticulous preparation of the dumplings also reflects
     the province's dedication to culinary craftsmanship, making it a beloved and
     iconic dish that brings people together to savor the flavors of Iloilo.
+  isDishAtProvince: 000000000001

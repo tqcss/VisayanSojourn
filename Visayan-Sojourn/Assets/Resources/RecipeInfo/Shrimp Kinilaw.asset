@@ -26,6 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e63be4e3297efc44f99ced07649116d8, type: 2}
   sprite: {fileID: 21300000, guid: 4cbaee34a387d4044b581b99bda38e6c, type: 3}
   scale: {x: 1, y: 1, z: 1}
+  framedSprite: {fileID: 21300000, guid: b0ab29fa54c382f4cada0c07af5fb07d, type: 3}
   description: Aklan's Shrimp Kinilaw is a culinary gem, featuring fresh shrimp in
     vinegar, calamansi juice, and a blend of other local spices. This dish captures
     the essence of Aklan's coastal bounty, with the zesty marinade highlighting the
@@ -36,3 +37,4 @@ MonoBehaviour:
     in vinegar, calamansi juice, and a blend of other local spices. This dish captures
     the essence of Aklan's coastal bounty, with the zesty marinade highlighting the
     natural sweetness of the shrimp.
+  isDishAtProvince: 000100000000
