@@ -7,7 +7,6 @@ using TMPro;
 
 public class LevelLoad : MonoBehaviour
 {
-    public GameObject videoScreen;
     public GameObject levelSelection;
     public Animator levelSelectionController;
     

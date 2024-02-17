@@ -51,8 +51,6 @@ public class CookBookScript : MonoBehaviour
 
         listScript = dishList.transform.GetComponent<DishList>();
         allDishes = listScript.dishAntique.Concat(listScript.dishAklan).Concat(listScript.dishCapiz).Concat(listScript.dishNegrosOccidental).Concat(listScript.dishGuimaras).Concat(listScript.dishIloilo).ToArray();
-
-        GetRecipesUnlocked();
     }
 
     private void Update()
@@ -132,7 +130,7 @@ public class CookBookScript : MonoBehaviour
         }
         catch (UnityException) {}
 
-        PlayerPrefs.SetInt("UnlockedDishes", recipesDone);
+        Debug.Log(recipesDone);
         ChangePage(currentPage);
     }
 
@@ -158,7 +156,7 @@ public class CookBookScript : MonoBehaviour
             if (allDishes[page].isDishAtProvince[i])
             {
                 mapHighlight.sprite = highlightedMaps[i];
-                provinceText.text = highlightedMaps[i].name.Replace("highlighted_", "").ToUpper();
+                provinceText.text = highlightedMaps[i].name.Replace("highlighted_", "").Replace("_", "").ToUpper();
                 return;
             }
         }

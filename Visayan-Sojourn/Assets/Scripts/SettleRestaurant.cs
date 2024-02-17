@@ -88,7 +88,7 @@ public class SettleRestaurant : MonoBehaviour
             StartCoroutine(CustomerArrival());
 
             // Set the order of a customer
-            yield return new WaitForSeconds(waitTimeArrival);
+            yield return new WaitForSeconds((waitTimeArrival * 3.0f) / 4.0f);
             orderText.SetActive(true);
             orderDisplay.SetActive(true);
             checkButton.SetActive(true);

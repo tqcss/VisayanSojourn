@@ -15,8 +15,8 @@ MonoBehaviour:
   recipe:
   - {fileID: 11400000, guid: 32d290f159ad7ef449cd40ee9874a4a2, type: 2}
   - {fileID: 11400000, guid: 755f74cc7c58f9a48b7318367e31061a, type: 2}
-  - {fileID: 11400000, guid: 2d09eb2ef741e3e4fbdb8df851344115, type: 2}
   - {fileID: 11400000, guid: ecc3e85539b328b43ab5971ebb1c829f, type: 2}
+  - {fileID: 11400000, guid: 2d09eb2ef741e3e4fbdb8df851344115, type: 2}
   - {fileID: 11400000, guid: 6ee36267e71400446ad5c18b0202650f, type: 2}
   - {fileID: 11400000, guid: 02b6ad3ce47e0904f80afe5ee2978316, type: 2}
   sprite: {fileID: 21300000, guid: a3f0390a6975d0041bb195a2b69e486c, type: 3}

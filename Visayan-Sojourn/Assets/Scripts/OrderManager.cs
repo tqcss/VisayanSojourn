@@ -42,22 +42,27 @@ public class OrderManager : MonoBehaviour
         currentOrderPrompt = dish;
         orderText.text = currentOrderPrompt.name;
         orderDisplay.sprite = currentOrderPrompt.sprite;
-        dishColoredImage.sprite = currentOrderPrompt.framedSprite;
 
-        if (_levelLoad.CheckModeId() == 1) 
+        switch (_levelLoad.CheckModeId())
         {
-            dishMonoImage.sprite = currentOrderPrompt.sprite;
-            dishDescription.text = currentOrderPrompt.shortDescription;
+            case 1:
+                dishMonoImage.sprite = currentOrderPrompt.sprite;
+                dishDescription.text = currentOrderPrompt.shortDescription;
+                dishColoredImage.sprite = currentOrderPrompt.framedSprite;
+                break;
+            case 2:
+                dishColoredImage.sprite = currentOrderPrompt.sprite;
+                break;
         }
 
         // Set the time duration based on the number of ingredients of a dish
         switch (_levelLoad.CheckModeId())
         {
             case 1:
-                timeDuration = 7.5f + (currentOrderPrompt.recipe.Count * 2.5f);
+                timeDuration = 7.0f + (currentOrderPrompt.recipe.Count * 3.5f);
                 break;
             case 2:
-                timeDuration = 4.0f + (currentOrderPrompt.recipe.Count * 2.0f);
+                timeDuration = 5.0f + (currentOrderPrompt.recipe.Count * 2.5f);
                 break;
         }
     }

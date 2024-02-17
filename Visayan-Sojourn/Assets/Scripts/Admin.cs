@@ -62,7 +62,6 @@ public class Admin : MonoBehaviour
             PlayerPrefs.SetInt("ProvinceUnlocked", provinceUnlocked + 1);
             PlayerPrefs.SetInt(_levelLoad.primalTravelKeyNames[provinceUnlocked - 1], 1);
         }
-        PlayerPrefs.SetInt("UnlockedDishes", PlayerPrefs.GetInt("UnlockedDishes", 0) + 1);
         _updateDisplayMain.UpdateDisplayProvince();
     }
 
@@ -82,7 +81,6 @@ public class Admin : MonoBehaviour
             // Decrement the no. of completed province if the no. of unlocked province is more than 0
             PlayerPrefs.SetInt("ProvinceCompleted", provinceCompleted - 1);
         }
-        PlayerPrefs.SetInt("UnlockedDishes", PlayerPrefs.GetInt("UnlockedDishes", 0) - 1);
         _updateDisplayMain.UpdateDisplayProvince();
     }
 
