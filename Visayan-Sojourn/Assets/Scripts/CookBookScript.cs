@@ -130,12 +130,15 @@ public class CookBookScript : MonoBehaviour
         }
         catch (UnityException) {}
 
-        Debug.Log(recipesDone);
+        Debug.Log(PlayerPrefs.GetInt(_playerProvince.recipeDoneKeyName[levelId], 1) > dishList.transform.GetComponent<DishList>().dishesLength);
+        Debug.Log("Recipe Done: " + recipesDone);
+        PlayerPrefs.SetInt("UnlockedDishes", recipesDone);
         ChangePage(currentPage);
     }
 
     public void ChangePage(int page)
     {   
+        Debug.Log("Page: " + page);
         if (page == 0)
             buttonLeft.transform.GetComponent<UnityEngine.UI.Button>().interactable = false;
         else if (page == 1)

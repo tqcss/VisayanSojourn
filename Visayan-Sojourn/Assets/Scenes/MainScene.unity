@@ -1135,7 +1135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &257726248
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3667,8 +3667,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 250, y: 100}
+  m_AnchoredPosition: {x: 0, y: -60}
+  m_SizeDelta: {x: 250, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &781537830
 MonoBehaviour:
@@ -3703,13 +3703,15 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Serve customers with
+  m_Text: 'Earn coins by serving
 
-    your discovered recipes.
+    the customers with
+
+    your discovered recipes!
 
 
-    Must finish Kitchen
-    Mode.'
+    Must
+    finish Kitchen Mode.'
 --- !u!222 &781537831
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4568,7 +4570,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5fc70e36a84a5e6418b25b8786eff895, type: 3}
   - {fileID: 8300000, guid: 3b484f1fc145fc34b9895f023d36e6a8, type: 3}
   - {fileID: 8300000, guid: e6137e5b5610abb4aa795c5d7e97bba6, type: 3}
-  provinceThemeInitialTime: 000000001b0000001400000015000000020000000a000000
+  provinceThemeInitialTime: 0000000001000000050000000d000000010000000a000000
   kitchenMusic: {fileID: 8300000, guid: eb809ad6e6e20574792d7194f293be72, type: 3}
   restaurantMusic: {fileID: 8300000, guid: 348515f8c39e6a3499d5dbfa9ed685cb, type: 3}
   startSfx: {fileID: 940407621}
@@ -5702,7 +5704,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.4000014, y: -35}
+  m_AnchoredPosition: {x: 0, y: -35}
   m_SizeDelta: {x: 70, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1022938709
@@ -5741,9 +5743,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 997a43b767814dd0a7642ec9b78cba41, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 20
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
@@ -9260,7 +9262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.4, y: -35}
+  m_AnchoredPosition: {x: 0, y: -35}
   m_SizeDelta: {x: 70, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1609998258

@@ -14,6 +14,7 @@ public class InitialLoad : MonoBehaviour
     public GameObject skipButton;
     public GameObject playButton;
     public GameObject quitButton;
+    public AudioSource audioSource;
     public string mainScene = "MainScene";
     public string travelScene = "TravelScene";
     public Text versionText;
@@ -63,6 +64,7 @@ public class InitialLoad : MonoBehaviour
         else
         {
             // Set the game objects
+            audioSource.Play();
             skipButton.SetActive(false);
             introTrailerScreen.SetActive(false);
             titleScreen.SetActive(true);
@@ -88,6 +90,7 @@ public class InitialLoad : MonoBehaviour
 
     public IEnumerator LoadAsynchronously(string scene)
     {
+        audioSource.Stop();
         skipButton.SetActive(false);
         introTrailerScreen.SetActive(false);
         loadingScreen.SetActive(true);

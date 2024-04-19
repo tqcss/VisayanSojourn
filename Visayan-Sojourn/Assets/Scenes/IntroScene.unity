@@ -299,7 +299,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5e4763560bbc4de47ba998e2379709fd, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -510,11 +510,12 @@ MonoBehaviour:
   skipButton: {fileID: 1946744223}
   playButton: {fileID: 951057486}
   quitButton: {fileID: 1288559082}
+  audioSource: {fileID: 217428248}
   mainScene: MainScene
   travelScene: TravelScene
   versionText: {fileID: 1391709411}
   versionTextObj: {fileID: 1391709409}
-  version: INDEV 1.2.9
+  version: 1.0
 --- !u!4 &262652993
 Transform:
   m_ObjectHideFlags: 0
@@ -1743,11 +1744,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 997a43b767814dd0a7642ec9b78cba41, type: 3}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: 8a2b9e2a607dd2143b58c44bc32410b4, type: 3}
+    m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -1755,7 +1756,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: In Testing Mode
+  m_Text: PLAY
 --- !u!222 &1358471308
 CanvasRenderer:
   m_ObjectHideFlags: 0
