@@ -2249,7 +2249,7 @@ MonoBehaviour:
   - Have you memorized the recipe?
   - I will go somewhere else then.
   - Please keep up with the order!
-  costRatio: 0.15
+  costRatio: 0.1
   sellTotal: 0
   streakCount: 0
   streakBonus: 1

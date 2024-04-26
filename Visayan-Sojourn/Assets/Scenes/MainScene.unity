@@ -1652,7 +1652,7 @@ MonoBehaviour:
   globalLives: 0
   failsBeforeSuccess: 0
   livesMax: 5
-  lifeMaxCooldown: 600
+  lifeMaxCooldown: 30
   lifeCooldown: 0
   inCooldown: 0
 --- !u!1 &413446625
