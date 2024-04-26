@@ -515,7 +515,7 @@ MonoBehaviour:
   travelScene: TravelScene
   versionText: {fileID: 1391709411}
   versionTextObj: {fileID: 1391709409}
-  version: 1.0
+  version: 1.0.1
 --- !u!4 &262652993
 Transform:
   m_ObjectHideFlags: 0

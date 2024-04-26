@@ -502,6 +502,8 @@ MonoBehaviour:
   - {fileID: -2068762707, guid: 57214f5a280f0f444966aed503757fbc, type: 3}
   - {fileID: 1965357435, guid: 0e7e3836f5fd2974f9dfc03946f783ed, type: 3}
   - {fileID: 1965357435, guid: 0e7e3836f5fd2974f9dfc03946f783ed, type: 3}
+  - {fileID: 1965357435, guid: 0e7e3836f5fd2974f9dfc03946f783ed, type: 3}
+  - {fileID: 1965357435, guid: 0e7e3836f5fd2974f9dfc03946f783ed, type: 3}
   - {fileID: -1042986392, guid: 4d529da19b760dc4094cffc7186d82e3, type: 3}
   livesImage: {fileID: 545613096}
   livesText: {fileID: 2102512607}
@@ -1649,8 +1651,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalLives: 0
   failsBeforeSuccess: 0
-  livesMax: 3
-  lifeMaxCooldown: 900
+  livesMax: 5
+  lifeMaxCooldown: 600
   lifeCooldown: 0
   inCooldown: 0
 --- !u!1 &413446625
@@ -8279,7 +8281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   globalCoins: 0
-  initialCoins: 10
+  initialCoins: 12.5
   coinsGenerated: 0
   coinGeneratorMax: 4
   coinsPerGenerate: 0.25
