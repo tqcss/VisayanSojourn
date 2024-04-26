@@ -59,10 +59,10 @@ public class OrderManager : MonoBehaviour
         switch (_levelLoad.CheckModeId())
         {
             case 1:
-                timeDuration = 7.0f + (currentOrderPrompt.recipe.Count * 3.5f);
+                timeDuration = 10.0f + (currentOrderPrompt.recipe.Count * 5.0f);
                 break;
             case 2:
-                timeDuration = 5.0f + (currentOrderPrompt.recipe.Count * 2.5f);
+                timeDuration = 8.0f + (currentOrderPrompt.recipe.Count * 4.0f);
                 break;
         }
     }
